@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role">
+    <sys_user_role action="INSERT_OR_UPDATE">
+        <assignable_by/>
+        <can_delegate>true</can_delegate>
+        <description>Default admin role</description>
+        <elevated_privilege>false</elevated_privilege>
+        <federated_id>OhRt6YJ1IpZ5k03WzzMI1u/FRqMgOlaV1HURRs6xA6o=</federated_id>
+        <grantable>true</grantable>
+        <includes_roles/>
+        <name>x_2206701_hotel_0.admin</name>
+        <scoped_admin>false</scoped_admin>
+        <suffix>admin</suffix>
+        <sys_class_name>sys_user_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-14 13:31:37</sys_created_on>
+        <sys_id>753f6f23837387d0ef22b1b6feaad342</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2206701_hotel_0.admin</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_user_role_753f6f23837387d0ef22b1b6feaad342</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-14 13:31:37</sys_updated_on>
+    </sys_user_role>
+</record_update>
