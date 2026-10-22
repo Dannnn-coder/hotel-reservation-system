@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="room_type" table="x_2206701_hotel_0_rooms" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>room_type</element>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>room_type</sys_name>
+            <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+            <sys_update_name>sys_choice_x_2206701_hotel_0_rooms_room_type</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+        </sys_choice_set>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Single</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>0</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>single</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Double</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>1</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>double</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Triple</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>2</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>triple</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Quad</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>3</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>quad</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Queen</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>4</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>queen</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>King</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>5</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>king</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Executive Suite</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>6</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
+            <value>executive_suite</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>room_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Presidential Suite</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_rooms</name>
+            <sequence>7</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-21 11:05:59</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-21 11:05:59</sys_updated_on>
+            <value>presidential_suite</value>
+        </sys_choice>
+    </sys_choice>
+</record_update>
