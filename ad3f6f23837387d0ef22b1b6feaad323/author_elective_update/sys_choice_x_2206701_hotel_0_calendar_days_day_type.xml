@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="day_type" table="x_2206701_hotel_0_calendar_days" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>day_type</element>
+            <name>x_2206701_hotel_0_calendar_days</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-22 03:05:12</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>day_type</sys_name>
+            <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+            <sys_update_name>sys_choice_x_2206701_hotel_0_calendar_days_day_type</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-22 03:05:12</sys_updated_on>
+        </sys_choice_set>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>day_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Business day</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_calendar_days</name>
+            <sequence>0</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-22 03:05:12</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-22 03:05:12</sys_updated_on>
+            <value>business_day</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>day_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Holiday</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_calendar_days</name>
+            <sequence>1</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-22 03:05:12</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-22 03:05:12</sys_updated_on>
+            <value>holiday</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>day_type</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Event</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_calendar_days</name>
+            <sequence>2</sequence>
+            <synonyms/>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-22 03:05:12</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-22 03:05:12</sys_updated_on>
+            <value>event</value>
+        </sys_choice>
+    </sys_choice>
+</record_update>

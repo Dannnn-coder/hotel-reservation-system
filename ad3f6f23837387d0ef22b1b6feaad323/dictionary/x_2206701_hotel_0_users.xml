@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="2a57770247c81350ba4a819f016d436e" extends="sys_user" label="Users" max_length="40" name="x_2206701_hotel_0_users" type="collection">
+        <element label="Years of experience" max_length="38" name="years_of_experience" type="decimal"/>
+        <element label="Assigned group" max_length="32" name="assigned_group" reference="sys_user_group" type="reference"/>
+        <element label="Age" mandatory="true" max_length="40" name="age" type="integer"/>
+        <index name="index">
+            <element name="assigned_group"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="assigned_group" label="Assigned group" language="en" table="x_2206701_hotel_0_users">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>assigned_group</element>
+            <help/>
+            <hint/>
+            <label>Assigned group</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_users</name>
+            <plural/>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-22 08:47:06</sys_created_on>
+            <sys_mod_count>3</sys_mod_count>
+            <sys_name>Assigned group</sys_name>
+            <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+            <sys_update_name>sys_documentation_x_2206701_hotel_0_users_assigned_group_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-22 08:47:07</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
