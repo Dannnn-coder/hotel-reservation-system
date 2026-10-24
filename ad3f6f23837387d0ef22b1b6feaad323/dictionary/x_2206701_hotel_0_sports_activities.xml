@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="cc53ab4647081350ba4a819f016d4381" label="Sports Activities" max_length="40" name="x_2206701_hotel_0_sports_activities" type="collection">
+        <element label="Activity date and time" mandatory="true" max_length="40" name="activity_date_and_time" type="glide_date_time"/>
+        <element label="Rate" mandatory="true" max_length="40" name="rate" type="currency"/>
+        <element display="true" label="Activity name" mandatory="true" max_length="100" name="activity_name" type="string"/>
+    </element>
+</database>

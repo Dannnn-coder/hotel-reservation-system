@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="INSERT_OR_UPDATE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-24 07:49:10</sys_created_on>
+        <sys_id>fcb0c63a83c81f109231f4c6feaad39d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2206701_hotel_0_sports_activities.x_2206701_hotel_0.receptionist</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_security_acl display_value="x_2206701_hotel_0_sports_activities">d073238647081350ba4a819f016d4374</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_fcb0c63a83c81f109231f4c6feaad39d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-24 07:49:10</sys_updated_on>
+        <sys_user_role display_value="x_2206701_hotel_0.receptionist" name="x_2206701_hotel_0.receptionist">039b19ba83841f109231f4c6feaad381</sys_user_role>
+    </sys_security_acl_role>
+</record_update>
