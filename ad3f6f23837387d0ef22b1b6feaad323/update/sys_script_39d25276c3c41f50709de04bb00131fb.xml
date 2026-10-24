@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_2206701_hotel_0_scheduled_reservations</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Calculate Reservation Days and Total</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+    var ru = new x_2206701_hotel_0.ReservationUtils();
+
+    var checkIn = current.getValue('check_in_date');
+    var checkOut = current.getValue('check_out_date');
+
+    // Auto-calculate number of days + total when both dates are set
+    if (checkIn && checkOut) {
+        var nights = ru.calculateDays(checkIn, checkOut);
+        current.setValue('number_of_days', nights);
+
+        // Total = fallback (rate * nights). Swap for Role 4's pricing later.
+        var total = ru._fallbackPrice(current.getValue('room'), nights);
+        current.setValue('total_payment', total);
+    }
+
+})(current, previous);
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-24 09:11:27</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>39d25276c3c41f50709de04bb00131fb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Calculate Reservation Days and Total</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_script_39d25276c3c41f50709de04bb00131fb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-24 09:11:27</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=39d25276c3c41f50709de04bb00131fb"/>
+</record_update>
