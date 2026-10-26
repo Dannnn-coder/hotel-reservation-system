@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_2206701_hotel_0.ReservationUtils</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Role 3 - Reservation logic: create, validate, calculate days, cancel, confirm, guest lookup&#13;
+</description>
+        <mobile_callable>false</mobile_callable>
+        <name>ReservationUtils</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var ReservationUtils = Class.create();
+ReservationUtils.prototype = {
+    initialize: function() {},
+
+    /**
+     * Validate that check-out is AFTER check-in.
+     * Returns { ok: true } or { ok: false, message: "..." }
+     */
+    validateDates: function(checkInStr, checkOutStr) {
+        if (!checkInStr || !checkOutStr) {
+            return { ok: false, message: "Check-in and check-out dates are required." };
+        }
+        var checkIn = new GlideDate();
+        checkIn.setValue(checkInStr);
+        var checkOut = new GlideDate();
+        checkOut.setValue(checkOutStr);
+
+        // check-out must be strictly after check-in
+        if (checkOut.getNumericValue() <= checkIn.getNumericValue()) {
+            return { ok: false, message: "Check-out date must be after the check-in date." };
+        }
+        return { ok: true };
+    },
+
+    /**
+     * Calculate number of nights between check-in and check-out.
+     * Returns an integer (days).
+     */
+    calculateDays: function(checkInStr, checkOutStr) {
+        var checkIn = new GlideDate();
+        checkIn.setValue(checkInStr);
+        var checkOut = new GlideDate();
+        checkOut.setValue(checkOutStr);
+
+        var msPerDay = 1000 * 60 * 60 * 24;
+        var diff = checkOut.getNumericValue() - checkIn.getNumericValue();
+        return Math.round(diff / msPerDay);
+    },
+
+    /**
+     * MAIN: create a reservation.
+     * data = { room, guest_name, guest_email, check_in_date, check_out_date,
+     *          number_of_adults, number_of_children, registered_user (optional) }
+     * Returns { ok, message, reservationId }
+     */
+    createReservation: function(data) {
+        // 1) Validate dates
+        var dateCheck = this.validateDates(data.check_in_date, data.check_out_date);
+        if (!dateCheck.ok) {
+            return { ok: false, message: dateCheck.message };
+        }
+
+        // 2) Require a room (enforces "one room per reservation" — a single reference)
+        if (!data.room) {
+            return { ok: false, message: "A room must be selected." };
+        }
+
+        // 3) Calculate number of nights
+        var nights = this.calculateDays(data.check_in_date, data.check_out_date);
+
+        // 4) Get the total price from Role 4 (Cauban)'s pricing function.
+        //    TODO: replace the next line with Role 4's actual Script Include + method
+        //    once Cauban provides the name. For now we use a safe fallback (rate * nights).
+        var total = this._fallbackPrice(data.room, nights);
+        // Example of the real call (uncomment when ready):
+        // total = new x_2206701_hotel_0.PricingUtils().calculateRoomTotal(data.room, nights, data.check_in_date);
+
+        // 5) Create the record
+        var gr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        gr.initialize();
+        gr.setValue('room', data.room);
+        gr.setValue('guest_name', data.guest_name);
+        gr.setValue('guest_email', data.guest_email);
+        gr.setValue('check_in_date', data.check_in_date);
+        gr.setValue('check_out_date', data.check_out_date);
+        gr.setValue('number_of_days', nights);
+        gr.setValue('number_of_adults', data.number_of_adults || 1);
+        gr.setValue('number_of_children', data.number_of_children || 0);
+        gr.setValue('total_payment', total);
+        gr.setValue('reservation_status', 'pending');
+
+        // 6) Securely set registered_user for signed-in customers; blank for guests.
+        if (data.registered_user) {
+            gr.setValue('registered_user', data.registered_user);
+        }
+
+        var newId = gr.insert();
+        if (newId) {
+            return { ok: true, message: "Reservation created.", reservationId: newId, total: total, nights: nights };
+        }
+        return { ok: false, message: "Could not create the reservation." };
+    },
+
+    /**
+     * Cancel a reservation. Enforces: cancel only if 72+ hours before check-in.
+     * Returns { ok, message }
+     */
+    cancelReservation: function(reservationId) {
+        var gr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        if (!gr.get(reservationId)) {
+            return { ok: false, message: "Reservation not found." };
+        }
+
+        var checkIn = new GlideDateTime();
+        checkIn.setValue(gr.getValue('check_in_date') + " 00:00:00"); // check_in is Date-only
+        var now = new GlideDateTime();
+
+        var hoursUntil = (checkIn.getNumericValue() - now.getNumericValue()) / (1000 * 60 * 60);
+        if (hoursUntil < 72) {
+            return { ok: false, message: "Cancellation is only allowed 72 hours before check-in." };
+        }
+
+        gr.setValue('reservation_status', 'cancelled');
+        gr.update();
+        return { ok: true, message: "Reservation cancelled." };
+    },
+
+    /**
+     * Confirm a reservation (set status to confirmed).
+     */
+    confirmReservation: function(reservationId) {
+        var gr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        if (!gr.get(reservationId)) {
+            return { ok: false, message: "Reservation not found." };
+        }
+        gr.setValue('reservation_status', 'confirmed');
+        gr.update();
+        return { ok: true, message: "Reservation confirmed." };
+    },
+
+    /**
+     * Guest lookup: find a reservation by its number + guest email.
+     * Returns { ok, message, reservationId } so a guest without an account can find their booking.
+     */
+    lookupGuestReservation: function(reservationNumber, guestEmail) {
+        var gr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        gr.addQuery('number', reservationNumber);
+        gr.addQuery('guest_email', guestEmail);
+        gr.query();
+        if (gr.next()) {
+            return { ok: true, message: "Reservation found.", reservationId: gr.getUniqueValue() };
+        }
+        return { ok: false, message: "No reservation found for that number and email." };
+    },
+
+    /**
+     * Temporary fallback price = room rate * nights.
+     * Replace with Role 4 (Cauban)'s pricing function when available.
+     */
+    _fallbackPrice: function(roomId, nights) {
+        var room = new GlideRecord('x_2206701_hotel_0_rooms');
+        if (room.get(roomId)) {
+            var rate = parseFloat(room.getValue('rate')) || 0;
+            return rate * nights;
+        }
+        return 0;
+    },
+
+    type: 'ReservationUtils'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-24 09:04:43</sys_created_on>
+        <sys_id>b8811e72c3c41f50709de04bb00131c4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ReservationUtils</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_script_include_b8811e72c3c41f50709de04bb00131c4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-24 09:04:43</sys_updated_on>
+    </sys_script_include>
+</record_update>
