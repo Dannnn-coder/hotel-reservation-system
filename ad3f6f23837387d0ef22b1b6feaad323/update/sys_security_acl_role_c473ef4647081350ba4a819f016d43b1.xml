@@ -13,6 +13,6 @@
         <sys_update_name>sys_security_acl_role_c473ef4647081350ba4a819f016d43b1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-10-22 07:04:59</sys_updated_on>
-        <sys_user_role display_value="x_2206701_hotel_0.admin" name="x_2206701_hotel_0.admin">753f6f23837387d0ef22b1b6feaad342</sys_user_role>
+        <sys_user_role display_value="x_2206701_hotel_0.administator" name="x_2206701_hotel_0.administator">753f6f23837387d0ef22b1b6feaad342</sys_user_role>
     </sys_security_acl_role>
 </record_update>
