@@ -2,9 +2,9 @@
     <element db_object_id="e603ae8e47ccdf10ba4a819f016d43f6" label="Calendar Days" max_length="40" name="x_2206701_hotel_0_calendar_days" type="collection">
         <element choice="1" label="Day type" mandatory="true" max_length="40" name="day_type" type="choice">
             <choice>
+                <element inactive_on_update="false" label="Event" sequence="2" value="event"/>
                 <element inactive_on_update="false" label="Holiday" sequence="1" value="holiday"/>
                 <element inactive_on_update="false" label="Business day" sequence="0" value="business_day"/>
-                <element inactive_on_update="false" label="Event" sequence="2" value="event"/>
             </choice>
         </element>
         <element default="0" label="Discount percentage" mandatory="true" max_length="38" name="discount_percentage" type="decimal"/>
