@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role_contains">
+    <sys_user_role_contains action="INSERT_OR_UPDATE">
+        <contains display_value="x_2206701_hotel_0.receptionist" name="x_2206701_hotel_0.receptionist">039b19ba83841f109231f4c6feaad381</contains>
+        <role display_value="x_2206701_hotel_0.administator" name="x_2206701_hotel_0.administator">753f6f23837387d0ef22b1b6feaad342</role>
+        <sys_class_name>sys_user_role_contains</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-24 05:13:57</sys_created_on>
+        <sys_id>cd3d9d7e83841f109231f4c6feaad31a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2206701_hotel_0.receptionist.x_2206701_hotel_0.administator</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_user_role_contains_cd3d9d7e83841f109231f4c6feaad31a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-24 05:13:57</sys_updated_on>
+    </sys_user_role_contains>
+</record_update>
