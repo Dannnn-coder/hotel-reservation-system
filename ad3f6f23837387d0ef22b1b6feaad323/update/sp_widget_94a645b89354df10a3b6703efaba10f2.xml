@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.hotel-footer {&#13;
+    background: #162a22;&#13;
+    color: #faf6ef;&#13;
+    padding: 55px 7% 20px;&#13;
+    font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.footer-main {&#13;
+    display: grid;&#13;
+    grid-template-columns: 2fr 1fr 1fr;&#13;
+    gap: 40px;&#13;
+    padding-bottom: 40px;&#13;
+}&#13;
+&#13;
+.footer-brand h2 {&#13;
+    color: #e6c79c;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 27px;&#13;
+    margin: 0 0 12px;&#13;
+}&#13;
+&#13;
+.footer-brand p {&#13;
+    color: rgba(250, 246, 239, 0.65);&#13;
+    font-size: 13px;&#13;
+    line-height: 1.7;&#13;
+    max-width: 300px;&#13;
+}&#13;
+&#13;
+.footer-links {&#13;
+    display: flex;&#13;
+    flex-direction: column;&#13;
+    gap: 13px;&#13;
+}&#13;
+&#13;
+.footer-links h4 {&#13;
+    color: #e6c79c;&#13;
+    font-size: 11px;&#13;
+    letter-spacing: 2px;&#13;
+    margin: 5px 0 8px;&#13;
+}&#13;
+&#13;
+.footer-links a {&#13;
+    color: rgba(250, 246, 239, 0.75) !important;&#13;
+    text-decoration: none !important;&#13;
+    font-size: 13px;&#13;
+}&#13;
+&#13;
+.footer-links a:hover {&#13;
+    color: #e6c79c !important;&#13;
+}&#13;
+&#13;
+.footer-bottom {&#13;
+    border-top: 1px solid rgba(250, 246, 239, 0.15);&#13;
+    padding-top: 20px;&#13;
+    display: flex;&#13;
+    justify-content: space-between;&#13;
+    gap: 15px;&#13;
+    color: rgba(250, 246, 239, 0.55);&#13;
+    font-size: 11px;&#13;
+}&#13;
+&#13;
+@media (max-width: 767px) {&#13;
+    .footer-main {&#13;
+        grid-template-columns: 1fr;&#13;
+        gap: 30px;&#13;
+    }&#13;
+&#13;
+    .footer-bottom {&#13;
+        flex-direction: column;&#13;
+        line-height: 1.6;&#13;
+    }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-footer</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Footer</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:43:35</sys_created_on>
+        <sys_id>94a645b89354df10a3b6703efaba10f2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Footer</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_94a645b89354df10a3b6703efaba10f2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:43:35</sys_updated_on>
+        <template><![CDATA[<footer class="hotel-footer">
+  <div class="footer-main">
+    <div class="footer-brand">
+      <h2>Placeholder title</h2>
+      <p>A place to relax, recharge, and enjoy your stay.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>EXPLORE</h4>
+      <a href="?id=hotel_reservation_home_page">Home</a>
+      <a href="?id=hotel_rooms">Rooms</a>
+      <a href="?id=book_sports">Sports Activities</a>
+    </div>
+
+    <div class="footer-links">
+      <h4>GUEST SERVICES</h4>
+      <a href="?id=my_reservations">My Reservations</a>
+      <a href="?id=guest_lookup">Guest Lookup</a>
+      <a href="?id=book_room">Book a Room</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Placeholder title. All rights reserved.</span>
+    <span>Designed for a comfortable stay.</span>
+  </div>
+</footer>]]></template>
+    </sp_widget>
+</record_update>

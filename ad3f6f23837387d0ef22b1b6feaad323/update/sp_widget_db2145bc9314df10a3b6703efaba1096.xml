@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.featured-rooms {&#13;
+    padding: 65px 7%;&#13;
+    background: #faf6ef;&#13;
+    color: #2a2d29;&#13;
+    font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.rooms-heading {&#13;
+    text-align: center;&#13;
+    margin-bottom: 35px;&#13;
+}&#13;
+&#13;
+.rooms-eyebrow {&#13;
+    color: #a8895e;&#13;
+    font-size: 11px;&#13;
+    font-weight: 700;&#13;
+    letter-spacing: 3px;&#13;
+}&#13;
+&#13;
+.rooms-heading h2 {&#13;
+    color: #1f3a30;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 36px;&#13;
+    margin: 10px 0;&#13;
+}&#13;
+&#13;
+.rooms-heading p {&#13;
+    color: #6f756f;&#13;
+    font-size: 14px;&#13;
+}&#13;
+&#13;
+.rooms-grid {&#13;
+    display: grid;&#13;
+    grid-template-columns: repeat(3, minmax(0, 1fr));&#13;
+    gap: 25px;&#13;
+}&#13;
+&#13;
+.room-card {&#13;
+    background: #fff;&#13;
+    border: 1px solid #e7e1d4;&#13;
+    overflow: hidden;&#13;
+    transition: transform 0.25s, box-shadow 0.25s;&#13;
+}&#13;
+&#13;
+.room-card:hover {&#13;
+    transform: translateY(-5px);&#13;
+    box-shadow: 0 12px 25px rgba(31, 58, 48, 0.10);&#13;
+}&#13;
+&#13;
+.room-image {&#13;
+    height: 190px;&#13;
+    background: linear-gradient(135deg, #dce5df, #aebfb2);&#13;
+    position: relative;&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    justify-content: center;&#13;
+}&#13;
+&#13;
+.room-image-placeholder {&#13;
+    color: rgba(31, 58, 48, 0.55);&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 24px;&#13;
+    letter-spacing: 5px;&#13;
+}&#13;
+&#13;
+.room-status {&#13;
+    position: absolute;&#13;
+    top: 15px;&#13;
+    right: 15px;&#13;
+    background: #faf6ef;&#13;
+    color: #1f3a30;&#13;
+    padding: 7px 12px;&#13;
+    font-size: 11px;&#13;
+    font-weight: 700;&#13;
+}&#13;
+&#13;
+.room-details {&#13;
+    padding: 22px;&#13;
+}&#13;
+&#13;
+.room-type {&#13;
+    color: #a8895e;&#13;
+    font-size: 11px;&#13;
+    text-transform: uppercase;&#13;
+    letter-spacing: 2px;&#13;
+}&#13;
+&#13;
+.room-details h3 {&#13;
+    color: #1f3a30;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 23px;&#13;
+    margin: 9px 0 17px;&#13;
+}&#13;
+&#13;
+.room-info {&#13;
+    display: flex;&#13;
+    justify-content: space-between;&#13;
+    gap: 10px;&#13;
+    color: #6f756f;&#13;
+    font-size: 12px;&#13;
+    padding-bottom: 18px;&#13;
+    border-bottom: 1px solid #e7e1d4;&#13;
+}&#13;
+&#13;
+.room-bottom {&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    justify-content: space-between;&#13;
+    gap: 10px;&#13;
+    padding-top: 18px;&#13;
+}&#13;
+&#13;
+.room-price {&#13;
+    color: #1f3a30;&#13;
+    font-size: 19px;&#13;
+    font-weight: 700;&#13;
+}&#13;
+&#13;
+.room-button {&#13;
+    background: #1f3a30;&#13;
+    color: #fff !important;&#13;
+    text-decoration: none;&#13;
+    padding: 11px 17px;&#13;
+    font-size: 12px;&#13;
+    transition: background 0.2s;&#13;
+}&#13;
+&#13;
+.room-button:hover {&#13;
+    background: #162a22;&#13;
+    text-decoration: none;&#13;
+}&#13;
+&#13;
+.rooms-footer {&#13;
+    text-align: center;&#13;
+    margin-top: 35px;&#13;
+}&#13;
+&#13;
+.rooms-footer a {&#13;
+    color: #1f3a30;&#13;
+    font-weight: 700;&#13;
+    font-size: 13px;&#13;
+    text-decoration: none;&#13;
+}&#13;
+&#13;
+.rooms-footer a:hover {&#13;
+    color: #a8895e;&#13;
+}&#13;
+&#13;
+.rooms-empty {&#13;
+    text-align: center;&#13;
+    padding: 45px 20px;&#13;
+    background: #fff;&#13;
+    border: 1px solid #e7e1d4;&#13;
+}&#13;
+&#13;
+.rooms-empty h3 {&#13;
+    color: #1f3a30;&#13;
+    font-family: Georgia, serif;&#13;
+}&#13;
+&#13;
+.rooms-empty p {&#13;
+    color: #6f756f;&#13;
+}&#13;
+&#13;
+@media (max-width: 767px) {&#13;
+    .rooms-grid {&#13;
+        grid-template-columns: 1fr;&#13;
+    }&#13;
+&#13;
+    .featured-rooms {&#13;
+        padding: 45px 20px;&#13;
+    }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-featured-rooms</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Featured Rooms</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    data.rooms = [];
+
+    var gr = new GlideRecordSecure('x_2206701_hotel_0_rooms');
+    gr.orderBy('room_name');
+    gr.setLimit(3);
+    gr.query();
+
+    while (gr.next()) {
+        data.rooms.push({
+            sys_id: gr.getUniqueValue(),
+            name: gr.getDisplayValue('room_name'),
+            type: gr.getDisplayValue('room_type'),
+            capacity: gr.getDisplayValue('capacity'),
+            rate: gr.getDisplayValue('rate'),
+            availability: gr.getDisplayValue('availability_status')
+        });
+    }
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:28:35</sys_created_on>
+        <sys_id>db2145bc9314df10a3b6703efaba1096</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Featured Rooms</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_db2145bc9314df10a3b6703efaba1096</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:28:35</sys_updated_on>
+        <template><![CDATA[<section class="featured-rooms">
+  <div class="rooms-heading">
+    <span class="rooms-eyebrow">FIND YOUR PERFECT STAY</span>
+    <h2>Featured Rooms</h2>
+    <p>Explore our available accommodations.</p>
+  </div>
+
+  <div class="rooms-grid" ng-if="c.data.rooms.length">
+    <article class="room-card" ng-repeat="room in c.data.rooms track by room.sys_id">
+      <div class="room-image">
+        <div class="room-image-placeholder">
+          <span>ROOM</span>
+        </div>
+        <span class="room-status">{{room.availability}}</span>
+      </div>
+
+      <div class="room-details">
+        <span class="room-type">{{room.type}}</span>
+        <h3>{{room.name}}</h3>
+
+        <div class="room-info">
+          <span>
+            <i class="fa fa-users"></i>
+            {{room.capacity}} Guests
+          </span>
+          <span>
+            <i class="fa fa-moon-o"></i>
+            Per Night
+          </span>
+        </div>
+
+        <div class="room-bottom">
+          <div class="room-price">{{room.rate}}</div>
+          <a href="?id=book_room" class="room-button">Book Now</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="rooms-empty" ng-if="!c.data.rooms.length">
+    <h3>No rooms to display yet</h3>
+    <p>Room listings will appear here once room records are available.</p>
+  </div>
+
+  <div class="rooms-footer">
+    <a href="?id=hotel_rooms">View All Rooms <i class="fa fa-arrow-right"></i></a>
+  </div>
+</section>]]></template>
+    </sp_widget>
+</record_update>

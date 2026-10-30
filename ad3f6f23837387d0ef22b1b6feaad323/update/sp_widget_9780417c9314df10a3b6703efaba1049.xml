@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>&#13;
+.hotel-features {&#13;
+  width: 100%;&#13;
+  box-sizing: border-box;&#13;
+  padding: 65px 7%;&#13;
+  background: #ffffff;&#13;
+  font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.features-grid {&#13;
+  max-width: 1300px;&#13;
+  margin: 0 auto;&#13;
+  display: grid;&#13;
+  grid-template-columns: repeat(4, 1fr);&#13;
+  gap: 35px;&#13;
+}&#13;
+&#13;
+.feature-item {&#13;
+  text-align: center;&#13;
+  padding: 15px;&#13;
+}&#13;
+&#13;
+.feature-icon {&#13;
+  width: 65px;&#13;
+  height: 65px;&#13;
+  margin: 0 auto 20px;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  border-radius: 50%;&#13;
+  background: #e8eee9;&#13;
+  color: #1f3a30;&#13;
+  font-size: 23px;&#13;
+}&#13;
+&#13;
+.feature-item h3 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 22px;&#13;
+  font-weight: normal;&#13;
+  margin: 0 0 12px;&#13;
+}&#13;
+&#13;
+.feature-item p {&#13;
+  color: #6f756f;&#13;
+  font-size: 13px;&#13;
+  line-height: 1.8;&#13;
+  margin: 0;&#13;
+}&#13;
+&#13;
+@media (max-width: 850px) {&#13;
+  .features-grid {&#13;
+    grid-template-columns: repeat(2, 1fr);&#13;
+    gap: 25px;&#13;
+  }&#13;
+}&#13;
+&#13;
+@media (max-width: 480px) {&#13;
+  .features-grid {&#13;
+    grid-template-columns: 1fr;&#13;
+  }&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-features</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Features</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:17:27</sys_created_on>
+        <sys_id>9780417c9314df10a3b6703efaba1049</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Features</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_9780417c9314df10a3b6703efaba1049</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:17:27</sys_updated_on>
+        <template><![CDATA[
+<section class="hotel-features">
+  <div class="features-grid">
+
+    <div class="feature-item">
+      <div class="feature-icon">
+        <span class="glyphicon glyphicon-globe"></span>
+      </div>
+      <h3>Oceanfront</h3>
+      <p>Wake up to beautiful ocean views and the calming sound of the waves.</p>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">
+        <span class="glyphicon glyphicon-bed"></span>
+      </div>
+      <h3>Luxury Rooms</h3>
+      <p>Relax in thoughtfully designed spaces made for comfort and rest.</p>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">
+        <span class="glyphicon glyphicon-cutlery"></span>
+      </div>
+      <h3>Fine Dining</h3>
+      <p>Enjoy delicious meals and memorable dining experiences.</p>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">
+        <span class="glyphicon glyphicon-leaf"></span>
+      </div>
+      <h3>Spa & Wellness</h3>
+      <p>Take time to unwind, recharge, and enjoy a little relaxation.</p>
+    </div>
+
+  </div>
+</section>
+]]></template>
+    </sp_widget>
+</record_update>
