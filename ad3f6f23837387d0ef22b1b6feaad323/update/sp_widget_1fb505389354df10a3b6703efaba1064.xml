@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.hotel-cta {&#13;
+    position: relative;&#13;
+    padding: 75px 25px;&#13;
+    background: linear-gradient(120deg, #162a22, #1f3a30);&#13;
+    text-align: center;&#13;
+    overflow: hidden;&#13;
+}&#13;
+&#13;
+.hotel-cta:before,&#13;
+.hotel-cta:after {&#13;
+    content: "";&#13;
+    position: absolute;&#13;
+    border: 1px solid rgba(230, 199, 156, 0.2);&#13;
+    border-radius: 50%;&#13;
+    width: 300px;&#13;
+    height: 300px;&#13;
+}&#13;
+&#13;
+.hotel-cta:before {&#13;
+    top: -190px;&#13;
+    left: -100px;&#13;
+}&#13;
+&#13;
+.hotel-cta:after {&#13;
+    bottom: -220px;&#13;
+    right: -80px;&#13;
+}&#13;
+&#13;
+.cta-content {&#13;
+    position: relative;&#13;
+    z-index: 1;&#13;
+}&#13;
+&#13;
+.cta-eyebrow {&#13;
+    color: #e6c79c;&#13;
+    font-size: 11px;&#13;
+    font-weight: 700;&#13;
+    letter-spacing: 3px;&#13;
+}&#13;
+&#13;
+.cta-content h2 {&#13;
+    color: #faf6ef;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 42px;&#13;
+    line-height: 1.2;&#13;
+    margin: 18px 0;&#13;
+}&#13;
+&#13;
+.cta-content p {&#13;
+    color: rgba(250, 246, 239, 0.75);&#13;
+    font-size: 14px;&#13;
+    margin-bottom: 28px;&#13;
+}&#13;
+&#13;
+.cta-button {&#13;
+    display: inline-block;&#13;
+    background: #e6c79c;&#13;
+    color: #1f3a30 !important;&#13;
+    padding: 14px 25px;&#13;
+    text-decoration: none !important;&#13;
+    font-size: 12px;&#13;
+    font-weight: 700;&#13;
+    letter-spacing: 1px;&#13;
+    transition: background 0.2s;&#13;
+}&#13;
+&#13;
+.cta-button:hover {&#13;
+    background: #d4b07c;&#13;
+}&#13;
+&#13;
+@media (max-width: 767px) {&#13;
+    .cta-content h2 {&#13;
+        font-size: 32px;&#13;
+    }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-call-to-action</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Call to Action</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:41:31</sys_created_on>
+        <sys_id>1fb505389354df10a3b6703efaba1064</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Call to Action</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_1fb505389354df10a3b6703efaba1064</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:41:31</sys_updated_on>
+        <template><![CDATA[<section class="hotel-cta">
+  <div class="cta-content">
+    <span class="cta-eyebrow">YOUR NEXT ESCAPE STARTS HERE</span>
+    <h2>Make Your Stay<br>Something Special.</h2>
+    <p>Discover comfort, relaxation, and unforgettable experiences.</p>
+    <a href="?id=book_room" class="cta-button">
+      Plan Your Stay <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+</section>]]></template>
+    </sp_widget>
+</record_update>

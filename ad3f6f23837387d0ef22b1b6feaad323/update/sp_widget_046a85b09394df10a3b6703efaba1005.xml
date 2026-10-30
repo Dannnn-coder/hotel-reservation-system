@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope) {
+    var c = this;
+
+    c.reservationNumber = "";
+    c.guestEmail = "";
+    c.message = "";
+    c.messageType = "";
+    c.loading = false;
+
+    c.submitLookup = function() {
+        c.message = "";
+        c.messageType = "";
+
+        if (!c.reservationNumber || !c.reservationNumber.trim()) {
+            c.message = "Please enter your reservation number.";
+            c.messageType = "error";
+            return;
+        }
+
+        if (!c.guestEmail || !c.guestEmail.trim()) {
+            c.message = "Please enter the email address used for your reservation.";
+            c.messageType = "error";
+            return;
+        }
+
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(c.guestEmail.trim())) {
+            c.message = "Please enter a valid email address.";
+            c.messageType = "error";
+            return;
+        }
+
+        c.message = "The reservation lookup service is not connected yet. Please try again once the booking service is ready.";
+        c.messageType = "info";
+    };
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.guest-lookup-page {&#13;
+  min-height: 650px;&#13;
+  padding: 65px 20px 55px;&#13;
+  background: #faf6ef;&#13;
+  font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.lookup-heading {&#13;
+  text-align: center;&#13;
+  max-width: 650px;&#13;
+  margin: 0 auto 35px;&#13;
+}&#13;
+&#13;
+.lookup-eyebrow {&#13;
+  display: inline-block;&#13;
+  color: #9a805d;&#13;
+  font-size: 11px;&#13;
+  font-weight: 700;&#13;
+  letter-spacing: 3px;&#13;
+  margin-bottom: 12px;&#13;
+}&#13;
+&#13;
+.lookup-heading h1 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 38px;&#13;
+  font-weight: 500;&#13;
+  margin: 0 0 12px;&#13;
+}&#13;
+&#13;
+.lookup-heading p {&#13;
+  color: #6f756f;&#13;
+  font-size: 15px;&#13;
+  line-height: 1.7;&#13;
+  margin: 0;&#13;
+}&#13;
+&#13;
+.lookup-card {&#13;
+  max-width: 510px;&#13;
+  margin: 0 auto;&#13;
+  padding: 38px 42px;&#13;
+  background: #ffffff;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 10px;&#13;
+  box-shadow: 0 12px 35px rgba(31, 58, 48, 0.07);&#13;
+}&#13;
+&#13;
+.lookup-icon {&#13;
+  width: 55px;&#13;
+  height: 55px;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  margin: 0 auto 18px;&#13;
+  background: #e8eee9;&#13;
+  border-radius: 50%;&#13;
+  color: #1f3a30;&#13;
+  font-size: 23px;&#13;
+}&#13;
+&#13;
+.lookup-card h2 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 25px;&#13;
+  font-weight: 500;&#13;
+  text-align: center;&#13;
+  margin: 0 0 8px;&#13;
+}&#13;
+&#13;
+.lookup-description {&#13;
+  color: #6f756f;&#13;
+  font-size: 13px;&#13;
+  text-align: center;&#13;
+  line-height: 1.6;&#13;
+  margin: 0 0 28px;&#13;
+}&#13;
+&#13;
+.lookup-card .form-group {&#13;
+  margin-bottom: 20px;&#13;
+}&#13;
+&#13;
+.lookup-card label {&#13;
+  display: block;&#13;
+  color: #2a2d29;&#13;
+  font-size: 13px;&#13;
+  font-weight: 600;&#13;
+  margin-bottom: 8px;&#13;
+}&#13;
+&#13;
+.lookup-card input {&#13;
+  width: 100%;&#13;
+  height: 46px;&#13;
+  padding: 0 14px;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 5px;&#13;
+  background: #faf6ef;&#13;
+  color: #2a2d29;&#13;
+  font-size: 14px;&#13;
+  box-sizing: border-box;&#13;
+  outline: none;&#13;
+}&#13;
+&#13;
+.lookup-card input:focus {&#13;
+  border-color: #1f3a30;&#13;
+  box-shadow: 0 0 0 2px rgba(31, 58, 48, 0.08);&#13;
+}&#13;
+&#13;
+.lookup-card input::placeholder {&#13;
+  color: #a3a69f;&#13;
+}&#13;
+&#13;
+.lookup-button {&#13;
+  width: 100%;&#13;
+  height: 48px;&#13;
+  margin-top: 5px;&#13;
+  border: none;&#13;
+  border-radius: 5px;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff;&#13;
+  font-size: 13px;&#13;
+  font-weight: 600;&#13;
+  letter-spacing: 0.5px;&#13;
+  cursor: pointer;&#13;
+  transition: background 0.2s ease;&#13;
+}&#13;
+&#13;
+.lookup-button:hover {&#13;
+  background: #162a22;&#13;
+}&#13;
+&#13;
+.lookup-button:disabled {&#13;
+  opacity: 0.6;&#13;
+  cursor: not-allowed;&#13;
+}&#13;
+&#13;
+.lookup-button i {&#13;
+  margin-right: 8px;&#13;
+}&#13;
+&#13;
+.lookup-message {&#13;
+  display: flex;&#13;
+  align-items: flex-start;&#13;
+  gap: 10px;&#13;
+  padding: 13px 15px;&#13;
+  margin-top: 20px;&#13;
+  border-radius: 5px;&#13;
+  font-size: 13px;&#13;
+  line-height: 1.6;&#13;
+}&#13;
+&#13;
+.lookup-message.error {&#13;
+  background: #f9e9e6;&#13;
+  color: #9c3d31;&#13;
+}&#13;
+&#13;
+.lookup-message.info {&#13;
+  background: #e8eee9;&#13;
+  color: #1f3a30;&#13;
+}&#13;
+&#13;
+.lookup-help {&#13;
+  display: flex;&#13;
+  align-items: flex-start;&#13;
+  gap: 9px;&#13;
+  padding-top: 20px;&#13;
+  margin-top: 25px;&#13;
+  border-top: 1px solid #e7e1d4;&#13;
+  color: #8a8e87;&#13;
+  font-size: 11px;&#13;
+  line-height: 1.6;&#13;
+}&#13;
+&#13;
+.lookup-help i {&#13;
+  color: #9a805d;&#13;
+  margin-top: 2px;&#13;
+}&#13;
+&#13;
+.lookup-back {&#13;
+  text-align: center;&#13;
+  margin-top: 28px;&#13;
+}&#13;
+&#13;
+.lookup-back a {&#13;
+  color: #1f3a30;&#13;
+  font-size: 13px;&#13;
+  text-decoration: none;&#13;
+}&#13;
+&#13;
+.lookup-back a:hover {&#13;
+  color: #9a805d;&#13;
+}&#13;
+&#13;
+.lookup-back i {&#13;
+  margin-right: 6px;&#13;
+}&#13;
+&#13;
+@media (max-width: 600px) {&#13;
+  .guest-lookup-page {&#13;
+    padding: 40px 15px;&#13;
+  }&#13;
+&#13;
+  .lookup-heading h1 {&#13;
+    font-size: 30px;&#13;
+  }&#13;
+&#13;
+  .lookup-card {&#13;
+    padding: 30px 22px;&#13;
+  }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-guest-lookup</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Guest Lookup</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  data.lookupEnabled = false;
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 09:00:58</sys_created_on>
+        <sys_id>046a85b09394df10a3b6703efaba1005</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Hotel Guest Lookup</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_046a85b09394df10a3b6703efaba1005</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 09:29:15</sys_updated_on>
+        <template><![CDATA[<div class="guest-lookup-page">
+  <div class="lookup-heading">
+    <span class="lookup-eyebrow">RESERVATION SERVICES</span>
+    <h1>Find Your Reservation</h1>
+    <p>Enter your reservation number and email address to look up your booking.</p>
+  </div>
+
+  <div class="lookup-card">
+    <div class="lookup-icon">
+      <i class="fa fa-ticket"></i>
+    </div>
+
+    <h2>Reservation Lookup</h2>
+    <p class="lookup-description">Please provide the details associated with your reservation.</p>
+
+    <form ng-submit="c.submitLookup()" novalidate>
+      <div class="form-group">
+        <label for="reservation-number">Reservation Number</label>
+        <input
+          id="reservation-number"
+          type="text"
+          ng-model="c.reservationNumber"
+          placeholder="Enter your reservation number"
+          autocomplete="off"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="guest-email">Email Address</label>
+        <input
+          id="guest-email"
+          type="email"
+          ng-model="c.guestEmail"
+          placeholder="Enter your booking email"
+          autocomplete="email"
+          required>
+      </div>
+
+      <button type="submit" class="lookup-button" ng-disabled="c.loading">
+        <i class="fa fa-search"></i>
+        Find My Reservation
+      </button>
+    </form>
+
+    <div class="lookup-message" ng-if="c.message" ng-class="c.messageType" role="status">
+      <i class="fa" ng-class="c.messageType === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'"></i>
+      <span>{{c.message}}</span>
+    </div>
+
+    <div class="lookup-help">
+      <i class="fa fa-lock"></i>
+      Your reservation details are protected. You must provide the matching reservation number and email address.
+    </div>
+  </div>
+
+  <div class="lookup-back">
+    <a href="?id=hotel_reservation_home_page">
+      <i class="fa fa-arrow-left"></i> Back to Homepage
+    </a>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

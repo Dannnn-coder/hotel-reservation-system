@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function() {
+    var c = this;
+
+    c.expanded = {};
+
+    c.toggleDetails = function(id) {
+        c.expanded[id] = !c.expanded[id];
+    };
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>&#13;
+.my-reservations-page {&#13;
+  max-width: 1050px;&#13;
+  margin: 0 auto;&#13;
+  padding: 55px 25px 75px;&#13;
+  color: #2a2d29;&#13;
+  font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.reservations-heading {&#13;
+  text-align: center;&#13;
+  margin-bottom: 40px;&#13;
+}&#13;
+&#13;
+.reservations-eyebrow,&#13;
+.empty-eyebrow {&#13;
+  color: #a8875b;&#13;
+  font-size: 11px;&#13;
+  font-weight: 700;&#13;
+  letter-spacing: 3px;&#13;
+}&#13;
+&#13;
+.reservations-heading h1 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 42px;&#13;
+  margin: 12px 0;&#13;
+}&#13;
+&#13;
+.reservations-heading p {&#13;
+  color: #6f756f;&#13;
+  font-size: 15px;&#13;
+}&#13;
+&#13;
+.reservation-list {&#13;
+  display: grid;&#13;
+  gap: 22px;&#13;
+}&#13;
+&#13;
+.reservation-card {&#13;
+  background: #ffffff;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 12px;&#13;
+  padding: 25px;&#13;
+  box-shadow: 0 5px 20px rgba(31, 58, 48, 0.05);&#13;
+}&#13;
+&#13;
+.reservation-top,&#13;
+.reservation-bottom {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: space-between;&#13;
+  gap: 15px;&#13;
+}&#13;
+&#13;
+.reservation-label,&#13;
+.reservation-dates span {&#13;
+  display: block;&#13;
+  color: #a8875b;&#13;
+  font-size: 10px;&#13;
+  font-weight: 700;&#13;
+  letter-spacing: 1.5px;&#13;
+}&#13;
+&#13;
+.reservation-top h2 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 22px;&#13;
+  margin: 7px 0 0;&#13;
+}&#13;
+&#13;
+.status-badge {&#13;
+  background: #e8eee9;&#13;
+  color: #1f3a30;&#13;
+  padding: 8px 13px;&#13;
+  border-radius: 20px;&#13;
+  font-size: 11px;&#13;
+  font-weight: 700;&#13;
+}&#13;
+&#13;
+.reservation-room {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  gap: 15px;&#13;
+  margin: 25px 0;&#13;
+}&#13;
+&#13;
+.room-icon {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  width: 48px;&#13;
+  height: 48px;&#13;
+  background: #e8eee9;&#13;
+  color: #1f3a30;&#13;
+  border-radius: 9px;&#13;
+  font-size: 20px;&#13;
+}&#13;
+&#13;
+.reservation-room h3 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 20px;&#13;
+  margin: 0 0 5px;&#13;
+}&#13;
+&#13;
+.reservation-room p {&#13;
+  color: #6f756f;&#13;
+  font-size: 12px;&#13;
+  margin: 0;&#13;
+}&#13;
+&#13;
+.reservation-dates {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  gap: 30px;&#13;
+  padding: 20px 0;&#13;
+  border-top: 1px solid #e7e1d4;&#13;
+  border-bottom: 1px solid #e7e1d4;&#13;
+}&#13;
+&#13;
+.reservation-dates strong {&#13;
+  display: block;&#13;
+  margin-top: 9px;&#13;
+  color: #2a2d29;&#13;
+  font-size: 14px;&#13;
+}&#13;
+&#13;
+.date-divider {&#13;
+  height: 35px;&#13;
+  width: 1px;&#13;
+  background: #e7e1d4;&#13;
+}&#13;
+&#13;
+.reservation-bottom {&#13;
+  padding: 18px 0;&#13;
+  color: #6f756f;&#13;
+  font-size: 12px;&#13;
+}&#13;
+&#13;
+.reservation-bottom strong {&#13;
+  color: #1f3a30;&#13;
+  font-size: 18px;&#13;
+}&#13;
+&#13;
+.details-button {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: space-between;&#13;
+  width: 100%;&#13;
+  padding: 13px 0 0;&#13;
+  background: transparent;&#13;
+  border: 0;&#13;
+  border-top: 1px solid #e7e1d4;&#13;
+  color: #1f3a30;&#13;
+  font-size: 12px;&#13;
+  font-weight: 700;&#13;
+  cursor: pointer;&#13;
+  text-align: left;&#13;
+}&#13;
+&#13;
+.reservation-details {&#13;
+  margin-top: 18px;&#13;
+  padding: 18px;&#13;
+  background: #faf6ef;&#13;
+  border-radius: 8px;&#13;
+}&#13;
+&#13;
+.reservation-details p {&#13;
+  color: #6f756f;&#13;
+  font-size: 13px;&#13;
+  margin: 8px 0;&#13;
+}&#13;
+&#13;
+.reservation-details strong {&#13;
+  color: #1f3a30;&#13;
+}&#13;
+&#13;
+.reservations-empty {&#13;
+  max-width: 650px;&#13;
+  margin: 35px auto 20px;&#13;
+  padding: 55px 30px;&#13;
+  text-align: center;&#13;
+  background: #faf6ef;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 14px;&#13;
+}&#13;
+&#13;
+.empty-icon {&#13;
+  width: 70px;&#13;
+  height: 70px;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  margin: 0 auto 22px;&#13;
+  background: #e8eee9;&#13;
+  color: #1f3a30;&#13;
+  border-radius: 50%;&#13;
+  font-size: 26px;&#13;
+}&#13;
+&#13;
+.reservations-empty h2 {&#13;
+  color: #1f3a30;&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 29px;&#13;
+  margin: 12px 0;&#13;
+}&#13;
+&#13;
+.reservations-empty p {&#13;
+  max-width: 450px;&#13;
+  margin: 0 auto 25px;&#13;
+  color: #6f756f;&#13;
+  font-size: 14px;&#13;
+  line-height: 1.8;&#13;
+}&#13;
+&#13;
+.browse-button {&#13;
+  display: inline-block;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff !important;&#13;
+  padding: 12px 20px;&#13;
+  border-radius: 6px;&#13;
+  font-size: 12px;&#13;
+  font-weight: 600;&#13;
+  text-decoration: none !important;&#13;
+}&#13;
+&#13;
+.browse-button:hover {&#13;
+  background: #162a22;&#13;
+}&#13;
+&#13;
+@media (max-width: 600px) {&#13;
+  .my-reservations-page {&#13;
+    padding: 35px 15px 50px;&#13;
+  }&#13;
+&#13;
+  .reservations-heading h1 {&#13;
+    font-size: 32px;&#13;
+  }&#13;
+&#13;
+  .reservation-dates {&#13;
+    gap: 15px;&#13;
+  }&#13;
+&#13;
+  .reservation-top,&#13;
+  .reservation-bottom {&#13;
+    align-items: flex-start;&#13;
+    flex-direction: column;&#13;
+  }&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-my-reservations</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel My Reservations</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[
+(function() {
+    data.reservations = [];
+
+    var gr = new GlideRecordSecure('x_2206701_hotel_0_scheduled_reservations');
+    gr.addQuery('registered_user', gs.getUserID());
+    gr.orderByDesc('sys_created_on');
+    gr.query();
+
+    while (gr.next()) {
+        data.reservations.push({
+            sys_id: gr.getUniqueValue(),
+            number: gr.getDisplayValue('number'),
+            status: gr.getDisplayValue('reservation_status'),
+            room: gr.getDisplayValue('room'),
+            check_in: gr.getDisplayValue('check_in_date'),
+            check_out: gr.getDisplayValue('check_out_date'),
+            adults: gr.getDisplayValue('number_of_adults'),
+            children: gr.getDisplayValue('number_of_children'),
+            days: gr.getDisplayValue('number_of_days'),
+            total: gr.getDisplayValue('total_payment'),
+            guest_name: gr.getDisplayValue('guest_name'),
+            guest_email: gr.getDisplayValue('guest_email')
+        });
+    }
+})();
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:58:17</sys_created_on>
+        <sys_id>fae985709394df10a3b6703efaba102d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Hotel My Reservations</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_fae985709394df10a3b6703efaba102d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 09:24:59</sys_updated_on>
+        <template><![CDATA[
+<div class="my-reservations-page">
+  <div class="reservations-heading">
+    <span class="reservations-eyebrow">YOUR STAY</span>
+    <h1>My Reservations</h1>
+    <p>View and keep track of your upcoming and previous stays.</p>
+  </div>
+
+  <div class="reservation-list" ng-if="c.data.reservations.length > 0">
+    <div class="reservation-card" ng-repeat="reservation in c.data.reservations track by reservation.sys_id">
+      <div class="reservation-top">
+        <div>
+          <span class="reservation-label">RESERVATION NUMBER</span>
+          <h2>{{reservation.number}}</h2>
+        </div>
+        <span class="status-badge">{{reservation.status || 'Status unavailable'}}</span>
+      </div>
+
+      <div class="reservation-room">
+        <span class="room-icon"><i class="fa fa-bed"></i></span>
+        <div>
+          <h3>{{reservation.room}}</h3>
+          <p>{{reservation.days}} night(s)</p>
+        </div>
+      </div>
+
+      <div class="reservation-dates">
+        <div>
+          <span>CHECK-IN</span>
+          <strong>{{reservation.check_in}}</strong>
+        </div>
+        <div class="date-divider"></div>
+        <div>
+          <span>CHECK-OUT</span>
+          <strong>{{reservation.check_out}}</strong>
+        </div>
+      </div>
+
+      <div class="reservation-bottom">
+        <span>{{reservation.adults}} Adult(s) · {{reservation.children}} Child(ren)</span>
+        <strong>{{reservation.total}}</strong>
+      </div>
+
+      <button class="details-button" ng-click="c.toggleDetails(reservation.sys_id)">
+        {{c.expanded[reservation.sys_id] ? 'Hide Details' : 'View Details'}}
+        <i class="fa" ng-class="c.expanded[reservation.sys_id] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+
+      <div class="reservation-details" ng-if="c.expanded[reservation.sys_id]">
+        <p><strong>Guest name:</strong> {{reservation.guest_name}}</p>
+        <p><strong>Guest email:</strong> {{reservation.guest_email}}</p>
+        <p><strong>Number of days:</strong> {{reservation.days}}</p>
+        <p><strong>Reservation status:</strong> {{reservation.status}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reservations-empty" ng-if="c.data.reservations.length === 0">
+    <div class="empty-icon"><i class="fa fa-calendar-o"></i></div>
+    <span class="empty-eyebrow">YOUR BOOKINGS</span>
+    <h2>No Reservations Yet</h2>
+    <p>You don't have any reservations at the moment. When you book a room, your reservation details will appear here.</p>
+    <a href="?id=hotel_rooms" class="browse-button">Browse Our Rooms</a>
+  </div>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>
