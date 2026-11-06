@@ -39,8 +39,9 @@
         var nights = ru.calculateDays(checkIn, checkOut);
         current.setValue('number_of_days', nights);
 
-        // Total = fallback (rate * nights). Swap for Role 4's pricing later.
-        var total = ru._fallbackPrice(current.getValue('room'), nights);
+        // Total from Role 4 (Cauban)'s PricingUtils, applying per-night
+        // event/holiday discounts from the Calendar Days table.
+        var total = new x_2206701_hotel_0.PricingUtils().calculateRoomTotal(current.getValue('room'), nights, checkIn);
         current.setValue('total_payment', total);
     }
 

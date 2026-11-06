@@ -71,11 +71,9 @@ ReservationUtils.prototype = {
         var nights = this.calculateDays(data.check_in_date, data.check_out_date);
 
         // 4) Get the total price from Role 4 (Cauban)'s pricing function.
-        //    TODO: replace the next line with Role 4's actual Script Include + method
-        //    once Cauban provides the name. For now we use a safe fallback (rate * nights).
-        var total = this._fallbackPrice(data.room, nights);
-        // Example of the real call (uncomment when ready):
-        // total = new x_2206701_hotel_0.PricingUtils().calculateRoomTotal(data.room, nights, data.check_in_date);
+        //    Uses PricingUtils.calculateRoomTotal, which applies event/holiday
+        //    discounts per night from the Calendar Days table.
+        var total = new x_2206701_hotel_0.PricingUtils().calculateRoomTotal(data.room, nights, data.check_in_date);
 
         // 5) Create the record
         var gr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
