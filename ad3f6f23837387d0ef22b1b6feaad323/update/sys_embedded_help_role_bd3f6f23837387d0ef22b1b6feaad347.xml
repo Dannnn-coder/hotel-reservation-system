@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_embedded_help_role">
     <sys_embedded_help_role action="INSERT_OR_UPDATE">
         <order>10</order>
-        <role display_value="x_2206701_hotel_0.admin" name="x_2206701_hotel_0.admin">753f6f23837387d0ef22b1b6feaad342</role>
+        <role display_value="x_2206701_hotel_0.administator" name="x_2206701_hotel_0.administator">753f6f23837387d0ef22b1b6feaad342</role>
         <sys_class_name>sys_embedded_help_role</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-14 13:31:37</sys_created_on>

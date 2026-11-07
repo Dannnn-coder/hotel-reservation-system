@@ -41,7 +41,7 @@
         <update_guid_history>0837793652881f104c63812f5fec751b:-703343756</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="x_2206701_hotel_0_calendar_days.x_2206701_hotel_0.receptionist">ea57fd3683881f109231f4c6feaad3ea</sys_audit_delete>
+        <sys_audit_delete display_value="">ea57fd3683881f109231f4c6feaad3ea</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-24 07:08:12</sys_created_on>

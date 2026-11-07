@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_2206701_hotel_0.PricingUtils</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Role 4 (Cauban) - Room availability, conflict checking, dynamic calendar event discounts, and sports activities logic.</description>
+        <mobile_callable>false</mobile_callable>
+        <name>PricingUtils</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var PricingUtils = Class.create();
+PricingUtils.prototype = {
+    initialize: function() {},
+
+    /**
+     * 1. ROOM AVAILABILITY & CONFLICT CHECKING
+     * Checks if a room is available for the given date range.
+     * @param {string} roomId - sys_id of the room
+     * @param {string} checkInStr - 'YYYY-MM-DD'
+     * @param {string} checkOutStr - 'YYYY-MM-DD'
+     * @param {string} [excludeResId] - (optional) reservation sys_id to ignore when updating
+     * @returns {Object} { available: boolean, reason: string }
+     */
+    isRoomAvailable: function(roomId, checkInStr, checkOutStr, excludeResId) {
+        if (!roomId || !checkInStr || !checkOutStr) {
+            return { available: false, reason: "Room, check-in, and check-out dates are required." };
+        }
+
+        // Check 1: Is room under maintenance?
+        var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
+        if (roomGr.get(roomId)) {
+            var status = roomGr.getValue('availability_status');
+            if (status === 'maintenance') {
+                return { available: false, reason: "Room is currently under maintenance." };
+            }
+        } else {
+            return { available: false, reason: "Room record not found." };
+        }
+
+        // Check 2: Check for overlapping active reservations
+        // Overlap formula: existing_check_in < requested_check_out AND existing_check_out > requested_check_in
+        var resGr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        resGr.addQuery('room', roomId);
+        resGr.addQuery('check_in_date', '<', checkOutStr);
+        resGr.addQuery('check_out_date', '>', checkInStr);
+        
+        // Only block if reservation is active (pending, confirmed, checked_in)
+        var qc = resGr.addQuery('reservation_status', 'pending');
+        qc.addOrCondition('reservation_status', 'confirmed');
+        qc.addOrCondition('reservation_status', 'checked_in');
+
+        if (excludeResId) {
+            resGr.addQuery('sys_id', '!=', excludeResId);
+        }
+
+        resGr.query();
+        if (resGr.hasNext()) {
+            return { available: false, reason: "Room is already booked for the selected dates." };
+        }
+
+        return { available: true, reason: "Room is available." };
+    },
+
+    /**
+     * 2. CURRENT-DAY ROOM AVAILABILITY (for Role 1 Portal Browsing)
+     * Returns an array of room records currently available today.
+     * @returns {Array} List of available room objects
+     */
+    getCurrentDayAvailableRooms: function() {
+        var today = new GlideDate().getValue(); // YYYY-MM-DD
+        var tomorrow = new GlideDate();
+        tomorrow.addDaysLocalTime(1);
+        var tomorrowStr = tomorrow.getValue();
+
+        var availableRooms = [];
+        var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
+        roomGr.addQuery('availability_status', '!=', 'maintenance');
+        roomGr.query();
+
+        while (roomGr.next()) {
+            var roomId = roomGr.getUniqueValue();
+            var check = this.isRoomAvailable(roomId, today, tomorrowStr);
+            if (check.available) {
+                availableRooms.push({
+                    sys_id: roomId,
+                    room_name: roomGr.getValue('room_name'),
+                    room_type: roomGr.getDisplayValue('room_type'),
+                    capacity: roomGr.getValue('capacity'),
+                    rate: parseFloat(roomGr.getValue('rate')) || 0
+                });
+            }
+        }
+        return availableRooms;
+    },
+
+    /**
+     * 3. PRICING & EVENT-BASED DISCOUNT CALCULATION
+     * Calculates the total room cost factoring in event/holiday discounts per night.
+     * (Matches the exact signature called by Role 3 Sarsonas in ReservationUtils!)
+     * 
+     * @param {string} roomId - sys_id of the room
+     * @param {number} numberOfDays - number of nights
+     * @param {string} checkInStr - check-in date 'YYYY-MM-DD'
+     * @returns {number} Total payment amount (rounded to 2 decimals)
+     */
+    calculateRoomTotal: function(roomId, numberOfDays, checkInStr) {
+        var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
+        if (!roomGr.get(roomId)) {
+            return 0;
+        }
+
+        var baseRate = parseFloat(roomGr.getValue('rate')) || 0;
+        if (numberOfDays <= 0 || !checkInStr) {
+            return baseRate * (numberOfDays > 0 ? numberOfDays : 1);
+        }
+
+        var total = 0;
+        var currentDate = new GlideDate();
+        currentDate.setValue(checkInStr);
+
+        // Calculate cost night by night to apply specific calendar discounts
+        for (var i = 0; i < numberOfDays; i++) {
+            var dateStr = currentDate.getValue();
+            var discountPct = this.getDiscountPercentageForDate(dateStr);
+
+            var nightCost = baseRate;
+            if (discountPct > 0) {
+                nightCost = baseRate * (1 - (discountPct / 100));
+            }
+            total += nightCost;
+
+            // Move to the next calendar day
+            currentDate.addDaysLocalTime(1);
+        }
+
+        return Math.round(total * 100) / 100;
+    },
+
+    /**
+     * Helper: Look up discount percentage for a single date from Calendar Days.
+     * @param {string} dateStr - 'YYYY-MM-DD'
+     * @returns {number} discount percentage (e.g., 10 for 10%)
+     */
+    getDiscountPercentageForDate: function(dateStr) {
+        var calGr = new GlideRecord('x_2206701_hotel_0_calendar_days');
+        calGr.addQuery('date', dateStr);
+        calGr.query();
+        if (calGr.next()) {
+            var pct = parseFloat(calGr.getValue('discount_percentage')) || 0;
+            return pct;
+        }
+        return 0;
+    },
+
+    /**
+     * 4. SPORTS ACTIVITY PRICING & ENFORCEMENT
+     * Calculates activity total and enforces the rule: only one activity at a time.
+     * 
+     * @param {string} activityId - sys_id of the sports activity
+     * @returns {Object} { ok: boolean, rate: number, message: string }
+     */
+    calculateSportsActivity: function(activityId) {
+        if (!activityId) {
+            return { ok: false, rate: 0, message: "No sports activity selected." };
+        }
+
+        var actGr = new GlideRecord('x_2206701_hotel_0_sports_activities');
+        if (actGr.get(activityId)) {
+            var rate = parseFloat(actGr.getValue('rate')) || 0;
+            return {
+                ok: true,
+                rate: rate,
+                activity_name: actGr.getValue('activity_name'),
+                message: "Activity rate retrieved successfully."
+            };
+        }
+        return { ok: false, rate: 0, message: "Sports activity not found." };
+    },
+
+    /**
+     * Enforces Requirement 18: Users can only book 1 sports activity at a time.
+     * @param {Array|number} activities - array of activity IDs or count
+     * @returns {Object} { valid: boolean, message: string }
+     */
+    validateSingleSportsActivity: function(activities) {
+        var count = Array.isArray(activities) ? activities.length : (parseInt(activities, 10) || 0);
+        if (count > 1) {
+            return {
+                valid: false,
+                message: "Rule violation: You may only book one (1) sports activity per booking."
+            };
+        }
+        return { valid: true, message: "Valid sports activity selection." };
+    },
+
+    type: 'PricingUtils'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-26 06:53:19</sys_created_on>
+        <sys_id>683588ab93c013101c0efd10ed03d67d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PricingUtils</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_script_include_683588ab93c013101c0efd10ed03d67d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-26 06:53:19</sys_updated_on>
+    </sys_script_include>
+</record_update>

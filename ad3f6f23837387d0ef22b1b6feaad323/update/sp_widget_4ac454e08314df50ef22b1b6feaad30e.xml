@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope) {
+  var c = this;
+
+  // Defaults
+  c.data.adults = 1;
+  c.data.children = 0;
+  c.showModal = false;
+  c.bookingConfirmed = false;
+  c.isSubmitting = false;
+
+  // If user is logged in, default guest info
+  if (c.data.isLoggedIn) {
+    c.data.guestName = c.data.userName;
+    c.data.guestEmail = c.data.userEmail;
+  }
+
+  // Triggered when room or dates change
+  c.onFormChange = function() {
+    c.data.dateError = '';
+    c.data.availReason = '';
+
+    if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
+      c.data.action = 'calculateEstimate';
+      c.server.update().then(function() {
+        // Updated state from server
+      });
+    } else {
+      c.data.estimatedTotal = 0;
+      c.data.nights = 0;
+    }
+  };
+
+  c.onGuestCountChange = function() {
+    // Check capacity if room is selected
+    if (c.data.selectedRoom) {
+      var room = c.getRoomObject(c.data.selectedRoom);
+      if (room && (parseInt(c.data.adults, 10) + parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)) {
+        c.data.dateError = "Total guests exceed the maximum room capacity (" + room.capacity + ").";
+      } else {
+        c.data.dateError = '';
+      }
+    }
+  };
+
+  c.canReview = function() {
+    return c.data.selectedRoom && 
+           c.data.checkIn && 
+           c.data.checkOut && 
+           c.data.guestName && 
+           c.data.guestEmail && 
+           c.data.isAvailable && 
+           !c.data.dateError;
+  };
+
+  c.openConfirmModal = function() {
+    if (c.canReview()) {
+      c.showModal = true;
+      c.bookingConfirmed = false;
+    }
+  };
+
+  c.closeModal = function() {
+    c.showModal = false;
+  };
+
+  c.confirmBooking = function() {
+    c.isSubmitting = true;
+    c.data.action = 'createBooking';
+    c.server.update().then(function() {
+      c.isSubmitting = false;
+      if (c.data.bookingSuccess) {
+        c.bookingConfirmed = true;
+      }
+    });
+  };
+
+  c.resetForm = function() {
+    c.showModal = false;
+    c.bookingConfirmed = false;
+    c.data.selectedRoom = '';
+    c.data.checkIn = '';
+    c.data.checkOut = '';
+    c.data.estimatedTotal = 0;
+    c.data.nights = 0;
+    c.data.dateError = '';
+    c.data.availReason = '';
+  };
+
+  // Helper getters
+  c.getRoomObject = function(roomId) {
+    if (!c.data.rooms) return null;
+    for (var i = 0; i < c.data.rooms.length; i++) {
+      if (c.data.rooms[i].sys_id === roomId) return c.data.rooms[i];
+    }
+    return null;
+  };
+
+  c.getSelectedRoomName = function() {
+    var r = c.getRoomObject(c.data.selectedRoom);
+    return r ? r.name : '';
+  };
+
+  c.getSelectedRoomRate = function() {
+    var r = c.getRoomObject(c.data.selectedRoom);
+    return r ? r.rate : 0;
+  };
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
+&#13;
+.hotel-booking-widget {&#13;
+  --green: #1f3a30;&#13;
+  --green-dark: #162a22;&#13;
+  --green-soft: #e8eee9;&#13;
+  --sand: #e6c79c;&#13;
+  --sand-dark: #d4b07c;&#13;
+  --cream: #faf6ef;&#13;
+  --white: #ffffff;&#13;
+  --text: #2a2d29;&#13;
+  --muted: #6f756f;&#13;
+  --line: #e7e1d4;&#13;
+  --radius: 8px;&#13;
+  --shadow: 0 10px 30px rgba(31, 58, 48, .08);&#13;
+  --serif: 'Cormorant Garamond', Georgia, serif;&#13;
+  --sans: 'Inter', system-ui, sans-serif;&#13;
+&#13;
+  font-family: var(--sans);&#13;
+  color: var(--text);&#13;
+  background: var(--cream);&#13;
+  min-height: 100vh;&#13;
+  padding-bottom: 60px;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget h1, .hotel-booking-widget h2, .hotel-booking-widget h3 {&#13;
+  font-family: var(--serif);&#13;
+  color: var(--green);&#13;
+  font-weight: 600;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .eyebrow {&#13;
+  font-size: .72rem;&#13;
+  letter-spacing: .22em;&#13;
+  text-transform: uppercase;&#13;
+  color: var(--muted);&#13;
+  font-weight: 500;&#13;
+  display: block;&#13;
+  margin-bottom: 6px;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .page-banner {&#13;
+  background: var(--green);&#13;
+  color: var(--white);&#13;
+  padding: 50px 20px;&#13;
+  text-align: center;&#13;
+}&#13;
+.hotel-booking-widget .page-banner h1 { color: var(--white); font-size: 2.8rem; margin: 0; }&#13;
+.hotel-booking-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1rem; }&#13;
+.hotel-booking-widget .page-banner .eyebrow { color: var(--sand); }&#13;
+&#13;
+.hotel-booking-widget .booking-section { padding: 40px 15px; }&#13;
+.hotel-booking-widget .booking-container { max-width: 1100px; margin: 0 auto; }&#13;
+&#13;
+.hotel-booking-widget .form-layout {&#13;
+  display: grid;&#13;
+  grid-template-columns: 1.6fr 1fr;&#13;
+  gap: 30px;&#13;
+  align-items: start;&#13;
+}&#13;
+@media (max-width: 900px) {&#13;
+  .hotel-booking-widget .form-layout { grid-template-columns: 1fr; }&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .form-card {&#13;
+  background: var(--white);&#13;
+  border: 1px solid var(--line);&#13;
+  border-radius: var(--radius);&#13;
+  box-shadow: var(--shadow);&#13;
+  padding: 34px;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .form-title { font-size: 2rem; margin: 0 0 4px; }&#13;
+.hotel-booking-widget .form-sub { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }&#13;
+&#13;
+.hotel-booking-widget .user-status-banner {&#13;
+  background: var(--green-soft);&#13;
+  border: 1px solid #c2d6c6;&#13;
+  color: var(--green);&#13;
+  padding: 10px 16px;&#13;
+  border-radius: var(--radius);&#13;
+  margin-bottom: 20px;&#13;
+  font-size: .88rem;&#13;
+  display: flex;&#13;
+  gap: 10px;&#13;
+  align-items: center;&#13;
+}&#13;
+.hotel-booking-widget .user-status-banner.guest {&#13;
+  background: #fdf6e9;&#13;
+  border-color: #f1ddb6;&#13;
+  color: #8a6420;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .form-grid {&#13;
+  display: grid;&#13;
+  grid-template-columns: 1fr 1fr;&#13;
+  gap: 18px;&#13;
+}&#13;
+@media (max-width: 600px) {&#13;
+  .hotel-booking-widget .form-grid { grid-template-columns: 1fr; }&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .field {&#13;
+  display: flex;&#13;
+  flex-direction: column;&#13;
+  gap: 6px;&#13;
+}&#13;
+.hotel-booking-widget .field.full { grid-column: 1 / -1; }&#13;
+.hotel-booking-widget .field label {&#13;
+  font-size: .72rem;&#13;
+  letter-spacing: .12em;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 600;&#13;
+  color: var(--green);&#13;
+}&#13;
+.hotel-booking-widget .field label .req { color: #b4483a; }&#13;
+.hotel-booking-widget .field input, .hotel-booking-widget .field select {&#13;
+  padding: 11px 14px;&#13;
+  border: 1px solid var(--line);&#13;
+  border-radius: var(--radius);&#13;
+  background: var(--cream);&#13;
+  font-size: .92rem;&#13;
+  outline: none;&#13;
+  transition: .2s;&#13;
+}&#13;
+.hotel-booking-widget .field input:focus, .hotel-booking-widget .field select:focus {&#13;
+  border-color: var(--sand-dark);&#13;
+  background: var(--white);&#13;
+  box-shadow: 0 0 0 3px rgba(230,199,156,.3);&#13;
+}&#13;
+.hotel-booking-widget .field input:disabled {&#13;
+  opacity: 0.65;&#13;
+  cursor: not-allowed;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .btn {&#13;
+  display: inline-block;&#13;
+  padding: 13px 24px;&#13;
+  border-radius: var(--radius);&#13;
+  font-size: .78rem;&#13;
+  letter-spacing: .12em;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 600;&#13;
+  cursor: pointer;&#13;
+  border: 1px solid transparent;&#13;
+  transition: .2s;&#13;
+  text-align: center;&#13;
+}&#13;
+.hotel-booking-widget .btn:disabled {&#13;
+  opacity: 0.5;&#13;
+  cursor: not-allowed;&#13;
+}&#13;
+.hotel-booking-widget .btn-green {&#13;
+  background: var(--green);&#13;
+  color: var(--white);&#13;
+}&#13;
+.hotel-booking-widget .btn-green:hover:not(:disabled) {&#13;
+  background: var(--green-dark);&#13;
+  transform: translateY(-2px);&#13;
+}&#13;
+.hotel-booking-widget .btn-sand {&#13;
+  background: var(--sand);&#13;
+  color: var(--green);&#13;
+}&#13;
+.hotel-booking-widget .btn-sand:hover:not(:disabled) {&#13;
+  background: var(--sand-dark);&#13;
+}&#13;
+.hotel-booking-widget .btn-outline {&#13;
+  border-color: var(--green);&#13;
+  color: var(--green);&#13;
+  background: transparent;&#13;
+}&#13;
+.hotel-booking-widget .btn-outline:hover {&#13;
+  background: var(--green);&#13;
+  color: var(--white);&#13;
+}&#13;
+.hotel-booking-widget .btn-block { width: 100%; }&#13;
+&#13;
+.hotel-booking-widget .summary {&#13;
+  background: var(--green);&#13;
+  color: var(--white);&#13;
+  border-radius: var(--radius);&#13;
+  padding: 28px;&#13;
+  position: sticky;&#13;
+  top: 30px;&#13;
+}&#13;
+.hotel-booking-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.5rem; }&#13;
+.hotel-booking-widget .summary .eyebrow { color: var(--sand); }&#13;
+&#13;
+.hotel-booking-widget .summary-row {&#13;
+  display: flex;&#13;
+  justify-content: space-between;&#13;
+  padding: 10px 0;&#13;
+  border-bottom: 1px solid rgba(255,255,255,.14);&#13;
+  font-size: .88rem;&#13;
+  color: rgba(255,255,255,.8);&#13;
+}&#13;
+.hotel-booking-widget .summary-row strong { color: var(--white); font-weight: 600; }&#13;
+&#13;
+.hotel-booking-widget .summary-total {&#13;
+  display: flex;&#13;
+  justify-content: space-between;&#13;
+  align-items: baseline;&#13;
+  margin: 22px 0 16px;&#13;
+}&#13;
+.hotel-booking-widget .summary-total span { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
+.hotel-booking-widget .summary-total strong { font-family: var(--serif); font-size: 2.2rem; color: var(--white); }&#13;
+&#13;
+.hotel-booking-widget .summary .note {&#13;
+  font-size: .75rem;&#13;
+  color: rgba(255,255,255,.65);&#13;
+  margin-top: 14px;&#13;
+  line-height: 1.4;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .alert {&#13;
+  padding: 12px 16px;&#13;
+  border-radius: var(--radius);&#13;
+  font-size: .86rem;&#13;
+  margin-bottom: 18px;&#13;
+  display: flex;&#13;
+  gap: 10px;&#13;
+  align-items: center;&#13;
+  border-left: 4px solid;&#13;
+}&#13;
+.hotel-booking-widget .alert.error {&#13;
+  background: #f8e4e0;&#13;
+  border-color: #b4483a;&#13;
+  color: #8a3a2f;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .badge.available {&#13;
+  background: #dcebdf;&#13;
+  color: #2c5a3f;&#13;
+  padding: 3px 8px;&#13;
+  border-radius: 12px;&#13;
+  font-size: .72rem;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 600;&#13;
+}&#13;
+&#13;
+.hotel-booking-widget .custom-modal-backdrop {&#13;
+  position: fixed;&#13;
+  top: 0; left: 0; right: 0; bottom: 0;&#13;
+  background: rgba(22,42,34,.65);&#13;
+  z-index: 1050;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  padding: 20px;&#13;
+}&#13;
+.hotel-booking-widget .custom-modal {&#13;
+  background: var(--white);&#13;
+  border-radius: 12px;&#13;
+  max-width: 480px;&#13;
+  width: 100%;&#13;
+  box-shadow: 0 25px 60px rgba(0,0,0,.25);&#13;
+  overflow: hidden;&#13;
+}&#13;
+.hotel-booking-widget .dialog-body { padding: 32px; }&#13;
+.hotel-booking-widget .dialog-total {&#13;
+  font-family: var(--serif);&#13;
+  font-size: 2.8rem;&#13;
+  color: var(--green);&#13;
+  font-weight: 700;&#13;
+  margin: 8px 0 16px;&#13;
+}&#13;
+.hotel-booking-widget .summary-row.dark {&#13;
+  color: var(--muted);&#13;
+  border-color: var(--line);&#13;
+}&#13;
+.hotel-booking-widget .summary-row.dark strong { color: var(--text); }&#13;
+.hotel-booking-widget .dialog-note {&#13;
+  color: var(--muted);&#13;
+  font-size: .82rem;&#13;
+  margin-top: 16px;&#13;
+}&#13;
+.hotel-booking-widget .dialog-actions {&#13;
+  display: flex;&#13;
+  gap: 12px;&#13;
+  justify-content: flex-end;&#13;
+  margin-top: 24px;&#13;
+}&#13;
+.hotel-booking-widget .res-num-box {&#13;
+  background: var(--cream);&#13;
+  border: 2px dashed var(--sand-dark);&#13;
+  padding: 16px;&#13;
+  border-radius: 8px;&#13;
+  text-align: center;&#13;
+  margin-top: 14px;&#13;
+}&#13;
+.hotel-booking-widget .res-num-box small {&#13;
+  text-transform: uppercase;&#13;
+  letter-spacing: .12em;&#13;
+  color: var(--muted);&#13;
+  font-size: .7rem;&#13;
+}&#13;
+.hotel-booking-widget .res-num-box .res-num {&#13;
+  font-family: var(--serif);&#13;
+  font-size: 2rem;&#13;
+  font-weight: 700;&#13;
+  color: var(--green);&#13;
+  margin-top: 4px;&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>hotel-room-booking-form</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Room Booking Form</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  // 1. Detect Logged-In User or Guest
+  data.isLoggedIn = gs.isLoggedIn();
+  data.userId = gs.getUserID();
+  data.userName = gs.getUserDisplayName();
+  data.userEmail = gs.getUser().getEmail();
+  // 2. Fetch Active Rooms for dropdown
+  data.rooms = [];
+  var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
+  roomGr.addQuery('availability_status', '!=', 'maintenance');
+  roomGr.orderBy('rate');
+  roomGr.query();
+  while (roomGr.next()) {
+    data.rooms.push({
+      sys_id: roomGr.getUniqueValue(),
+      name: roomGr.getValue('room_name') || roomGr.getDisplayValue(),
+      type: roomGr.getDisplayValue('room_type'),
+      capacity: roomGr.getValue('capacity') || 2,
+      rate: parseFloat(roomGr.getValue('rate')) || 0
+    });
+  }
+// Role 2: Room Reservation Booking Engine - Nico John G. Colo
+  // 3. Handle Client Controller Actions
+  if (input) {
+    var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+    var resUtil = new x_2206701_hotel_0.ReservationUtils();
+
+    // ACTION: Calculate Dynamic Price & Check Availability
+    if (input.action === 'calculateEstimate') {
+      var dateCheck = resUtil.validateDates(input.checkIn, input.checkOut);
+      if (!dateCheck.ok) {
+        data.dateError = dateCheck.message;
+        data.isAvailable = false;
+        data.estimatedTotal = 0;
+        data.nights = 0;
+        return;
+      }
+
+      data.dateError = '';
+      data.nights = resUtil.calculateDays(input.checkIn, input.checkOut);
+
+      // Check room availability via Cauban's PricingUtils
+      var availCheck = pricingUtil.isRoomAvailable(input.selectedRoom, input.checkIn, input.checkOut);
+      data.isAvailable = availCheck.available;
+      data.availReason = availCheck.reason;
+
+      // Calculate total with calendar discounts
+      if (data.isAvailable) {
+        data.estimatedTotal = pricingUtil.calculateRoomTotal(input.selectedRoom, data.nights, input.checkIn);
+      } else {
+        data.estimatedTotal = 0;
+      }
+    }
+
+    // ACTION: Submit Reservation to Database via Sarsonas's ReservationUtils
+    if (input.action === 'createBooking') {
+      var bookingPayload = {
+        room: input.selectedRoom,
+        guest_name: input.guestName,
+        guest_email: input.guestEmail,
+        check_in_date: input.checkIn,
+        check_out_date: input.checkOut,
+        number_of_adults: parseInt(input.adults, 10) || 1,
+        number_of_children: parseInt(input.children, 10) || 0,
+        registered_user: data.isLoggedIn ? data.userId : ''
+      };
+
+      var createResult = resUtil.createReservation(bookingPayload);
+      if (createResult.ok) {
+        data.bookingSuccess = true;
+        data.createdSysId = createResult.reservationId;
+
+        // Fetch display reservation number (e.g. RES000012)
+        var resGr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        if (resGr.get(createResult.reservationId)) {
+          data.reservationDisplayNumber = resGr.getValue('number') || createResult.reservationId;
+        } else {
+          data.reservationDisplayNumber = createResult.reservationId;
+        }
+      } else {
+        data.bookingSuccess = false;
+        data.bookingError = createResult.message;
+      }
+    }
+  }
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-29 10:34:36</sys_created_on>
+        <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Hotel Room Booking Form</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-29 12:39:44</sys_updated_on>
+        <template><![CDATA[<div class="hotel-booking-widget">
+
+  <!-- Page Banner -->
+  <section class="page-banner">
+    <div class="banner-container">
+      <span class="eyebrow">Reserve your stay</span>
+      <h1>Book a Room</h1>
+    <p>Instant online room reservations. No account required for guests.</p>
+    </div>
+  </section>
+
+  <main class="booking-section">
+    <div class="booking-container form-layout">
+
+      <!-- LEFT: Booking Form Card -->
+      <div class="form-card">
+        <h2 class="form-title">Reservation Details</h2>
+        <p class="form-sub">Fill in your information below to reserve your room.</p>
+
+        <!-- User Authentication Status Banner -->
+        <div class="user-status-banner" ng-if="c.data.isLoggedIn">
+          <span>✓</span>
+          <div>Booking as registered user: <strong>{{c.data.userName}}</strong> ({{c.data.userEmail}})</div>
+        </div>
+        <div class="user-status-banner guest" ng-if="!c.data.isLoggedIn">
+          <span>ℹ</span>
+          <div>Booking as <strong>Guest</strong>. No account required.</div>
+        </div>
+
+        <!-- Dynamic Validation Alerts -->
+        <div class="alert error" ng-if="c.data.dateError">
+          <span>⚠</span>
+          <div>{{c.data.dateError}}</div>
+        </div>
+        <div class="alert error" ng-if="c.data.availReason && !c.data.isAvailable">
+          <span>⚠</span>
+          <div>{{c.data.availReason}}</div>
+        </div>
+        <div class="alert error" ng-if="c.data.bookingError">
+          <span>⚠</span>
+          <div>{{c.data.bookingError}}</div>
+        </div>
+
+        <form>
+          <div class="form-grid">
+            
+            <!-- Guest details (auto-filled if logged in, editable if guest) -->
+            <div class="field">
+              <label for="gname">Guest Name <span class="req">*</span></label>
+              <input id="gname" type="text" placeholder="Full name" ng-model="c.data.guestName" ng-disabled="c.data.isLoggedIn" required>
+            </div>
+            <div class="field">
+              <label for="gemail">Guest Email <span class="req">*</span></label>
+              <input id="gemail" type="email" placeholder="you@example.com" ng-model="c.data.guestEmail" ng-disabled="c.data.isLoggedIn" required>
+            </div>
+
+            <!-- Room Dropdown -->
+            <div class="field full">
+              <label for="room">Select Room <span class="req">*</span></label>
+              <select id="room" ng-model="c.data.selectedRoom" ng-change="c.onFormChange()">
+                <option value="">-- Choose a room --</option>
+                <option ng-repeat="r in c.data.rooms" value="{{r.sys_id}}">
+                  {{r.name}} — {{r.type}} · ${{r.rate}}/night (Max {{r.capacity}} guests)
+                </option>
+              </select>
+            </div>
+			// Role 2: Room Reservation Booking Engine - Nico John G. Colo
+            <!-- Dates -->
+            <div class="field">
+              <label for="cin">Check-in Date <span class="req">*</span></label>
+              <input id="cin" type="date" ng-model="c.data.checkIn" ng-change="c.onFormChange()">
+            </div>
+            <div class="field">
+              <label for="cout">Check-out Date <span class="req">*</span></label>
+              <input id="cout" type="date" ng-model="c.data.checkOut" ng-change="c.onFormChange()">
+            </div>
+
+            <!-- Guest counts -->
+            <div class="field">
+              <label for="ad">Adults <span class="req">*</span></label>
+              <input id="ad" type="number" min="1" max="10" ng-model="c.data.adults" ng-change="c.onGuestCountChange()">
+            </div>
+            <div class="field">
+              <label for="ch">Children</label>
+              <input id="ch" type="number" min="0" max="10" ng-model="c.data.children" ng-change="c.onGuestCountChange()">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="field full" style="margin-top: 14px;">
+              <button type="button" class="btn btn-green btn-block" 
+                      ng-click="c.openConfirmModal()" 
+                      ng-disabled="!c.canReview()">
+                Review & Confirm Reservation
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT: Sticky Estimate Summary Card -->
+      <aside class="summary">
+        <span class="eyebrow">Estimate</span>
+        <h3>Booking Summary</h3>
+        
+        <div class="summary-row">
+          <span>Room</span>
+          <strong>{{c.getSelectedRoomName() || 'None selected'}}</strong>
+        </div>
+        <div class="summary-row">
+          <span>Nights</span>
+          <strong>{{c.data.nights || 0}}</strong>
+        </div>
+        <div class="summary-row">
+          <span>Base Rate</span>
+          <strong>${{c.getSelectedRoomRate()}} / night</strong>
+        </div>
+        <div class="summary-row" ng-if="c.data.isAvailable && c.data.nights > 0">
+          <span>Availability</span>
+          <span class="badge available">Available</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Estimated Total</span>
+          <strong>${{c.data.estimatedTotal ? (c.data.estimatedTotal | number:2) : '0.00'}}</strong>
+        </div>
+
+        <button type="button" class="btn btn-sand btn-block" 
+                ng-click="c.openConfirmModal()" 
+                ng-disabled="!c.canReview()">
+          Preview & Book
+        </button>
+        <p class="note">This estimate is calculated automatically by the hotel system factoring in dates and active calendar discounts.</p>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- CUSTOM CONFIRMATION & ESTIMATE MODAL (Popup) -->
+  <div class="custom-modal-backdrop" ng-if="c.showModal">
+    <div class="custom-modal">
+      
+      <!-- Stage 1: Review Before Booking -->
+      <div class="dialog-body" ng-if="!c.bookingConfirmed">
+        <span class="eyebrow">Before you confirm</span>
+        <h3>Estimated Total Payment</h3>
+        <div class="dialog-total">${{c.data.estimatedTotal | number:2}}</div>
+
+        <div class="summary-row dark">
+          <span>{{c.getSelectedRoomName()}}</span>
+          <strong>{{c.data.nights}} night(s)</strong>
+        </div>
+        <div class="summary-row dark">
+          <span>Guest</span>
+          <strong>{{c.data.guestName}}</strong>
+        </div>
+        <div class="summary-row dark">
+          <span>Dates</span>
+          <strong>{{c.data.checkIn}} to {{c.data.checkOut}}</strong>
+        </div>
+
+        <p class="dialog-note">Cancellation policy: Cancellations are only permitted 72 hours before check-in.</p>
+        
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-outline" ng-click="c.closeModal()">Go Back</button>
+          <button type="button" class="btn btn-green" ng-click="c.confirmBooking()" ng-disabled="c.isSubmitting">
+            <span ng-if="!c.isSubmitting">Confirm Booking</span>
+            <span ng-if="c.isSubmitting">Saving...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 2: Success Screen -->
+      <div class="dialog-body success-view" ng-if="c.bookingConfirmed">
+        <span class="eyebrow">Reservation Confirmed</span>
+        <h2 style="color: #1f3a30; margin-top: 6px;">Thank You!</h2>
+        <p class="form-sub">Your reservation has been recorded successfully.</p>
+        
+        <div class="res-num-box">
+          <small>Reservation ID</small>
+          <div class="res-num">{{c.data.reservationDisplayNumber}}</div>
+        </div>
+
+        <p class="dialog-note" style="margin-top: 16px;">
+          Please save your reservation ID. You can use it along with your email to check your reservation status anytime.
+        </p>
+
+        <div class="dialog-actions" style="margin-top: 24px;">
+          <button type="button" class="btn btn-green" ng-click="c.resetForm()">Book Another Room</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>]]></template>
+    </sp_widget>
+</record_update>

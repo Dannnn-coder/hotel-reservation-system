@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element db_object_id="2537678e47081350ba4a819f016d43a6" label="Scheduled Reservations" max_length="40" name="x_2206701_hotel_0_scheduled_reservations" type="collection">
-        <element label="Guest name" mandatory="true" max_length="100" name="guest_name" type="string"/>
-        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" mandatory="true" max_length="40" name="number" read_only="true" type="string"/>
-        <element label="Total payment" max_length="40" name="total_payment" read_only="true" type="currency"/>
-        <element label="Check-out date" mandatory="true" max_length="40" name="check_out_date" type="glide_date"/>
-        <element label="Number of days" max_length="40" name="number_of_days" read_only="true" type="integer"/>
         <element label="Check-in date" mandatory="true" max_length="40" name="check_in_date" type="glide_date"/>
+        <element label="Guest email" mandatory="true" max_length="254" name="guest_email" type="string"/>
+        <element label="Total payment" max_length="40" name="total_payment" read_only="true" type="currency"/>
         <element choice="1" default="pending" label="Reservation status" mandatory="true" max_length="40" name="reservation_status" type="choice">
             <choice>
-                <element inactive_on_update="false" label="Checked-in" sequence="2" value="checked_in"/>
-                <element inactive_on_update="false" label="Pending" sequence="0" value="pending"/>
-                <element inactive_on_update="false" label="Cancelled" sequence="4" value="cancelled"/>
                 <element inactive_on_update="false" label="No-show" sequence="5" value="no_show"/>
-                <element inactive_on_update="false" label="Checked-out" sequence="3" value="checked_out"/>
+                <element inactive_on_update="false" label="Checked-in" sequence="2" value="checked_in"/>
                 <element inactive_on_update="false" label="Confirmed" sequence="1" value="confirmed"/>
+                <element inactive_on_update="false" label="Cancelled" sequence="4" value="cancelled"/>
+                <element inactive_on_update="false" label="Pending" sequence="0" value="pending"/>
+                <element inactive_on_update="false" label="Checked-out" sequence="3" value="checked_out"/>
             </choice>
         </element>
+        <element label="Check-out date" mandatory="true" max_length="40" name="check_out_date" type="glide_date"/>
+        <element label="Room" mandatory="true" max_length="32" name="room" reference="x_2206701_hotel_0_rooms" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" mandatory="true" max_length="40" name="number" read_only="true" type="string"/>
         <element default="1" label="Number of adults" mandatory="true" max_length="40" name="number_of_adults" type="integer"/>
         <element label="Registered user" max_length="32" name="registered_user" reference="x_2206701_hotel_0_users" type="reference"/>
-        <element label="Room" mandatory="true" max_length="32" name="room" reference="x_2206701_hotel_0_rooms" type="reference"/>
+        <element label="Guest name" mandatory="true" max_length="100" name="guest_name" type="string"/>
+        <element label="Number of days" max_length="40" name="number_of_days" read_only="true" type="integer"/>
         <element default="0" label="Number of children" mandatory="true" max_length="40" name="number_of_children" type="integer"/>
-        <element label="Guest email" mandatory="true" max_length="254" name="guest_email" type="string"/>
         <index name="index">
             <element name="registered_user"/>
         </index>

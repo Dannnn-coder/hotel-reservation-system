@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_package_dependency_m2m">
+    <sys_package_dependency_m2m action="INSERT_OR_UPDATE">
+        <dependency display_value="Service Management Basics" source="com.snc.service">a6812dc8a52503108bb220b7a4d21231</dependency>
+        <min_version>1.0.0</min_version>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-26 05:37:44</sys_created_on>
+        <sys_id>89d5771f934013101c0efd10ed03d678</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-26 05:37:44</sys_updated_on>
+    </sys_package_dependency_m2m>
+</record_update>

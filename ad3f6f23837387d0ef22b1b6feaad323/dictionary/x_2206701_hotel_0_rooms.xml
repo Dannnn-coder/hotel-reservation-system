@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element db_object_id="47478f3947c09f10ba4a819f016d43b5" label="Rooms" max_length="40" name="x_2206701_hotel_0_rooms" type="collection">
-        <element label="Capacity" mandatory="true" max_length="40" name="capacity" type="integer"/>
-        <element choice="1" label="Room type" mandatory="true" max_length="40" name="room_type" type="choice">
-            <choice>
-                <element inactive_on_update="false" label="Double" sequence="1" value="double"/>
-                <element inactive_on_update="false" label="King" sequence="5" value="king"/>
-                <element inactive_on_update="false" label="Quad" sequence="3" value="quad"/>
-                <element inactive_on_update="false" label="Presidential Suite" sequence="7" value="presidential_suite"/>
-                <element inactive_on_update="false" label="Single" sequence="0" value="single"/>
-                <element inactive_on_update="false" label="Queen" sequence="4" value="queen"/>
-                <element inactive_on_update="false" label="Triple" sequence="2" value="triple"/>
-                <element inactive_on_update="false" label="Executive Suite" sequence="6" value="executive_suite"/>
-            </choice>
-        </element>
         <element choice="1" label="Availability status" mandatory="true" max_length="40" name="availability_status" type="choice">
             <choice>
-                <element inactive_on_update="false" label="Reserved" sequence="2" value="reserved"/>
-                <element inactive_on_update="false" label="Occupied" sequence="1" value="occupied"/>
                 <element inactive_on_update="false" label="Available" sequence="0" value="available"/>
                 <element inactive_on_update="false" label="Maintenance" sequence="3" value="maintenance"/>
+                <element inactive_on_update="false" label="Reserved" sequence="2" value="reserved"/>
+                <element inactive_on_update="false" label="Occupied" sequence="1" value="occupied"/>
             </choice>
         </element>
         <element display="true" label="Room name" mandatory="true" max_length="100" name="room_name" type="string"/>
         <element label="Rate" mandatory="true" max_length="38" name="rate" type="currency"/>
+        <element label="Capacity" mandatory="true" max_length="40" name="capacity" type="integer"/>
+        <element choice="1" label="Room type" mandatory="true" max_length="40" name="room_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Presidential Suite" sequence="7" value="presidential_suite"/>
+                <element inactive_on_update="false" label="Quad" sequence="3" value="quad"/>
+                <element inactive_on_update="false" label="Triple" sequence="2" value="triple"/>
+                <element inactive_on_update="false" label="Executive Suite" sequence="6" value="executive_suite"/>
+                <element inactive_on_update="false" label="King" sequence="5" value="king"/>
+                <element inactive_on_update="false" label="Double" sequence="1" value="double"/>
+                <element inactive_on_update="false" label="Single" sequence="0" value="single"/>
+                <element inactive_on_update="false" label="Queen" sequence="4" value="queen"/>
+            </choice>
+        </element>
     </element>
 </database>

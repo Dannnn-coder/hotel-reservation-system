@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>&#13;
+.hotel-header {&#13;
+  width: 100%;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff;&#13;
+  padding: 18px 5%;&#13;
+  box-sizing: border-box;&#13;
+  font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.hotel-header-inner {&#13;
+  max-width: 1400px;&#13;
+  margin: 0 auto;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: space-between;&#13;
+  gap: 30px;&#13;
+}&#13;
+&#13;
+.hotel-brand {&#13;
+  display: flex;&#13;
+  flex-direction: column;&#13;
+  text-decoration: none;&#13;
+  color: #ffffff;&#13;
+  flex-shrink: 0;&#13;
+}&#13;
+&#13;
+.brand-name {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 25px;&#13;
+  font-weight: bold;&#13;
+  letter-spacing: 0.5px;&#13;
+}&#13;
+&#13;
+.brand-subtitle {&#13;
+  color: #e6c79c;&#13;
+  font-size: 9px;&#13;
+  letter-spacing: 2.5px;&#13;
+  margin-top: 4px;&#13;
+}&#13;
+&#13;
+.hotel-navigation {&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  justify-content: center;&#13;
+  gap: 28px;&#13;
+}&#13;
+&#13;
+.hotel-navigation a {&#13;
+  color: #ffffff;&#13;
+  text-decoration: none;&#13;
+  font-size: 13px;&#13;
+  transition: color 0.2s ease;&#13;
+}&#13;
+&#13;
+.hotel-navigation a:hover {&#13;
+  color: #e6c79c;&#13;
+}&#13;
+&#13;
+.hotel-login {&#13;
+  background: #e6c79c;&#13;
+  color: #1f3a30;&#13;
+  text-decoration: none;&#13;
+  padding: 11px 24px;&#13;
+  border-radius: 4px;&#13;
+  font-size: 13px;&#13;
+  font-weight: bold;&#13;
+  white-space: nowrap;&#13;
+  transition: background 0.2s ease;&#13;
+}&#13;
+&#13;
+.hotel-login:hover {&#13;
+  background: #d4b07c;&#13;
+}&#13;
+&#13;
+@media (max-width: 850px) {&#13;
+  .hotel-header-inner {&#13;
+    flex-wrap: wrap;&#13;
+    justify-content: center;&#13;
+  }&#13;
+&#13;
+  .hotel-navigation {&#13;
+    flex-wrap: wrap;&#13;
+    gap: 15px;&#13;
+  }&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-header</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Header</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:03:02</sys_created_on>
+        <sys_id>1a4d70f093d0df10a3b6703efaba10fc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Header</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_1a4d70f093d0df10a3b6703efaba10fc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:03:02</sys_updated_on>
+        <template><![CDATA[
+<header class="hotel-header">
+  <div class="hotel-header-inner">
+    <a class="hotel-brand" href="?id=hotel_reservation_home_page">
+      <span class="brand-name">Placeholder title</span>
+      <span class="brand-subtitle">YOUR OCEANFRONT ESCAPE</span>
+    </a>
+
+    <nav class="hotel-navigation">
+      <a href="?id=hotel_reservation_home_page">Home</a>
+      <a href="?id=hotel_rooms">Rooms</a>
+      <a href="?id=my_reservations">My Reservations</a>
+      <a href="?id=guest_lookup">Guest Lookup</a>
+    </nav>
+
+    <a class="hotel-login" href="?id=login">Sign In</a>
+  </div>
+</header>
+]]></template>
+    </sp_widget>
+</record_update>
