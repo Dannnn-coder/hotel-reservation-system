@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="7cf27fab831813d0a91e31b6feaad3f4" extends="sys_import_set_row" label="Rooms Import" max_length="40" name="x_2206701_hotel_0_rooms_import" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=rate" label="rate" max_length="40" name="u_rate" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=room_type" label="room_type" max_length="40" name="u_room_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=availability_status" label="availability_status" max_length="40" name="u_availability_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=room_name" label="room_name" max_length="40" name="u_room_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=capacity" label="capacity" max_length="40" name="u_capacity" type="string"/>
+    </element>
+</database>

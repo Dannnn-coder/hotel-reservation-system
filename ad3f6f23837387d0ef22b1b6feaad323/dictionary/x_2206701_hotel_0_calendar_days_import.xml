@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="5da734f3835053d0a91e31b6feaad380" extends="sys_import_set_row" label="Calendar Days Import" max_length="40" name="x_2206701_hotel_0_calendar_days_import" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=day_type" label="day_type" max_length="40" name="u_day_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=discount_percentage" label="discount_percentage" max_length="40" name="u_discount_percentage" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=date" label="date" max_length="40" name="u_date" type="string"/>
+    </element>
+</database>
