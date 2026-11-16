@@ -26,4 +26,3 @@ If you find yourself unable to import your repository due to the presence of fil
    Currently listed dependencies:
    * System Import Sets
    * Service Management Basics
-   * System Import Sets
