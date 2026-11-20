@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>2</order>
+        <semantic_tag/>
+        <size>3</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">58abb0f09314df10a3b6703efaba1097</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 07:55:07</sys_created_on>
+        <sys_id>10abb0f09314df10a3b6703efaba10de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>2</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_column_10abb0f09314df10a3b6703efaba10de</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 07:55:07</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</application>
+        <file_path/>
+        <instance_id>2639bbddeb1dea5ce9bbfddacad0cdcc</instance_id>
+        <instance_name>dev341613</instance_name>
+        <name>sp_column_10abb0f09314df10a3b6703efaba10de</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>2</order><semantic_tag/><size>3</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">58abb0f09314df10a3b6703efaba1097</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-10-30 07:55:07</sys_created_on><sys_id>10abb0f09314df10a3b6703efaba10de</sys_id><sys_mod_count>0</sys_mod_count><sys_name>2</sys_name><sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package><sys_policy/><sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope><sys_update_name>sp_column_10abb0f09314df10a3b6703efaba10de</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-10-30 07:55:07</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>1954384276</payload_hash>
+        <record_name>2</record_name>
+        <reverted_from/>
+        <source>b9c5523693401310a3b6703efaba108c</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 07:55:07</sys_created_on>
+        <sys_id>14abb0f09314df10a3b6703efaba10e1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a18bce2c2e0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 07:55:07</sys_updated_on>
+        <type>Column</type>
+        <update_guid>d0abb0f07014df109cc8d4f15e5b59e0</update_guid>
+        <update_guid_history>d0abb0f07014df109cc8d4f15e5b59e0:1954384276</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="2">8bcb38f09314df10a3b6703efaba10a6</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 07:55:51</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>040691e96d834d0c86972b47d8025190</sys_id>
+        <sys_metadata>10abb0f09314df10a3b6703efaba10de</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>2</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_scope_delete display_value="">37f65ffe085742c4906b1381ece3ee39</sys_scope_delete>
+        <sys_update_name>sp_column_10abb0f09314df10a3b6703efaba10de</sys_update_name>
+        <sys_update_version display_value="sp_column_10abb0f09314df10a3b6703efaba10de">14abb0f09314df10a3b6703efaba10e1</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 07:55:51</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

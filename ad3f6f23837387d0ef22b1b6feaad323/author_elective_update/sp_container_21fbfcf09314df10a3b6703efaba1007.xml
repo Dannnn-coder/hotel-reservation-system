@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Hotel Reservation Home Page - Container 9</name>
+        <order>9</order>
+        <semantic_tag/>
+        <sp_page display_value="hotel_reservation_home_page">1c7a3c309314df10a3b6703efaba1049</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 07:56:34</sys_created_on>
+        <sys_id>21fbfcf09314df10a3b6703efaba1007</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Hotel Reservation Home Page - Container 9</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_container_21fbfcf09314df10a3b6703efaba1007</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:47:10</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</application>
+        <file_path/>
+        <instance_id>2639bbddeb1dea5ce9bbfddacad0cdcc</instance_id>
+        <instance_name>dev341613</instance_name>
+        <name>sp_container_21fbfcf09314df10a3b6703efaba1007</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Hotel Reservation Home Page - Container 9</name><order>9</order><semantic_tag/><sp_page display_value="hotel_reservation_home_page">1c7a3c309314df10a3b6703efaba1049</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-10-30 07:56:34</sys_created_on><sys_id>21fbfcf09314df10a3b6703efaba1007</sys_id><sys_mod_count>7</sys_mod_count><sys_name>Hotel Reservation Home Page - Container 9</sys_name><sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package><sys_policy/><sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope><sys_update_name>sp_container_21fbfcf09314df10a3b6703efaba1007</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-10-30 08:47:10</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-752763445</payload_hash>
+        <record_name>Hotel Reservation Home Page - Container 9</record_name>
+        <reverted_from/>
+        <source>b9c5523693401310a3b6703efaba108c</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:47:10</sys_created_on>
+        <sys_id>be87453c9354df10a3b6703efaba10ea</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a18bfdd6050000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:47:10</sys_updated_on>
+        <type>Container</type>
+        <update_guid>fa87453c1a54df103997c4e98849eee9</update_guid>
+        <update_guid_history>fa87453c1a54df103997c4e98849eee9:-752763445,99d64db84354df10568ad7055c714ea9:651068365,2056c9781f54df10e087efb70412d2bd:-752763445,1275c9f41854df10a401f6436da52ba9:-1497031476,e774c9747e54df1044d0b87f33dfbd21:2053667789,575385f0fd54df105efc328547428923:724851437,65d041bc0514df10d22c507ed3537b84:-576286226,29fbfcf02e14df10915ef158d746a209:-1877423889</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Hotel Reservation Home Page - Container 9">6f87853c9354df10a3b6703efaba1001</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:47:13</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>255b70e997604b709808ff625cc16ef1</sys_id>
+        <sys_metadata>21fbfcf09314df10a3b6703efaba1007</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Reservation Home Page - Container 9</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_scope_delete display_value="">37f65ffe085742c4906b1381ece3ee39</sys_scope_delete>
+        <sys_update_name>sp_container_21fbfcf09314df10a3b6703efaba1007</sys_update_name>
+        <sys_update_version display_value="sp_container_21fbfcf09314df10a3b6703efaba1007">be87453c9354df10a3b6703efaba10ea</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:47:13</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

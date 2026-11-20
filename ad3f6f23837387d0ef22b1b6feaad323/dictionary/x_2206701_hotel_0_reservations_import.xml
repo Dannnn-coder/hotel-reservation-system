@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="9b5abf6b835813d0a91e31b6feaad394" extends="sys_import_set_row" label="Reservations Import" max_length="40" name="x_2206701_hotel_0_reservations_import" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=registered_user" label="registered_user" max_length="40" name="u_registered_user" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=number_of_days" label="number_of_days" max_length="40" name="u_number_of_days" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=reservation_status" label="reservation_status" max_length="40" name="u_reservation_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=number_of_children" label="number_of_children" max_length="40" name="u_number_of_children" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=total_payment" label="total_payment" max_length="40" name="u_total_payment" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=room" label="room" max_length="40" name="u_room" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=check_out_date" label="check_out_date" max_length="40" name="u_check_out_date" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=reservation_number" label="reservation_number" max_length="40" name="u_reservation_number" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=guest_email" label="guest_email" max_length="40" name="u_guest_email" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=number_of_adults" label="number_of_adults" max_length="40" name="u_number_of_adults" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=guest_name" label="guest_name" max_length="40" name="u_guest_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=check_in_date" label="check_in_date" max_length="40" name="u_check_in_date" type="string"/>
+    </element>
+</database>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>&#13;
+.hotel-hero {&#13;
+  min-height: 570px;&#13;
+  width: 100%;&#13;
+  box-sizing: border-box;&#13;
+  position: relative;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  padding: 90px 9%;&#13;
+  overflow: hidden;&#13;
+  background:&#13;
+    linear-gradient(90deg, rgba(15, 36, 29, 0.88), rgba(15, 36, 29, 0.48), rgba(15, 36, 29, 0.12)),&#13;
+    linear-gradient(135deg, #294b40, #78978a 55%, #d4b99a);&#13;
+  color: #ffffff;&#13;
+  font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.hero-content {&#13;
+  max-width: 700px;&#13;
+  position: relative;&#13;
+  z-index: 2;&#13;
+}&#13;
+&#13;
+.hero-eyebrow {&#13;
+  display: block;&#13;
+  color: #e6c79c;&#13;
+  font-size: 11px;&#13;
+  font-weight: bold;&#13;
+  letter-spacing: 4px;&#13;
+  margin-bottom: 22px;&#13;
+}&#13;
+&#13;
+.hero-content h1 {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: clamp(42px, 6vw, 76px);&#13;
+  line-height: 1.08;&#13;
+  font-weight: normal;&#13;
+  margin: 0 0 22px;&#13;
+  color: #ffffff;&#13;
+}&#13;
+&#13;
+.hero-content p {&#13;
+  max-width: 520px;&#13;
+  color: rgba(255, 255, 255, 0.88);&#13;
+  font-size: 16px;&#13;
+  line-height: 1.8;&#13;
+  margin: 0 0 32px;&#13;
+}&#13;
+&#13;
+.hero-buttons {&#13;
+  display: flex;&#13;
+  flex-wrap: wrap;&#13;
+  gap: 14px;&#13;
+}&#13;
+&#13;
+.hero-button {&#13;
+  display: inline-block;&#13;
+  text-decoration: none;&#13;
+  padding: 15px 27px;&#13;
+  border-radius: 3px;&#13;
+  font-size: 13px;&#13;
+  font-weight: bold;&#13;
+  transition: all 0.2s ease;&#13;
+}&#13;
+&#13;
+.hero-button.primary {&#13;
+  background: #e6c79c;&#13;
+  color: #1f3a30;&#13;
+}&#13;
+&#13;
+.hero-button.primary:hover {&#13;
+  background: #d4b07c;&#13;
+}&#13;
+&#13;
+.hero-button.secondary {&#13;
+  border: 1px solid rgba(255,255,255,0.8);&#13;
+  color: #ffffff;&#13;
+}&#13;
+&#13;
+.hero-button.secondary:hover {&#13;
+  background: rgba(255,255,255,0.15);&#13;
+}&#13;
+&#13;
+.hero-scroll {&#13;
+  position: absolute;&#13;
+  bottom: 28px;&#13;
+  left: 9%;&#13;
+  display: flex;&#13;
+  align-items: center;&#13;
+  gap: 12px;&#13;
+  color: rgba(255,255,255,0.75);&#13;
+  font-size: 9px;&#13;
+  letter-spacing: 2px;&#13;
+}&#13;
+&#13;
+.hero-scroll span {&#13;
+  width: 35px;&#13;
+  height: 1px;&#13;
+  background: #e6c79c;&#13;
+}&#13;
+&#13;
+@media (max-width: 600px) {&#13;
+  .hotel-hero {&#13;
+    min-height: 500px;&#13;
+    padding: 65px 7%;&#13;
+  }&#13;
+&#13;
+  .hero-content h1 {&#13;
+    font-size: 44px;&#13;
+  }&#13;
+&#13;
+  .hero-scroll {&#13;
+    left: 7%;&#13;
+  }&#13;
+}&#13;
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-hero-section</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Hero Section</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:11:16</sys_created_on>
+        <sys_id>f23f3c789314df10a3b6703efaba10de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Hero Section</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_f23f3c789314df10a3b6703efaba10de</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:11:16</sys_updated_on>
+        <template><![CDATA[
+<section class="hotel-hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">WELCOME TO YOUR NEXT GETAWAY</span>
+
+    <h1>Your Oceanfront Paradise Awaits</h1>
+
+    <p>Escape the everyday. Discover beautiful rooms, relaxing experiences, and unforgettable moments.</p>
+
+    <div class="hero-buttons">
+      <a href="?id=book_room" class="hero-button primary">Book a Room</a>
+      <a href="?id=book_sports" class="hero-button secondary">Explore Activities</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span></span>
+    SCROLL TO EXPLORE
+  </div>
+</section>
+]]></template>
+    </sp_widget>
+</record_update>

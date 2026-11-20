@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.quick-access {&#13;
+    padding: 65px 7%;&#13;
+    background: #ffffff;&#13;
+    font-family: Arial, sans-serif;&#13;
+}&#13;
+&#13;
+.quick-heading {&#13;
+    text-align: center;&#13;
+    margin-bottom: 38px;&#13;
+}&#13;
+&#13;
+.quick-heading &gt; span {&#13;
+    color: #a8895e;&#13;
+    font-size: 11px;&#13;
+    font-weight: 700;&#13;
+    letter-spacing: 3px;&#13;
+}&#13;
+&#13;
+.quick-heading h2 {&#13;
+    color: #1f3a30;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 36px;&#13;
+    margin: 10px 0;&#13;
+}&#13;
+&#13;
+.quick-heading p {&#13;
+    color: #6f756f;&#13;
+    font-size: 14px;&#13;
+}&#13;
+&#13;
+.quick-grid {&#13;
+    display: grid;&#13;
+    grid-template-columns: repeat(3, minmax(0, 1fr));&#13;
+    gap: 22px;&#13;
+}&#13;
+&#13;
+.quick-card {&#13;
+    display: block;&#13;
+    padding: 32px 28px;&#13;
+    background: #faf6ef;&#13;
+    border: 1px solid #e7e1d4;&#13;
+    text-decoration: none !important;&#13;
+    transition: transform 0.25s, box-shadow 0.25s;&#13;
+}&#13;
+&#13;
+.quick-card:hover {&#13;
+    transform: translateY(-5px);&#13;
+    box-shadow: 0 12px 25px rgba(31, 58, 48, 0.10);&#13;
+}&#13;
+&#13;
+.quick-icon {&#13;
+    width: 52px;&#13;
+    height: 52px;&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    justify-content: center;&#13;
+    background: #e8eee9;&#13;
+    color: #1f3a30;&#13;
+    font-size: 21px;&#13;
+    margin-bottom: 22px;&#13;
+}&#13;
+&#13;
+.quick-card h3 {&#13;
+    color: #1f3a30;&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 23px;&#13;
+    margin: 0 0 12px;&#13;
+}&#13;
+&#13;
+.quick-card p {&#13;
+    color: #6f756f;&#13;
+    font-size: 13px;&#13;
+    line-height: 1.7;&#13;
+    min-height: 44px;&#13;
+}&#13;
+&#13;
+.quick-card &gt; span {&#13;
+    display: inline-block;&#13;
+    margin-top: 20px;&#13;
+    color: #a8895e;&#13;
+    font-size: 11px;&#13;
+    font-weight: 700;&#13;
+    letter-spacing: 1px;&#13;
+}&#13;
+&#13;
+.quick-card:hover &gt; span {&#13;
+    color: #1f3a30;&#13;
+}&#13;
+&#13;
+@media (max-width: 767px) {&#13;
+    .quick-grid {&#13;
+        grid-template-columns: 1fr;&#13;
+    }&#13;
+&#13;
+    .quick-access {&#13;
+        padding: 45px 20px;&#13;
+    }&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel-quick-access</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Quick Access</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-30 08:37:53</sys_created_on>
+        <sys_id>cd55c1f49354df10a3b6703efaba105d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Quick Access</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_cd55c1f49354df10a3b6703efaba105d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-30 08:37:53</sys_updated_on>
+        <template><![CDATA[<section class="quick-access">
+  <div class="quick-heading">
+    <span>YOUR STAY, MADE SIMPLE</span>
+    <h2>Everything in One Place</h2>
+    <p>Manage your stay and explore more of what we offer.</p>
+  </div>
+
+  <div class="quick-grid">
+    <a href="?id=my_reservations" class="quick-card">
+      <div class="quick-icon"><i class="fa fa-calendar-check-o"></i></div>
+      <h3>My Reservations</h3>
+      <p>View and manage your existing reservations.</p>
+      <span>VIEW RESERVATIONS <i class="fa fa-arrow-right"></i></span>
+    </a>
+
+    <a href="?id=guest_lookup" class="quick-card">
+      <div class="quick-icon"><i class="fa fa-search"></i></div>
+      <h3>Guest Lookup</h3>
+      <p>Find your reservation using your booking details.</p>
+      <span>FIND MY BOOKING <i class="fa fa-arrow-right"></i></span>
+    </a>
+
+    <a href="?id=book_sports" class="quick-card">
+      <div class="quick-icon"><i class="fa fa-futbol-o"></i></div>
+      <h3>Sports Activities</h3>
+      <p>Discover activities available during your stay.</p>
+      <span>EXPLORE ACTIVITIES <i class="fa fa-arrow-right"></i></span>
+    </a>
+  </div>
+</section>]]></template>
+    </sp_widget>
+</record_update>
