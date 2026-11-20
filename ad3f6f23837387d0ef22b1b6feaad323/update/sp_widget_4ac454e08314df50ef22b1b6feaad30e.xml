@@ -519,14 +519,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-29 12:39:44</sys_updated_on>
+        <sys_updated_on>2026-11-20 13:13:37</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->
@@ -534,7 +534,7 @@
     <div class="banner-container">
       <span class="eyebrow">Reserve your stay</span>
       <h1>Book a Room</h1>
-    <p>Instant online room reservations. No account required for guests.</p>
+      <p>Instant online room reservations. No account required for guests.</p>
     </div>
   </section>
 
@@ -583,17 +583,20 @@
               <input id="gemail" type="email" placeholder="you@example.com" ng-model="c.data.guestEmail" ng-disabled="c.data.isLoggedIn" required>
             </div>
 
-            <!-- Room Dropdown -->
+            <!-- Room Dropdown (Fixed with ng-options) -->
             <div class="field full">
               <label for="room">Select Room <span class="req">*</span></label>
-              <select id="room" ng-model="c.data.selectedRoom" ng-change="c.onFormChange()">
+              <select id="room" 
+                      ng-model="c.data.selectedRoom" 
+                      ng-options="r.sys_id as (r.name + ' — ' + r.type + ' · $' + r.rate + '/night (Max ' + r.capacity + ' guests)') for r in c.data.rooms" 
+                      ng-change="c.onFormChange()" 
+                      required>
                 <option value="">-- Choose a room --</option>
-                <option ng-repeat="r in c.data.rooms" value="{{r.sys_id}}">
-                  {{r.name}} — {{r.type}} · ${{r.rate}}/night (Max {{r.capacity}} guests)
-                </option>
               </select>
             </div>
-			// Role 2: Room Reservation Booking Engine - Nico John G. Colo
+
+            <!-- Role 2: Room Reservation Booking Engine - Nico John G. Colo -->
+
             <!-- Dates -->
             <div class="field">
               <label for="cin">Check-in Date <span class="req">*</span></label>
