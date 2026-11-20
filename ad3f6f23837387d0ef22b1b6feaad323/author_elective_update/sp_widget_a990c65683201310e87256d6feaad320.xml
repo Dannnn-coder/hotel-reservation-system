@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function($window) {
+    var c = this;
+    var currentPath = $window.location.pathname;
+    var searchParam = $window.location.search;
+    var skip = searchParam.indexOf('noredirect=true') !== -1;
+    
+    // Check session storage to ensure we only auto-redirect once per session
+    var alreadyRedirected = $window.sessionStorage.getItem('hotel_portal_redirected');
+    
+    // Check if we are already on the target hotel page or inside the portal path
+    var isAlreadyAtDestination = searchParam.indexOf('hotel_reservation_home_page') !== -1;
+    
+    if (c.data.redirectUrl && !skip && !isAlreadyAtDestination && !alreadyRedirected) {
+        // Set the flag to block subsequent loop triggers
+        $window.sessionStorage.setItem('hotel_portal_redirected', 'true');
+        
+        // Execute the browser redirect
+        $window.location.href = c.data.redirectUrl;
+    }
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>hotel_staff_redirect</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Hotel Staff Redirect</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+    data.redirectUrl = '';
+    
+    if (gs.isLoggedIn()) {
+        var isRegisteredUser = gs.hasRole('x_2206701_hotel_0.registered_user');
+        var isAdminOrItil = gs.hasRole('admin') || gs.hasRole('itil');
+        
+        if (isAdminOrItil) {
+            data.redirectUrl = '/now/nav/ui/home';
+        }
+        else if (isRegisteredUser) {
+            // Point straight to the portal page route to ensure the header widget renders
+            data.redirectUrl = '/sp?id=hotel_reservation_home_page';
+        }
+    }
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-16 15:04:09</sys_created_on>
+        <sys_id>a990c65683201310e87256d6feaad320</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Hotel Staff Redirect</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_widget_a990c65683201310e87256d6feaad320</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-17 13:03:05</sys_updated_on>
+        <template><![CDATA[<div></div>
+]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</application>
+        <file_path/>
+        <instance_id>28d47e6ffb9c539c1feef633beefdce3</instance_id>
+        <instance_name>dev477301</instance_name>
+        <merge_base/>
+        <name>sp_widget_a990c65683201310e87256d6feaad320</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[api.controller=function($window) {
+    var c = this;
+    var currentPath = $window.location.pathname;
+    var searchParam = $window.location.search;
+    var skip = searchParam.indexOf('noredirect=true') !== -1;
+    
+    // Check session storage to ensure we only auto-redirect once per session
+    var alreadyRedirected = $window.sessionStorage.getItem('hotel_portal_redirected');
+    
+    // Check if we are already on the target hotel page or inside the portal path
+    var isAlreadyAtDestination = searchParam.indexOf('hotel_reservation_home_page') !== -1;
+    
+    if (c.data.redirectUrl &amp;&amp; !skip &amp;&amp; !isAlreadyAtDestination &amp;&amp; !alreadyRedirected) {
+        // Set the flag to block subsequent loop triggers
+        $window.sessionStorage.setItem('hotel_portal_redirected', 'true');
+        
+        // Execute the browser redirect
+        $window.location.href = c.data.redirectUrl;
+    }
+};]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;hotel_staff_redirect&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;Hotel Staff Redirect&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+    data.redirectUrl = '';
+    
+    if (gs.isLoggedIn()) {
+        var isRegisteredUser = gs.hasRole('x_2206701_hotel_0.registered_user');
+        var isAdminOrItil = gs.hasRole('admin') || gs.hasRole('itil');
+        
+        if (isAdminOrItil) {
+            data.redirectUrl = '/now/nav/ui/home';
+        }
+        else if (isRegisteredUser) {
+            // Point straight to the portal page route to ensure the header widget renders
+            data.redirectUrl = '/sp?id=hotel_reservation_home_page';
+        }
+    }
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2026-11-16 15:04:09&lt;/sys_created_on&gt;&lt;sys_id&gt;a990c65683201310e87256d6feaad320&lt;/sys_id&gt;&lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;&lt;sys_name&gt;Hotel Staff Redirect&lt;/sys_name&gt;&lt;sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0"&gt;ad3f6f23837387d0ef22b1b6feaad323&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Hotel Reservation System"&gt;ad3f6f23837387d0ef22b1b6feaad323&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_a990c65683201310e87256d6feaad320&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-11-17 13:03:05&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;&lt;/div&gt;
+]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1107900974</payload_hash>
+        <record_name>Hotel Staff Redirect</record_name>
+        <reverted_from/>
+        <source>2cf2843f83d81310e87256d6feaad36c</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-17 13:03:05</sys_created_on>
+        <sys_id>0fbe2aa683a09310e87256d6feaad31d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a1e99a98970000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-17 13:03:05</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>8bbe2aa653a09310c80f34a82d4e211c</update_guid>
+        <update_guid_history>8bbe2aa653a09310c80f34a82d4e211c:-1107900974,160de6e291a093100c2be2edc63b6ad6:584962958,a15ca2a26ea093102afd625500b40a83:935859383,a90ce662cba09310edf1f188d93f0ad3:-304370918,024b22227aa093109b5b1824fb8d38a3:679186166,807a66ae0560931086158b0c2ce630e1:-1694416877,aa29aaead76093102f66c99cf8193aef:64400772,e8a7ae2a34609310ea9d3c820d2adfc9:-755416192,5923ce1e1f20131071166bf721163703:110173281,78b3069e12201310570329bb8865b2ef:-1968972587,5923ce1e1f20131071166bf721163703:110173281,fed0c296b62013100306d144275982b5:-728087314</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Hotel Staff Redirect">4806a057832c1310e87256d6feaad391</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-19 11:01:08</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>0ece730d6d1c4330b3beaf06c2acb440</sys_id>
+        <sys_metadata>a990c65683201310e87256d6feaad320</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hotel Staff Redirect</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_scope_delete display_value="">37f65ffe085742c4906b1381ece3ee39</sys_scope_delete>
+        <sys_update_name>sp_widget_a990c65683201310e87256d6feaad320</sys_update_name>
+        <sys_update_version display_value="sp_widget_a990c65683201310e87256d6feaad320">0fbe2aa683a09310e87256d6feaad31d</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-19 11:01:08</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
