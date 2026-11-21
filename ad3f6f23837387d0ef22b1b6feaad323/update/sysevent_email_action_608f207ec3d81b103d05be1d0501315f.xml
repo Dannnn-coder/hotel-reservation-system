@@ -42,7 +42,8 @@
 <p>Please be advised that the details for Room name: ${room_name} have been updated.&nbsp;</p>
 <p>Click here to view the current room record: ${URI_REF}</p>
 <p>Thank you,<br>Hotel Reservation System</p>
-<p>&nbsp;</p>]]></message_html>
+<p>&nbsp;</p>
+<p>${mail_script:cc_receptionists}</p>]]></message_html>
         <message_list/>
         <message_text/>
         <name>Room Details Updated</name>
@@ -50,7 +51,7 @@
         <order>100</order>
         <push_message_only>false</push_message_only>
         <recipient_fields/>
-        <recipient_groups name="Receptionists">d7bc50f6c3581b103d05be1d05013107</recipient_groups>
+        <recipient_groups/>
         <recipient_users/>
         <reply_to/>
         <send_self>true</send_self>
@@ -64,7 +65,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>608f207ec3d81b103d05be1d0501315f</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Room Details Updated</sys_name>
         <sys_overrides/>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -72,7 +73,7 @@
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sysevent_email_action_608f207ec3d81b103d05be1d0501315f</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-05 12:18:18</sys_updated_on>
+        <sys_updated_on>2026-11-21 07:18:35</sys_updated_on>
         <sys_version>2</sys_version>
         <template display_value="Unsubscribe and Preferences">7ed0481f3b0b2200c869c2c703efc487</template>
         <type>email</type>
