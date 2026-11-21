@@ -51,7 +51,8 @@
         <order>100</order>
         <push_message_only>false</push_message_only>
         <recipient_fields/>
-        <recipient_groups name="Receptionists">d7bc50f6c3581b103d05be1d05013107</recipient_groups>
+        <recipient_groups>d7bc50f6c3581b103d05be1d05013107<sys_user_group>d7bc50f6c3581b103d05be1d05013107</sys_user_group>
+        </recipient_groups>
         <recipient_users>6816f79cc0a8016401c5a33be04be441</recipient_users>
         <reply_to/>
         <send_self>true</send_self>

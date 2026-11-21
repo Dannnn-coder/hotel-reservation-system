@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_report">
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_report">
     <sys_report action="INSERT_OR_UPDATE">
         <active>true</active>
         <additional_groupby/>
@@ -10,6 +10,7 @@
         <axis_min_color display_value="White">65b303c7a9fe3dba00629aff95ee3597</axis_min_color>
         <bar_unstack>false</bar_unstack>
         <calendar/>
+        <certified>false</certified>
         <chart_background_color/>
         <chart_border_color/>
         <chart_border_radius>0</chart_border_radius>
@@ -72,16 +73,21 @@
         <list_ui_view/>
         <location_field/>
         <lower_limit/>
+        <macroponent/>
         <map display_value="World">93b8a3a2d7101200bd4a4ebfae61033a</map>
         <map_source/>
+        <name/>
         <no_bulk_migration>true</no_bulk_migration>
         <orderby_list/>
         <other_threshold>-2</other_threshold>
         <others>true</others>
         <page_hdrftr/>
         <pivot_expanded>true</pivot_expanded>
+        <properties/>
         <report_drilldown/>
         <report_source/>
+        <requested_by/>
+        <required_translations/>
         <roles>x_2206701_hotel_0.administrator</roles>
         <row/>
         <sc_groupby_item_id/>
@@ -109,6 +115,8 @@
         <sys_class_name>sys_report</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-09 01:38:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
         <sys_id>67358bfb839093d0a91e31b6feaad3fe</sys_id>
         <sys_mod_count>3</sys_mod_count>
         <sys_name>Gross Sales by Month</sys_name>

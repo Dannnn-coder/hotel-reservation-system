@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
     <sp_container action="INSERT_OR_UPDATE">
+        <aria_label/>
         <background_color/>
         <background_image/>
         <background_style>default</background_style>
