@@ -7,6 +7,8 @@
   // Defaults
   c.data.adults = 1;
   c.data.children = 0;
+  c.checkInDate = null;
+  c.checkOutDate = null;
   c.showModal = false;
   c.bookingConfirmed = false;
   c.isSubmitting = false;
@@ -17,13 +19,27 @@
     c.data.guestEmail = c.data.userEmail;
   }
 
+  c.toLocalDateStr = function(val) {
+    if (!val) return "";
+    if (typeof val === "string") return val.substring(0, 10);
+    if (val instanceof Date && !isNaN(val.getTime())) {
+      var y = val.getFullYear();
+      var m = ("0" + (val.getMonth() + 1)).slice(-2);
+      var d = ("0" + val.getDate()).slice(-2);
+      return y + "-" + m + "-" + d;
+    }
+    return String(val).substring(0, 10);
+  };
+
   // Triggered when room or dates change
   c.onFormChange = function() {
-    c.data.dateError = '';
-    c.data.availReason = '';
+    c.data.dateError = "";
+    c.data.availReason = "";
+    c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+    c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
 
     if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
-      c.data.action = 'calculateEstimate';
+      c.data.action = "calculateEstimate";
       c.server.update().then(function() {
         // Updated state from server
       });
@@ -34,29 +50,30 @@
   };
 
   c.onGuestCountChange = function() {
-    // Check capacity if room is selected
     if (c.data.selectedRoom) {
       var room = c.getRoomObject(c.data.selectedRoom);
       if (room && (parseInt(c.data.adults, 10) + parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)) {
         c.data.dateError = "Total guests exceed the maximum room capacity (" + room.capacity + ").";
       } else {
-        c.data.dateError = '';
+        c.data.dateError = "";
       }
     }
   };
 
   c.canReview = function() {
-    return c.data.selectedRoom && 
-           c.data.checkIn && 
-           c.data.checkOut && 
-           c.data.guestName && 
-           c.data.guestEmail && 
-           c.data.isAvailable && 
+    return c.data.selectedRoom &&
+           c.data.checkIn &&
+           c.data.checkOut &&
+           c.data.guestName &&
+           c.data.guestEmail &&
+           c.data.isAvailable &&
            !c.data.dateError;
   };
 
   c.openConfirmModal = function() {
     if (c.canReview()) {
+      c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+      c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
       c.showModal = true;
       c.bookingConfirmed = false;
     }
@@ -68,7 +85,9 @@
 
   c.confirmBooking = function() {
     c.isSubmitting = true;
-    c.data.action = 'createBooking';
+    c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+    c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+    c.data.action = "createBooking";
     c.server.update().then(function() {
       c.isSubmitting = false;
       if (c.data.bookingSuccess) {
@@ -80,16 +99,17 @@
   c.resetForm = function() {
     c.showModal = false;
     c.bookingConfirmed = false;
-    c.data.selectedRoom = '';
-    c.data.checkIn = '';
-    c.data.checkOut = '';
+    c.data.selectedRoom = "";
+    c.checkInDate = null;
+    c.checkOutDate = null;
+    c.data.checkIn = "";
+    c.data.checkOut = "";
     c.data.estimatedTotal = 0;
     c.data.nights = 0;
-    c.data.dateError = '';
-    c.data.availReason = '';
+    c.data.dateError = "";
+    c.data.availReason = "";
   };
 
-  // Helper getters
   c.getRoomObject = function(roomId) {
     if (!c.data.rooms) return null;
     for (var i = 0; i < c.data.rooms.length; i++) {
@@ -100,7 +120,7 @@
 
   c.getSelectedRoomName = function() {
     var r = c.getRoomObject(c.data.selectedRoom);
-    return r ? r.name : '';
+    return r ? r.name : "";
   };
 
   c.getSelectedRoomRate = function() {
@@ -429,35 +449,39 @@
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
-  // 1. Detect Logged-In User or Guest
   data.isLoggedIn = gs.isLoggedIn();
   data.userId = gs.getUserID();
   data.userName = gs.getUserDisplayName();
   data.userEmail = gs.getUser().getEmail();
-  // 2. Fetch Active Rooms for dropdown
+
   data.rooms = [];
-  var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
-  roomGr.addQuery('availability_status', '!=', 'maintenance');
-  roomGr.orderBy('rate');
+  var roomGr = new GlideRecord("x_2206701_hotel_0_rooms");
+  roomGr.addQuery("availability_status", "!=", "maintenance");
+  roomGr.orderBy("rate");
   roomGr.query();
   while (roomGr.next()) {
     data.rooms.push({
       sys_id: roomGr.getUniqueValue(),
-      name: roomGr.getValue('room_name') || roomGr.getDisplayValue(),
-      type: roomGr.getDisplayValue('room_type'),
-      capacity: roomGr.getValue('capacity') || 2,
-      rate: parseFloat(roomGr.getValue('rate')) || 0
+      name: roomGr.getValue("room_name") || roomGr.getDisplayValue(),
+      type: roomGr.getDisplayValue("room_type"),
+      capacity: roomGr.getValue("capacity") || 2,
+      rate: parseFloat(roomGr.getValue("rate")) || 0
     });
   }
-// Role 2: Room Reservation Booking Engine - Nico John G. Colo
-  // 3. Handle Client Controller Actions
+
+  function normalizeDateStr(val) {
+    if (!val) return "";
+    return String(val).substring(0, 10);
+  }
+
   if (input) {
     var pricingUtil = new x_2206701_hotel_0.PricingUtils();
     var resUtil = new x_2206701_hotel_0.ReservationUtils();
+    var checkInStr = normalizeDateStr(input.checkIn);
+    var checkOutStr = normalizeDateStr(input.checkOut);
 
-    // ACTION: Calculate Dynamic Price & Check Availability
-    if (input.action === 'calculateEstimate') {
-      var dateCheck = resUtil.validateDates(input.checkIn, input.checkOut);
+    if (input.action === "calculateEstimate") {
+      var dateCheck = resUtil.validateDates(checkInStr, checkOutStr);
       if (!dateCheck.ok) {
         data.dateError = dateCheck.message;
         data.isAvailable = false;
@@ -466,44 +490,36 @@
         return;
       }
 
-      data.dateError = '';
-      data.nights = resUtil.calculateDays(input.checkIn, input.checkOut);
-
-      // Check room availability via Cauban's PricingUtils
-      var availCheck = pricingUtil.isRoomAvailable(input.selectedRoom, input.checkIn, input.checkOut);
+      data.dateError = "";
+      data.nights = resUtil.calculateDays(checkInStr, checkOutStr);
+      var availCheck = pricingUtil.isRoomAvailable(input.selectedRoom, checkInStr, checkOutStr);
       data.isAvailable = availCheck.available;
       data.availReason = availCheck.reason;
-
-      // Calculate total with calendar discounts
       if (data.isAvailable) {
-        data.estimatedTotal = pricingUtil.calculateRoomTotal(input.selectedRoom, data.nights, input.checkIn);
+        data.estimatedTotal = pricingUtil.calculateRoomTotal(input.selectedRoom, data.nights, checkInStr);
       } else {
         data.estimatedTotal = 0;
       }
     }
 
-    // ACTION: Submit Reservation to Database via Sarsonas's ReservationUtils
-    if (input.action === 'createBooking') {
+    if (input.action === "createBooking") {
       var bookingPayload = {
         room: input.selectedRoom,
         guest_name: input.guestName,
         guest_email: input.guestEmail,
-        check_in_date: input.checkIn,
-        check_out_date: input.checkOut,
+        check_in_date: checkInStr,
+        check_out_date: checkOutStr,
         number_of_adults: parseInt(input.adults, 10) || 1,
         number_of_children: parseInt(input.children, 10) || 0,
-        registered_user: data.isLoggedIn ? data.userId : ''
+        registered_user: data.isLoggedIn ? data.userId : ""
       };
-
       var createResult = resUtil.createReservation(bookingPayload);
       if (createResult.ok) {
         data.bookingSuccess = true;
         data.createdSysId = createResult.reservationId;
-
-        // Fetch display reservation number (e.g. RES000012)
-        var resGr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+        var resGr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
         if (resGr.get(createResult.reservationId)) {
-          data.reservationDisplayNumber = resGr.getValue('number') || createResult.reservationId;
+          data.reservationDisplayNumber = resGr.getValue("number") || createResult.reservationId;
         } else {
           data.reservationDisplayNumber = createResult.reservationId;
         }
@@ -519,14 +535,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-20 13:13:37</sys_updated_on>
+        <sys_updated_on>2026-11-21 13:08:00</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->
@@ -600,11 +616,11 @@
             <!-- Dates -->
             <div class="field">
               <label for="cin">Check-in Date <span class="req">*</span></label>
-              <input id="cin" type="date" ng-model="c.data.checkIn" ng-change="c.onFormChange()">
+              <input id="cin" type="date" ng-model="c.checkInDate" ng-change="c.onFormChange()">
             </div>
             <div class="field">
               <label for="cout">Check-out Date <span class="req">*</span></label>
-              <input id="cout" type="date" ng-model="c.data.checkOut" ng-change="c.onFormChange()">
+              <input id="cout" type="date" ng-model="c.checkOutDate" ng-change="c.onFormChange()">
             </div>
 
             <!-- Guest counts -->

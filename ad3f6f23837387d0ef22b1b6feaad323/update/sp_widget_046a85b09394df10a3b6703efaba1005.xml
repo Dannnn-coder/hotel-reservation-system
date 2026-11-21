@@ -2,42 +2,158 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller = function($scope) {
-    var c = this;
+  var c = this;
+  c.reservationNumber = "";
+  c.guestEmail = "";
+  c.message = "";
+  c.messageType = "";
+  c.actionMessage = "";
+  c.actionMessageType = "";
+  c.loading = false;
+  c.actionBusy = false;
+  c.reservation = null;
+  c.editMode = false;
 
-    c.reservationNumber = "";
-    c.guestEmail = "";
+  function parseYmd(str) {
+    if (!str) return null;
+    var parts = String(str).substring(0, 10).split("-");
+    if (parts.length !== 3) return null;
+    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  }
+
+  function toLocalDateStr(val) {
+    if (!val) return "";
+    if (typeof val === "string") return val.substring(0, 10);
+    if (val instanceof Date && !isNaN(val.getTime())) {
+      var y = val.getFullYear();
+      var m = ("0" + (val.getMonth() + 1)).slice(-2);
+      var d = ("0" + val.getDate()).slice(-2);
+      return y + "-" + m + "-" + d;
+    }
+    return String(val).substring(0, 10);
+  }
+
+  c.canModify = function() {
+    if (!c.reservation) return false;
+    var st = c.reservation.status_value;
+    return st !== "cancelled" && st !== "closed" && st !== "checked_out";
+  };
+
+  c.submitLookup = function() {
     c.message = "";
     c.messageType = "";
-    c.loading = false;
+    c.actionMessage = "";
+    c.actionMessageType = "";
+    c.editMode = false;
+    c.reservation = null;
 
-    c.submitLookup = function() {
-        c.message = "";
-        c.messageType = "";
+    if (!c.reservationNumber || !c.reservationNumber.trim()) {
+      c.message = "Please enter your reservation number.";
+      c.messageType = "error";
+      return;
+    }
+    if (!c.guestEmail || !c.guestEmail.trim()) {
+      c.message = "Please enter the email address used for your reservation.";
+      c.messageType = "error";
+      return;
+    }
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(c.guestEmail.trim())) {
+      c.message = "Please enter a valid email address.";
+      c.messageType = "error";
+      return;
+    }
 
-        if (!c.reservationNumber || !c.reservationNumber.trim()) {
-            c.message = "Please enter your reservation number.";
-            c.messageType = "error";
-            return;
-        }
+    c.loading = true;
+    c.server.get({
+      action: "lookup",
+      reservationNumber: c.reservationNumber.trim(),
+      guestEmail: c.guestEmail.trim()
+    }).then(function(resp) {
+      c.loading = false;
+      var d = (resp && resp.data) || {};
+      if (d.found && d.reservation) {
+        c.reservation = d.reservation;
+      } else {
+        c.message = d.errorMessage || "No matching reservation found. Please check your details.";
+        c.messageType = "error";
+      }
+    }, function() {
+      c.loading = false;
+      c.message = "Unable to look up reservation right now.";
+      c.messageType = "error";
+    });
+  };
 
-        if (!c.guestEmail || !c.guestEmail.trim()) {
-            c.message = "Please enter the email address used for your reservation.";
-            c.messageType = "error";
-            return;
-        }
+  c.confirmReservation = function() {
+    if (!c.reservation) return;
+    c.actionBusy = true;
+    c.actionMessage = "";
+    c.server.get({
+      action: "confirm",
+      reservationId: c.reservation.sys_id,
+      guestEmail: c.guestEmail.trim()
+    }).then(function(resp) {
+      c.actionBusy = false;
+      var d = (resp && resp.data) || {};
+      if (d.reservation) c.reservation = d.reservation;
+      c.actionMessage = d.actionMessage || "";
+      c.actionMessageType = d.actionMessageType || "info";
+    });
+  };
 
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  c.cancelReservation = function() {
+    if (!c.reservation) return;
+    c.actionBusy = true;
+    c.actionMessage = "";
+    c.server.get({
+      action: "cancel",
+      reservationId: c.reservation.sys_id,
+      guestEmail: c.guestEmail.trim()
+    }).then(function(resp) {
+      c.actionBusy = false;
+      var d = (resp && resp.data) || {};
+      if (d.reservation) c.reservation = d.reservation;
+      c.actionMessage = d.actionMessage || "";
+      c.actionMessageType = d.actionMessageType || "info";
+      if (c.actionMessageType === "info") c.editMode = false;
+    });
+  };
 
-        if (!emailPattern.test(c.guestEmail.trim())) {
-            c.message = "Please enter a valid email address.";
-            c.messageType = "error";
-            return;
-        }
+  c.startEdit = function() {
+    if (c.editMode) {
+      c.editMode = false;
+      return;
+    }
+    c.editCheckInDate = parseYmd(c.reservation.raw_check_in);
+    c.editCheckOutDate = parseYmd(c.reservation.raw_check_out);
+    c.editAdults = c.reservation.adults;
+    c.editChildren = c.reservation.children;
+    c.editMode = true;
+  };
 
-        c.message = "The reservation lookup service is not connected yet. Please try again once the booking service is ready.";
-        c.messageType = "info";
-    };
-}]]></client_script>
+  c.saveUpdate = function() {
+    if (!c.reservation) return;
+    c.actionBusy = true;
+    c.actionMessage = "";
+    c.server.get({
+      action: "update",
+      reservationId: c.reservation.sys_id,
+      guestEmail: c.guestEmail.trim(),
+      editCheckIn: toLocalDateStr(c.editCheckInDate),
+      editCheckOut: toLocalDateStr(c.editCheckOutDate),
+      editAdults: c.editAdults,
+      editChildren: c.editChildren
+    }).then(function(resp) {
+      c.actionBusy = false;
+      var d = (resp && resp.data) || {};
+      if (d.reservation) c.reservation = d.reservation;
+      c.actionMessage = d.actionMessage || "";
+      c.actionMessageType = d.actionMessageType || "info";
+      if (c.actionMessageType === "info") c.editMode = false;
+    });
+  };
+};]]></client_script>
         <controller_as>c</controller_as>
         <css>.guest-lookup-page {&#13;
   min-height: 650px;&#13;
@@ -247,7 +363,95 @@
   .lookup-card {&#13;
     padding: 30px 22px;&#13;
   }&#13;
-}</css>
+}
+
+.lookup-result-card {
+  max-width: 680px;
+  margin: 28px auto 0;
+  padding: 32px 36px;
+  background: #ffffff;
+  border: 1px solid #e7e1d4;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px rgba(31, 58, 48, 0.07);
+}
+.lookup-res-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e7e1d4;
+  margin-bottom: 20px;
+}
+.lookup-res-label {
+  display: block;
+  color: #9a805d;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+.lookup-res-top h3 {
+  margin: 6px 0 0;
+  color: #1f3a30;
+  font-family: Georgia, serif;
+  font-size: 24px;
+}
+.lookup-status-badge {
+  background: #e8eee9;
+  color: #1f3a30;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.lookup-status-badge.status-cancelled { background: #f9e9e6; color: #9c3d31; }
+.lookup-res-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.lookup-res-item span {
+  display: block;
+  color: #8a8e87;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.lookup-res-item strong { color: #2a2d29; font-size: 14px; }
+.lookup-res-total { color: #1f3a30 !important; font-size: 17px !important; }
+.lookup-actions, .lookup-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #e7e1d4;
+}
+.action-btn {
+  padding: 10px 16px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.action-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-confirm { background: #1f3a30; color: #ffffff; }
+.btn-edit { background: #f3ede2; color: #1f3a30; border: 1px solid #d8ceb9; }
+.btn-cancel { background: #f9e9e6; color: #9c3d31; border: 1px solid #ecc6bf; }
+.btn-secondary { background: #efefef; color: #333333; }
+.lookup-edit-panel {
+  margin-top: 20px;
+  padding: 20px;
+  background: #faf6ef;
+  border: 1px solid #e7e1d4;
+  border-radius: 8px;
+}
+.lookup-edit-panel h4 { margin: 0 0 14px; color: #1f3a30; font-family: Georgia, serif; }
+.lookup-edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.lookup-edit-grid label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #2a2d29; }
+.lookup-edit-grid input { width: 100%; height: 40px; padding: 0 12px; border: 1px solid #e7e1d4; border-radius: 5px; background: #ffffff; box-sizing: border-box; }
+@media (max-width: 600px) { .lookup-res-grid, .lookup-edit-grid { grid-template-columns: 1fr; } }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -264,26 +468,165 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
-  data.lookupEnabled = false;
+  data.lookupEnabled = true;
+  if (!input || !input.action) return;
+
+  var resUtil = new x_2206701_hotel_0.ReservationUtils();
+  var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+
+  function buildResObj(gr) {
+    return {
+      sys_id: gr.getUniqueValue(),
+      number: gr.getValue("number") || gr.getDisplayValue("number") || gr.getUniqueValue(),
+      status: gr.getDisplayValue("reservation_status"),
+      status_value: gr.getValue("reservation_status"),
+      room: gr.getDisplayValue("room"),
+      room_id: gr.getValue("room"),
+      check_in: gr.getDisplayValue("check_in_date"),
+      check_out: gr.getDisplayValue("check_out_date"),
+      raw_check_in: gr.getValue("check_in_date"),
+      raw_check_out: gr.getValue("check_out_date"),
+      adults: parseInt(gr.getValue("number_of_adults"), 10) || 1,
+      children: parseInt(gr.getValue("number_of_children"), 10) || 0,
+      days: parseInt(gr.getValue("number_of_days"), 10) || 0,
+      total: gr.getDisplayValue("total_payment"),
+      guest_name: gr.getDisplayValue("guest_name"),
+      guest_email: gr.getValue("guest_email")
+    };
+  }
+
+  function findByIdAndEmail(resId, email) {
+    if (!resId || !email) return null;
+    var gr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
+    if (!gr.get(resId)) return null;
+    var dbEmail = (gr.getValue("guest_email") || "").toLowerCase().trim();
+    if (dbEmail !== String(email).toLowerCase().trim()) return null;
+    return gr;
+  }
+
+  if (input.action === "lookup") {
+    var num = (input.reservationNumber || "").trim();
+    var email = (input.guestEmail || "").trim();
+    var res = resUtil.lookupGuestReservation(num, email);
+    var foundGr = null;
+    if (res && res.ok && res.reservationId) {
+      foundGr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
+      if (!foundGr.get(res.reservationId)) foundGr = null;
+    }
+    if (!foundGr) {
+      foundGr = findByIdAndEmail(num, email);
+    }
+    if (foundGr) {
+      data.found = true;
+      data.reservation = buildResObj(foundGr);
+    } else {
+      data.found = false;
+      data.errorMessage = (res && res.message) || "No matching reservation found. Please verify your reservation number and email address.";
+    }
+    return;
+  }
+
+  var gr = findByIdAndEmail(input.reservationId, input.guestEmail);
+  if (!gr) {
+    data.actionMessage = "Reservation verification failed.";
+    data.actionMessageType = "error";
+    return;
+  }
+
+  if (input.action === "confirm") {
+    var cRes = resUtil.confirmReservation(gr.getUniqueValue());
+    gr.get(gr.getUniqueValue());
+    data.reservation = buildResObj(gr);
+    data.actionMessage = cRes.ok ? "Reservation confirmed successfully." : (cRes.message || "Unable to confirm reservation.");
+    data.actionMessageType = cRes.ok ? "info" : "error";
+    return;
+  }
+
+  if (input.action === "cancel") {
+    var canRes = resUtil.cancelReservation(gr.getUniqueValue());
+    gr.get(gr.getUniqueValue());
+    data.reservation = buildResObj(gr);
+    data.actionMessage = canRes.message;
+    data.actionMessageType = canRes.ok ? "info" : "error";
+    return;
+  }
+
+  if (input.action === "update") {
+    var st = gr.getValue("reservation_status");
+    if (st === "cancelled" || st === "closed" || st === "checked_out") {
+      data.reservation = buildResObj(gr);
+      data.actionMessage = "Closed or cancelled reservations cannot be modified.";
+      data.actionMessageType = "error";
+      return;
+    }
+    var cin = String(input.editCheckIn || "").substring(0, 10);
+    var cout = String(input.editCheckOut || "").substring(0, 10);
+    var dCheck = resUtil.validateDates(cin, cout);
+    if (!dCheck.ok) {
+      data.reservation = buildResObj(gr);
+      data.actionMessage = dCheck.message;
+      data.actionMessageType = "error";
+      return;
+    }
+    var roomId = gr.getValue("room");
+    var avail = pricingUtil.isRoomAvailable(roomId, cin, cout, gr.getUniqueValue());
+    if (!avail.available) {
+      data.reservation = buildResObj(gr);
+      data.actionMessage = avail.reason || "Selected dates are not available.";
+      data.actionMessageType = "error";
+      return;
+    }
+    var adults = parseInt(input.editAdults, 10);
+    var children = parseInt(input.editChildren, 10) || 0;
+    if (isNaN(adults) || adults < 1 || children < 0) {
+      data.reservation = buildResObj(gr);
+      data.actionMessage = "Please enter valid guest counts (at least 1 adult).";
+      data.actionMessageType = "error";
+      return;
+    }
+    var roomRec = new GlideRecord("x_2206701_hotel_0_rooms");
+    if (roomRec.get(roomId)) {
+      var cap = parseInt(roomRec.getValue("capacity"), 10) || 2;
+      if ((adults + children) > cap) {
+        data.reservation = buildResObj(gr);
+        data.actionMessage = "Total guests exceed the maximum room capacity (" + cap + ").";
+        data.actionMessageType = "error";
+        return;
+      }
+    }
+    var nights = resUtil.calculateDays(cin, cout);
+    var total = pricingUtil.calculateRoomTotal(roomId, nights, cin);
+    gr.setValue("check_in_date", cin);
+    gr.setValue("check_out_date", cout);
+    gr.setValue("number_of_days", nights);
+    gr.setValue("number_of_adults", adults);
+    gr.setValue("number_of_children", children);
+    gr.setValue("total_payment", total);
+    gr.update();
+    gr.get(gr.getUniqueValue());
+    data.reservation = buildResObj(gr);
+    data.actionMessage = "Reservation updated successfully.";
+    data.actionMessageType = "info";
+  }
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 09:00:58</sys_created_on>
         <sys_id>046a85b09394df10a3b6703efaba1005</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Hotel Guest Lookup</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_046a85b09394df10a3b6703efaba1005</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 09:29:15</sys_updated_on>
+        <sys_updated_on>2026-11-21 13:08:00</sys_updated_on>
         <template><![CDATA[<div class="guest-lookup-page">
   <div class="lookup-heading">
     <span class="lookup-eyebrow">RESERVATION SERVICES</span>
     <h1>Find Your Reservation</h1>
-    <p>Enter your reservation number and email address to look up your booking.</p>
+    <p>Enter your reservation number and email address to look up and manage your booking.</p>
   </div>
 
   <div class="lookup-card">
@@ -301,7 +644,7 @@
           id="reservation-number"
           type="text"
           ng-model="c.reservationNumber"
-          placeholder="Enter your reservation number"
+          placeholder="e.g. RES0001002"
           autocomplete="off"
           required>
       </div>
@@ -319,7 +662,7 @@
 
       <button type="submit" class="lookup-button" ng-disabled="c.loading">
         <i class="fa fa-search"></i>
-        Find My Reservation
+        {{c.loading ? "Searching..." : "Find My Reservation"}}
       </button>
     </form>
 
@@ -331,6 +674,72 @@
     <div class="lookup-help">
       <i class="fa fa-lock"></i>
       Your reservation details are protected. You must provide the matching reservation number and email address.
+    </div>
+  </div>
+
+  <div class="lookup-result-card" ng-if="c.reservation">
+    <div class="lookup-res-top">
+      <div>
+        <span class="lookup-res-label">RESERVATION NUMBER</span>
+        <h3>{{c.reservation.number}}</h3>
+      </div>
+      <span class="lookup-status-badge" ng-class="'status-' + c.reservation.status_value">{{c.reservation.status}}</span>
+    </div>
+
+    <div class="lookup-res-grid">
+      <div class="lookup-res-item"><span>Room</span><strong>{{c.reservation.room}}</strong></div>
+      <div class="lookup-res-item"><span>Guest</span><strong>{{c.reservation.guest_name}}</strong></div>
+      <div class="lookup-res-item"><span>Email</span><strong>{{c.reservation.guest_email}}</strong></div>
+      <div class="lookup-res-item"><span>Check-in</span><strong>{{c.reservation.check_in}}</strong></div>
+      <div class="lookup-res-item"><span>Check-out</span><strong>{{c.reservation.check_out}}</strong></div>
+      <div class="lookup-res-item"><span>Stay</span><strong>{{c.reservation.days}} night(s)</strong></div>
+      <div class="lookup-res-item"><span>Guests</span><strong>{{c.reservation.adults}} Adult(s), {{c.reservation.children}} Child(ren)</strong></div>
+      <div class="lookup-res-item"><span>Total Payment</span><strong class="lookup-res-total">{{c.reservation.total}}</strong></div>
+    </div>
+
+    <div class="lookup-message" ng-if="c.actionMessage" ng-class="c.actionMessageType" role="status">
+      <i class="fa" ng-class="c.actionMessageType === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'"></i>
+      <span>{{c.actionMessage}}</span>
+    </div>
+
+    <div class="lookup-actions" ng-if="c.canModify()">
+      <button type="button" class="action-btn btn-confirm" ng-if="c.reservation.status_value === 'pending'" ng-click="c.confirmReservation()" ng-disabled="c.actionBusy">
+        <i class="fa fa-check"></i> Confirm Reservation
+      </button>
+      <button type="button" class="action-btn btn-edit" ng-click="c.startEdit()" ng-disabled="c.actionBusy">
+        <i class="fa fa-pencil"></i> {{c.editMode ? "Close Editor" : "Update Stay"}}
+      </button>
+      <button type="button" class="action-btn btn-cancel" ng-click="c.cancelReservation()" ng-disabled="c.actionBusy">
+        <i class="fa fa-times"></i> Cancel Reservation
+      </button>
+    </div>
+
+    <div class="lookup-edit-panel" ng-if="c.editMode && c.canModify()">
+      <h4>Update Reservation Details</h4>
+      <div class="lookup-edit-grid">
+        <div class="form-group">
+          <label for="edit-cin">Check-in Date</label>
+          <input id="edit-cin" type="date" ng-model="c.editCheckInDate">
+        </div>
+        <div class="form-group">
+          <label for="edit-cout">Check-out Date</label>
+          <input id="edit-cout" type="date" ng-model="c.editCheckOutDate">
+        </div>
+        <div class="form-group">
+          <label for="edit-adults">Adults</label>
+          <input id="edit-adults" type="number" min="1" ng-model="c.editAdults">
+        </div>
+        <div class="form-group">
+          <label for="edit-children">Children</label>
+          <input id="edit-children" type="number" min="0" ng-model="c.editChildren">
+        </div>
+      </div>
+      <div class="lookup-edit-actions">
+        <button type="button" class="action-btn btn-confirm" ng-click="c.saveUpdate()" ng-disabled="c.actionBusy">
+          {{c.actionBusy ? "Saving..." : "Save Changes"}}
+        </button>
+        <button type="button" class="action-btn btn-secondary" ng-click="c.editMode = false" ng-disabled="c.actionBusy">Cancel</button>
+      </div>
     </div>
   </div>
 

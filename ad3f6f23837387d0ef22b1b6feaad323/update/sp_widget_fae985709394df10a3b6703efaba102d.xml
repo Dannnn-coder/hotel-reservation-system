@@ -2,13 +2,104 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller = function() {
-    var c = this;
+  var c = this;
+  c.expanded = {};
+  c.editing = {};
+  c.editForms = {};
+  c.submitting = {};
+  c.actionMessages = {};
 
-    c.expanded = {};
+  function parseYmd(str) {
+    if (!str) return null;
+    var parts = String(str).substring(0, 10).split("-");
+    if (parts.length !== 3) return null;
+    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  }
 
-    c.toggleDetails = function(id) {
-        c.expanded[id] = !c.expanded[id];
+  function toLocalDateStr(val) {
+    if (!val) return "";
+    if (typeof val === "string") return val.substring(0, 10);
+    if (val instanceof Date && !isNaN(val.getTime())) {
+      var y = val.getFullYear();
+      var m = ("0" + (val.getMonth() + 1)).slice(-2);
+      var d = ("0" + val.getDate()).slice(-2);
+      return y + "-" + m + "-" + d;
+    }
+    return String(val).substring(0, 10);
+  }
+
+  c.toggleDetails = function(id) {
+    c.expanded[id] = !c.expanded[id];
+  };
+
+  c.canModify = function(res) {
+    var st = res && res.status_value;
+    return st !== "cancelled" && st !== "closed" && st !== "checked_out";
+  };
+
+  c.confirmReservation = function(res) {
+    c.submitting[res.sys_id] = true;
+    c.data.action = "confirm";
+    c.data.reservationId = res.sys_id;
+    c.server.update().then(function() {
+      c.submitting[res.sys_id] = false;
+      if (c.data.actionMessage) {
+        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
+      }
+    });
+  };
+
+  c.cancelReservation = function(res) {
+    c.submitting[res.sys_id] = true;
+    c.data.action = "cancel";
+    c.data.reservationId = res.sys_id;
+    c.server.update().then(function() {
+      c.submitting[res.sys_id] = false;
+      if (c.data.actionMessage) {
+        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
+      }
+      if (c.data.actionMessageType === "info") c.editing[res.sys_id] = false;
+    });
+  };
+
+  c.startEdit = function(res) {
+    if (c.editing[res.sys_id]) {
+      c.editing[res.sys_id] = false;
+      return;
+    }
+    c.editForms[res.sys_id] = {
+      checkInDate: parseYmd(res.raw_check_in),
+      checkOutDate: parseYmd(res.raw_check_out),
+      adults: res.raw_adults,
+      children: res.raw_children
     };
+    c.editing[res.sys_id] = true;
+  };
+
+  c.cancelEdit = function(res) {
+    c.editing[res.sys_id] = false;
+  };
+
+  c.saveUpdate = function(res) {
+    var f = c.editForms[res.sys_id];
+    if (!f) return;
+    c.submitting[res.sys_id] = true;
+    c.data.action = "update";
+    c.data.reservationId = res.sys_id;
+    c.data.editCheckIn = toLocalDateStr(f.checkInDate);
+    c.data.editCheckOut = toLocalDateStr(f.checkOutDate);
+    c.data.editAdults = f.adults;
+    c.data.editChildren = f.children;
+    c.server.update().then(function() {
+      c.submitting[res.sys_id] = false;
+      if (c.data.actionMessage) {
+        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
+      }
+      if (c.data.actionMessageType === "info") {
+        c.editing[res.sys_id] = false;
+      }
+    });
+  };
 };]]></client_script>
         <controller_as>c</controller_as>
         <css>&#13;
@@ -261,7 +352,51 @@
     flex-direction: column;&#13;
   }&#13;
 }&#13;
-</css>
+
+
+.status-badge.status-cancelled { background: #f9e9e6; color: #9c3d31; }
+.res-actions, .res-edit-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 0 16px;
+}
+.res-btn {
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.res-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.res-btn-confirm { background: #1f3a30; color: #ffffff; }
+.res-btn-edit { background: #f3ede2; color: #1f3a30; border: 1px solid #d8ceb9; }
+.res-btn-cancel { background: #f9e9e6; color: #9c3d31; border: 1px solid #ecc6bf; }
+.res-btn-secondary { background: #efefef; color: #333333; }
+.res-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.res-feedback.info { background: #e8eee9; color: #1f3a30; }
+.res-feedback.error { background: #f9e9e6; color: #9c3d31; }
+.res-edit-form {
+  margin-bottom: 16px;
+  padding: 18px;
+  background: #faf6ef;
+  border: 1px solid #e7e1d4;
+  border-radius: 8px;
+}
+.res-edit-form h4 { margin: 0 0 12px; color: #1f3a30; font-family: Georgia, serif; }
+.res-edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.res-edit-grid label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #2a2d29; }
+.res-edit-grid input { width: 100%; height: 38px; padding: 0 10px; border: 1px solid #e7e1d4; border-radius: 5px; background: #ffffff; box-sizing: border-box; }
+@media (max-width: 600px) { .res-edit-grid { grid-template-columns: 1fr; } }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -277,52 +412,146 @@
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[
-(function() {
-    data.reservations = [];
+        <script><![CDATA[(function() {
+  data.actionMessage = "";
+  data.actionMessageType = "";
+  data.actionResId = "";
 
-    var gr = new GlideRecordSecure('x_2206701_hotel_0_scheduled_reservations');
-    gr.addQuery('registered_user', gs.getUserID());
-    gr.orderByDesc('sys_created_on');
-    gr.query();
+  var userId = gs.getUserID();
+  var userEmail = (gs.getUser().getEmail() || "").toLowerCase().trim();
 
-    while (gr.next()) {
-        data.reservations.push({
-            sys_id: gr.getUniqueValue(),
-            number: gr.getDisplayValue('number'),
-            status: gr.getDisplayValue('reservation_status'),
-            room: gr.getDisplayValue('room'),
-            check_in: gr.getDisplayValue('check_in_date'),
-            check_out: gr.getDisplayValue('check_out_date'),
-            adults: gr.getDisplayValue('number_of_adults'),
-            children: gr.getDisplayValue('number_of_children'),
-            days: gr.getDisplayValue('number_of_days'),
-            total: gr.getDisplayValue('total_payment'),
-            guest_name: gr.getDisplayValue('guest_name'),
-            guest_email: gr.getDisplayValue('guest_email')
-        });
+  if (input && input.action && input.reservationId && gs.isLoggedIn()) {
+    var resUtil = new x_2206701_hotel_0.ReservationUtils();
+    var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+    data.actionResId = input.reservationId;
+
+    var target = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
+    var ownsRecord = false;
+    if (target.get(input.reservationId)) {
+      var recUser = target.getValue("registered_user") || "";
+      var recEmail = (target.getValue("guest_email") || "").toLowerCase().trim();
+      ownsRecord = (recUser === userId) || (userEmail && recEmail === userEmail);
     }
-})();
-]]></script>
+
+    if (!ownsRecord) {
+      data.actionMessage = "You are not authorized to modify this reservation.";
+      data.actionMessageType = "error";
+    } else if (input.action === "confirm") {
+      var cRes = resUtil.confirmReservation(target.getUniqueValue());
+      data.actionMessage = cRes.ok ? "Reservation confirmed successfully." : (cRes.message || "Unable to confirm reservation.");
+      data.actionMessageType = cRes.ok ? "info" : "error";
+    } else if (input.action === "cancel") {
+      var canRes = resUtil.cancelReservation(target.getUniqueValue());
+      data.actionMessage = canRes.message;
+      data.actionMessageType = canRes.ok ? "info" : "error";
+    } else if (input.action === "update") {
+      var st = target.getValue("reservation_status");
+      if (st === "cancelled" || st === "closed" || st === "checked_out") {
+        data.actionMessage = "Closed or cancelled reservations cannot be modified.";
+        data.actionMessageType = "error";
+      } else {
+        var cin = String(input.editCheckIn || "").substring(0, 10);
+        var cout = String(input.editCheckOut || "").substring(0, 10);
+        var dCheck = resUtil.validateDates(cin, cout);
+        if (!dCheck.ok) {
+          data.actionMessage = dCheck.message;
+          data.actionMessageType = "error";
+        } else {
+          var roomId = target.getValue("room");
+          var avail = pricingUtil.isRoomAvailable(roomId, cin, cout, target.getUniqueValue());
+          if (!avail.available) {
+            data.actionMessage = avail.reason || "Selected dates are not available.";
+            data.actionMessageType = "error";
+          } else {
+            var adults = parseInt(input.editAdults, 10);
+            var children = parseInt(input.editChildren, 10) || 0;
+            var capOk = true;
+            var capVal = 2;
+            if (isNaN(adults) || adults < 1 || children < 0) {
+              data.actionMessage = "Please enter valid guest counts (at least 1 adult).";
+              data.actionMessageType = "error";
+              capOk = false;
+            } else {
+              var roomRec = new GlideRecord("x_2206701_hotel_0_rooms");
+              if (roomRec.get(roomId)) {
+                capVal = parseInt(roomRec.getValue("capacity"), 10) || 2;
+                if ((adults + children) > capVal) {
+                  data.actionMessage = "Total guests exceed the maximum room capacity (" + capVal + ").";
+                  data.actionMessageType = "error";
+                  capOk = false;
+                }
+              }
+            }
+            if (capOk) {
+              var nights = resUtil.calculateDays(cin, cout);
+              var total = pricingUtil.calculateRoomTotal(roomId, nights, cin);
+              target.setValue("check_in_date", cin);
+              target.setValue("check_out_date", cout);
+              target.setValue("number_of_days", nights);
+              target.setValue("number_of_adults", adults);
+              target.setValue("number_of_children", children);
+              target.setValue("total_payment", total);
+              target.update();
+              data.actionMessage = "Reservation updated successfully.";
+              data.actionMessageType = "info";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  data.reservations = [];
+  if (gs.isLoggedIn()) {
+    var gr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
+    var q = gr.addQuery("registered_user", userId);
+    if (userEmail) {
+      q.addOrCondition("guest_email", gs.getUser().getEmail());
+    }
+    gr.orderByDesc("sys_created_on");
+    gr.query();
+    while (gr.next()) {
+      data.reservations.push({
+        sys_id: gr.getUniqueValue(),
+        number: gr.getValue("number") || gr.getDisplayValue("number"),
+        status: gr.getDisplayValue("reservation_status"),
+        status_value: gr.getValue("reservation_status"),
+        room: gr.getDisplayValue("room"),
+        room_id: gr.getValue("room"),
+        check_in: gr.getDisplayValue("check_in_date"),
+        check_out: gr.getDisplayValue("check_out_date"),
+        raw_check_in: gr.getValue("check_in_date"),
+        raw_check_out: gr.getValue("check_out_date"),
+        adults: gr.getDisplayValue("number_of_adults"),
+        children: gr.getDisplayValue("number_of_children"),
+        raw_adults: parseInt(gr.getValue("number_of_adults"), 10) || 1,
+        raw_children: parseInt(gr.getValue("number_of_children"), 10) || 0,
+        days: gr.getDisplayValue("number_of_days"),
+        total: gr.getDisplayValue("total_payment"),
+        guest_name: gr.getDisplayValue("guest_name"),
+        guest_email: gr.getDisplayValue("guest_email")
+      });
+    }
+  }
+})();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:58:17</sys_created_on>
         <sys_id>fae985709394df10a3b6703efaba102d</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Hotel My Reservations</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_fae985709394df10a3b6703efaba102d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 09:24:59</sys_updated_on>
-        <template><![CDATA[
-<div class="my-reservations-page">
+        <sys_updated_on>2026-11-21 13:08:00</sys_updated_on>
+        <template><![CDATA[<div class="my-reservations-page">
   <div class="reservations-heading">
     <span class="reservations-eyebrow">YOUR STAY</span>
     <h1>My Reservations</h1>
-    <p>View and keep track of your upcoming and previous stays.</p>
+    <p>View and manage your upcoming and previous stays.</p>
   </div>
 
   <div class="reservation-list" ng-if="c.data.reservations.length > 0">
@@ -330,9 +559,9 @@
       <div class="reservation-top">
         <div>
           <span class="reservation-label">RESERVATION NUMBER</span>
-          <h2>{{reservation.number}}</h2>
+          <h2>{{reservation.number || reservation.sys_id}}</h2>
         </div>
-        <span class="status-badge">{{reservation.status || 'Status unavailable'}}</span>
+        <span class="status-badge" ng-class="'status-' + reservation.status_value">{{reservation.status || "Status unavailable"}}</span>
       </div>
 
       <div class="reservation-room">
@@ -360,8 +589,53 @@
         <strong>{{reservation.total}}</strong>
       </div>
 
+      <div class="res-feedback" ng-if="c.actionMessages[reservation.sys_id]" ng-class="c.actionMessages[reservation.sys_id].type">
+        <i class="fa" ng-class="c.actionMessages[reservation.sys_id].type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'"></i>
+        <span>{{c.actionMessages[reservation.sys_id].text}}</span>
+      </div>
+
+      <div class="res-actions" ng-if="c.canModify(reservation)">
+        <button type="button" class="res-btn res-btn-confirm" ng-if="reservation.status_value === 'pending'" ng-click="c.confirmReservation(reservation)" ng-disabled="c.submitting[reservation.sys_id]">
+          <i class="fa fa-check"></i> Confirm Reservation
+        </button>
+        <button type="button" class="res-btn res-btn-edit" ng-click="c.startEdit(reservation)" ng-disabled="c.submitting[reservation.sys_id]">
+          <i class="fa fa-pencil"></i> {{c.editing[reservation.sys_id] ? "Close Editor" : "Update Reservation"}}
+        </button>
+        <button type="button" class="res-btn res-btn-cancel" ng-click="c.cancelReservation(reservation)" ng-disabled="c.submitting[reservation.sys_id]">
+          <i class="fa fa-times"></i> Cancel Reservation
+        </button>
+      </div>
+
+      <div class="res-edit-form" ng-if="c.editing[reservation.sys_id] && c.canModify(reservation)">
+        <h4>Edit Stay Details</h4>
+        <div class="res-edit-grid">
+          <div>
+            <label>Check-in Date</label>
+            <input type="date" ng-model="c.editForms[reservation.sys_id].checkInDate">
+          </div>
+          <div>
+            <label>Check-out Date</label>
+            <input type="date" ng-model="c.editForms[reservation.sys_id].checkOutDate">
+          </div>
+          <div>
+            <label>Adults</label>
+            <input type="number" min="1" ng-model="c.editForms[reservation.sys_id].adults">
+          </div>
+          <div>
+            <label>Children</label>
+            <input type="number" min="0" ng-model="c.editForms[reservation.sys_id].children">
+          </div>
+        </div>
+        <div class="res-edit-buttons">
+          <button type="button" class="res-btn res-btn-confirm" ng-click="c.saveUpdate(reservation)" ng-disabled="c.submitting[reservation.sys_id]">
+            {{c.submitting[reservation.sys_id] ? "Saving..." : "Save Changes"}}
+          </button>
+          <button type="button" class="res-btn res-btn-secondary" ng-click="c.cancelEdit(reservation)" ng-disabled="c.submitting[reservation.sys_id]">Cancel</button>
+        </div>
+      </div>
+
       <button class="details-button" ng-click="c.toggleDetails(reservation.sys_id)">
-        {{c.expanded[reservation.sys_id] ? 'Hide Details' : 'View Details'}}
+        {{c.expanded[reservation.sys_id] ? "Hide Details" : "View Details"}}
         <i class="fa" ng-class="c.expanded[reservation.sys_id] ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
       </button>
 
@@ -381,7 +655,6 @@
     <p>You don't have any reservations at the moment. When you book a room, your reservation details will appear here.</p>
     <a href="?id=hotel_rooms" class="browse-button">Browse Our Rooms</a>
   </div>
-</div>
-]]></template>
+</div>]]></template>
     </sp_widget>
 </record_update>
