@@ -162,14 +162,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:15:23</sys_created_on>
         <sys_id>d110c13c9314df10a3b6703efaba1070</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Hotel Availability Search</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_d110c13c9314df10a3b6703efaba1070</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 08:15:23</sys_updated_on>
+        <sys_updated_on>2026-11-21 13:06:20</sys_updated_on>
         <template><![CDATA[
 <section class="availability-section">
   <div class="availability-heading">
@@ -205,9 +205,14 @@
       <label for="roomtype">ROOM TYPE</label>
       <select id="roomtype" ng-model="c.roomType">
         <option value="Any">Any Room</option>
-        <option value="Ocean View Room">Ocean View Room</option>
-        <option value="Poolside Suite">Poolside Suite</option>
-        <option value="Oceanfront Villa">Oceanfront Villa</option>
+        <option value="Single">Single</option>
+        <option value="Double">Double</option>
+        <option value="Triple">Triple</option>
+        <option value="Quad">Quad</option>
+        <option value="Queen">Queen</option>
+        <option value="King">King</option>
+        <option value="Executive Suite">Executive Suite</option>
+        <option value="Presidential Suite">Presidential Suite</option>
       </select>
     </div>
 

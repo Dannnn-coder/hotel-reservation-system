@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="INSERT_OR_UPDATE">
+        <caller_access/>
+        <derived_priority>100</derived_priority>
+        <description/>
+        <event_name>x_2206701_hotel_0.reservation.changed</event_name>
+        <fired_by>Business Rule: Notify Receptionists on Reservation Change</fired_by>
+        <preserve_null_parm1>false</preserve_null_parm1>
+        <priority>100</priority>
+        <queue/>
+        <suffix>reservation.changed</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-21 07:09:59</sys_created_on>
+        <sys_id>ad04463b3ba01310b24a9cc643e45a5b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2206701_hotel_0.reservation.changed</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sysevent_register_ad04463b3ba01310b24a9cc643e45a5b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 07:09:59</sys_updated_on>
+        <table>x_2206701_hotel_0_scheduled_reservations</table>
+    </sysevent_register>
+</record_update>
