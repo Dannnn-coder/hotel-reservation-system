@@ -16,15 +16,15 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:41:50</sys_created_on>
         <sys_id>a856c9789354df10a3b6703efaba10a2</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>CITÉLLE Hotel &amp; Resort - Container 7</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_container_a856c9789354df10a3b6703efaba10a2</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-21 11:36:50</sys_updated_on>
+        <sys_updated_on>2026-11-22 13:08:39</sys_updated_on>
         <title/>
-        <width>container</width>
+        <width>container-fluid</width>
     </sp_container>
 </record_update>

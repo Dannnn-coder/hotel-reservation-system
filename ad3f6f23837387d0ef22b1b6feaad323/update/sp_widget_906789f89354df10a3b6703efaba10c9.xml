@@ -6,8 +6,7 @@
   var c = this;
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>&#13;
-.hotel-rooms-page {&#13;
+        <css>.hotel-rooms-page {&#13;
   max-width: 1200px;&#13;
   margin: 0 auto;&#13;
   padding: 55px 25px 75px;&#13;
@@ -181,6 +180,31 @@
     flex-direction: column;&#13;
   }&#13;
 }&#13;
+&#13;
+&#13;
+.room-image {&#13;
+    overflow: hidden;&#13;
+}&#13;
+&#13;
+.room-image img {&#13;
+    display: block;&#13;
+    width: 100%;&#13;
+    height: 100%;&#13;
+    object-fit: cover;&#13;
+}&#13;
+&#13;
+.room-image-placeholder {&#13;
+    width: 100%;&#13;
+    height: 100%;&#13;
+    display: flex;&#13;
+    align-items: center;&#13;
+    justify-content: center;&#13;
+    color: rgba(31, 58, 48, 0.55);&#13;
+    font-family: Georgia, serif;&#13;
+    font-size: 22px;&#13;
+    letter-spacing: 3px;&#13;
+}&#13;
+&#13;
 </css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -212,7 +236,8 @@
             type: gr.getDisplayValue('room_type'),
             capacity: gr.getDisplayValue('capacity'),
             rate: gr.getDisplayValue('rate'),
-            availability: gr.getDisplayValue('availability_status')
+            availability: gr.getDisplayValue('availability_status'),
+            image: gr.getValue('room_image')
         });
     }
 })();
@@ -222,14 +247,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:49:10</sys_created_on>
         <sys_id>906789f89354df10a3b6703efaba10c9</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Hotel Rooms Listing</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_906789f89354df10a3b6703efaba10c9</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 09:23:12</sys_updated_on>
+        <sys_updated_on>2026-11-22 16:36:05</sys_updated_on>
         <template><![CDATA[
 <div class="hotel-rooms-page">
   <div class="rooms-heading">
@@ -241,22 +266,25 @@
   <div class="rooms-grid" ng-if="c.data.rooms.length > 0">
     <div class="room-card" ng-repeat="room in c.data.rooms track by room.sys_id">
       <div class="room-image">
-        <span class="room-type">{{room.type || 'Room'}}</span>
+        <img ng-if="room.image" ng-src="{{room.image + '.iix'}}" alt="{{room.name}}">
+        <div class="room-image-placeholder" ng-if="!room.image">
+          <span>{{room.type || 'Room'}}</span>
+        </div>
       </div>
 
       <div class="room-content">
         <h2>{{room.name}}</h2>
         <div class="room-details">
-          <span><i class="fa fa-users"></i> {{room.capacity}} Guests</span>
+          <span><i class="fa fa-users"></i> {{room.capacity}} {{room.capacity == 1 ? 'Guest' : 'Guests'}}</span>
           <span><i class="fa fa-tag"></i> {{room.availability || 'Status unavailable'}}</span>
         </div>
 
         <div class="room-bottom">
           <div class="room-price">
             <strong>{{room.rate || 'Rate unavailable'}}</strong>
-            <small>per night</small>
+            <small>Per Night</small>
           </div>
-          <a class="book-button" href="?id=book_room">Book This Room</a>
+          <a class="book-button" ng-href="?id=book_room&room_id={{room.sys_id}}">Book This Room</a>
         </div>
       </div>
     </div>

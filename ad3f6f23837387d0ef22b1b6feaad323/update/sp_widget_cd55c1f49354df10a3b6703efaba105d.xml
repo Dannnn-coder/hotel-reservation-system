@@ -6,104 +6,131 @@
   var c = this;
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>.quick-access {&#13;
-    padding: 65px 7%;&#13;
-    background: #ffffff;&#13;
-    font-family: Arial, sans-serif;&#13;
+        <css>&#13;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
+&#13;
+.qa-section {&#13;
+  padding: 80px 0;&#13;
+  background: #ffffff;&#13;
+  font-family: 'Inter', system-ui, sans-serif;&#13;
+  color: #2a2d29;&#13;
+  line-height: 1.6;&#13;
+  width: 100%;&#13;
+  box-sizing: border-box;&#13;
 }&#13;
 &#13;
-.quick-heading {&#13;
-    text-align: center;&#13;
-    margin-bottom: 38px;&#13;
+.qa-section *,&#13;
+.qa-section *::before,&#13;
+.qa-section *::after {&#13;
+  box-sizing: border-box;&#13;
 }&#13;
 &#13;
-.quick-heading &gt; span {&#13;
-    color: #a8895e;&#13;
-    font-size: 11px;&#13;
-    font-weight: 700;&#13;
-    letter-spacing: 3px;&#13;
+.qa-container {&#13;
+  width: min(1120px, 92%);&#13;
+  margin: 0 auto;&#13;
 }&#13;
 &#13;
-.quick-heading h2 {&#13;
-    color: #1f3a30;&#13;
-    font-family: Georgia, serif;&#13;
-    font-size: 36px;&#13;
-    margin: 10px 0;&#13;
+.qa-section-head {&#13;
+  text-align: center;&#13;
+  margin-bottom: 48px;&#13;
 }&#13;
 &#13;
-.quick-heading p {&#13;
-    color: #6f756f;&#13;
-    font-size: 14px;&#13;
+.qa-eyebrow {&#13;
+  font-size: .72rem;&#13;
+  letter-spacing: .22em;&#13;
+  text-transform: uppercase;&#13;
+  color: #6f756f;&#13;
+  font-weight: 500;&#13;
+  display: block;&#13;
+  margin-bottom: 10px;&#13;
 }&#13;
 &#13;
-.quick-grid {&#13;
-    display: grid;&#13;
-    grid-template-columns: repeat(3, minmax(0, 1fr));&#13;
-    gap: 22px;&#13;
+.qa-section-head h2 {&#13;
+  font-family: 'Cormorant Garamond', Georgia, serif;&#13;
+  color: #1f3a30;&#13;
+  font-weight: 600;&#13;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);&#13;
+  line-height: 1.15;&#13;
+  margin: 0;&#13;
 }&#13;
 &#13;
-.quick-card {&#13;
-    display: block;&#13;
-    padding: 32px 28px;&#13;
-    background: #faf6ef;&#13;
-    border: 1px solid #e7e1d4;&#13;
-    text-decoration: none !important;&#13;
-    transition: transform 0.25s, box-shadow 0.25s;&#13;
+.qa-divider {&#13;
+  width: 44px;&#13;
+  height: 2px;&#13;
+  background: #d4b07c;&#13;
+  margin: 16px auto 0;&#13;
+  border-radius: 2px;&#13;
 }&#13;
 &#13;
-.quick-card:hover {&#13;
-    transform: translateY(-5px);&#13;
-    box-shadow: 0 12px 25px rgba(31, 58, 48, 0.10);&#13;
+.qa-grid {&#13;
+  display: grid;&#13;
+  grid-template-columns: repeat(3, minmax(0, 1fr));&#13;
+  gap: 26px;&#13;
 }&#13;
 &#13;
-.quick-icon {&#13;
-    width: 52px;&#13;
-    height: 52px;&#13;
-    display: flex;&#13;
-    align-items: center;&#13;
-    justify-content: center;&#13;
-    background: #e8eee9;&#13;
-    color: #1f3a30;&#13;
-    font-size: 21px;&#13;
-    margin-bottom: 22px;&#13;
+.qa-card {&#13;
+  background: #ffffff;&#13;
+  border-radius: 8px;&#13;
+  overflow: hidden;&#13;
+  box-shadow: 0 10px 30px rgba(31, 58, 48, .08);&#13;
+  transition: .3s ease;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  display: flex;&#13;
+  flex-direction: column;&#13;
+  text-decoration: none !important;&#13;
+  color: inherit;&#13;
+  min-width: 0;&#13;
 }&#13;
 &#13;
-.quick-card h3 {&#13;
-    color: #1f3a30;&#13;
-    font-family: Georgia, serif;&#13;
-    font-size: 23px;&#13;
-    margin: 0 0 12px;&#13;
+.qa-card:hover {&#13;
+  transform: translateY(-5px);&#13;
+  box-shadow: 0 18px 40px rgba(31, 58, 48, .14);&#13;
+  text-decoration: none !important;&#13;
 }&#13;
 &#13;
-.quick-card p {&#13;
-    color: #6f756f;&#13;
-    font-size: 13px;&#13;
-    line-height: 1.7;&#13;
-    min-height: 44px;&#13;
+.qa-card:focus {&#13;
+  outline: 2px solid #d4b07c;&#13;
+  outline-offset: 3px;&#13;
 }&#13;
 &#13;
-.quick-card &gt; span {&#13;
-    display: inline-block;&#13;
-    margin-top: 20px;&#13;
-    color: #a8895e;&#13;
-    font-size: 11px;&#13;
-    font-weight: 700;&#13;
-    letter-spacing: 1px;&#13;
+.qa-card-body {&#13;
+  padding: 22px;&#13;
+  display: flex;&#13;
+  flex-direction: column;&#13;
+  gap: 8px;&#13;
+  flex: 1;&#13;
+  text-align: center;&#13;
 }&#13;
 &#13;
-.quick-card:hover &gt; span {&#13;
-    color: #1f3a30;&#13;
+.qa-icon {&#13;
+  font-size: 2rem;&#13;
+  line-height: 1.4;&#13;
+  color: #d4b07c;&#13;
 }&#13;
 &#13;
-@media (max-width: 767px) {&#13;
-    .quick-grid {&#13;
-        grid-template-columns: 1fr;&#13;
-    }&#13;
+.qa-card h3 {&#13;
+  font-family: 'Cormorant Garamond', Georgia, serif;&#13;
+  color: #1f3a30;&#13;
+  font-size: 1.4rem;&#13;
+  font-weight: 600;&#13;
+  line-height: 1.15;&#13;
+  margin: 0;&#13;
+}&#13;
 &#13;
-    .quick-access {&#13;
-        padding: 45px 20px;&#13;
-    }&#13;
-}</css>
+.qa-card p {&#13;
+  color: #6f756f;&#13;
+  font-family: 'Inter', system-ui, sans-serif;&#13;
+  font-size: .87rem;&#13;
+  line-height: 1.6;&#13;
+  margin: 0;&#13;
+}&#13;
+&#13;
+@media (max-width: 900px) {&#13;
+  .qa-grid {&#13;
+    grid-template-columns: 1fr;&#13;
+  }&#13;
+}&#13;
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -117,7 +144,7 @@
 }]]></link>
         <name>Hotel Quick Access</name>
         <option_schema/>
-        <public>false</public>
+        <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
   /* populate the 'data' object */
@@ -129,43 +156,59 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:37:53</sys_created_on>
         <sys_id>cd55c1f49354df10a3b6703efaba105d</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Hotel Quick Access</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_cd55c1f49354df10a3b6703efaba105d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 08:37:53</sys_updated_on>
-        <template><![CDATA[<section class="quick-access">
-  <div class="quick-heading">
-    <span>YOUR STAY, MADE SIMPLE</span>
-    <h2>Everything in One Place</h2>
-    <p>Manage your stay and explore more of what we offer.</p>
+        <sys_updated_on>2026-11-22 15:39:59</sys_updated_on>
+        <template><![CDATA[
+<section class="qa-section">
+  <div class="qa-container">
+
+    <div class="qa-section-head">
+      <span class="qa-eyebrow">Manage your stay</span>
+      <h2>Everything in One Place</h2>
+      <div class="qa-divider"></div>
+    </div>
+
+    <div class="qa-grid">
+
+      <a href="?id=my_reservations" class="qa-card">
+        <div class="qa-card-body">
+          <div class="qa-icon">
+            <i class="fa fa-calendar-check-o"></i>
+          </div>
+          <h3>My Reservations</h3>
+          <p>View, update, confirm or cancel your bookings.</p>
+        </div>
+      </a>
+
+      <a href="?id=guest_lookup" class="qa-card">
+        <div class="qa-card-body">
+          <div class="qa-icon">
+            <i class="fa fa-search"></i>
+          </div>
+          <h3>Guest Lookup</h3>
+          <p>No account? Find your booking with your reservation number.</p>
+        </div>
+      </a>
+
+      <a href="?id=book_sports" class="qa-card">
+        <div class="qa-card-body">
+          <div class="qa-icon">
+            <i class="fa fa-futbol-o"></i>
+          </div>
+          <h3>Sports Activities</h3>
+          <p>Explore and book available sports activities.</p>
+        </div>
+      </a>
+
+    </div>
   </div>
-
-  <div class="quick-grid">
-    <a href="?id=my_reservations" class="quick-card">
-      <div class="quick-icon"><i class="fa fa-calendar-check-o"></i></div>
-      <h3>My Reservations</h3>
-      <p>View and manage your existing reservations.</p>
-      <span>VIEW RESERVATIONS <i class="fa fa-arrow-right"></i></span>
-    </a>
-
-    <a href="?id=guest_lookup" class="quick-card">
-      <div class="quick-icon"><i class="fa fa-search"></i></div>
-      <h3>Guest Lookup</h3>
-      <p>Find your reservation using your booking details.</p>
-      <span>FIND MY BOOKING <i class="fa fa-arrow-right"></i></span>
-    </a>
-
-    <a href="?id=book_sports" class="quick-card">
-      <div class="quick-icon"><i class="fa fa-futbol-o"></i></div>
-      <h3>Sports Activities</h3>
-      <p>Discover activities available during your stay.</p>
-      <span>EXPLORE ACTIVITIES <i class="fa fa-arrow-right"></i></span>
-    </a>
-  </div>
-</section>]]></template>
+</section>
+]]></template>
     </sp_widget>
 </record_update>
