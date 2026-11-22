@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_theme">
+    <sp_theme action="INSERT_OR_UPDATE">
+        <css_variables>@import url('https://fonts.googleapis.com/css2?family=Allura&amp;family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
+body { overflow-x: hidden; }&#13;
+section.page.sp-scroll {&#13;
+  overflow-x: hidden !important;&#13;
+}</css_variables>
+        <footer/>
+        <footer_fixed>true</footer_fixed>
+        <header/>
+        <icon/>
+        <logo/>
+        <logo_alt_text/>
+        <matching_now_experience_theme/>
+        <name>Citelle Theme</name>
+        <navbar_fixed>true</navbar_fixed>
+        <sys_class_name>sp_theme</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-22 13:04:26</sys_created_on>
+        <sys_id>77de141cc37c17507f96b71ed40131c6</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Citelle Theme</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_theme_77de141cc37c17507f96b71ed40131c6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-22 14:21:42</sys_updated_on>
+        <turn_off_scss_compilation>false</turn_off_scss_compilation>
+    </sp_theme>
+    <sys_translated_text action="delete_multiple" query="documentkey=77de141cc37c17507f96b71ed40131c6"/>
+</record_update>

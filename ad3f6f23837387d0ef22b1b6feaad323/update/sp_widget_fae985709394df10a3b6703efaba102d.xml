@@ -2,104 +2,140 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller = function() {
-  var c = this;
-  c.expanded = {};
-  c.editing = {};
-  c.editForms = {};
-  c.submitting = {};
-  c.actionMessages = {};
+    var c = this;
+    c.expanded = {};
+    c.editing = {};
+    c.editForms = {};
+    c.submitting = {};
+    c.actionMessages = {};
+    c.editErrors = {};
 
-  function parseYmd(str) {
-    if (!str) return null;
-    var parts = String(str).substring(0, 10).split("-");
-    if (parts.length !== 3) return null;
-    return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-  }
-
-  function toLocalDateStr(val) {
-    if (!val) return "";
-    if (typeof val === "string") return val.substring(0, 10);
-    if (val instanceof Date && !isNaN(val.getTime())) {
-      var y = val.getFullYear();
-      var m = ("0" + (val.getMonth() + 1)).slice(-2);
-      var d = ("0" + val.getDate()).slice(-2);
-      return y + "-" + m + "-" + d;
+    function parseYmd(str) {
+        if (!str) return null;
+        var parts = String(str).substring(0, 10).split("-");
+        if (parts.length !== 3) return null;
+        return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
     }
-    return String(val).substring(0, 10);
-  }
 
-  c.toggleDetails = function(id) {
-    c.expanded[id] = !c.expanded[id];
-  };
-
-  c.canModify = function(res) {
-    var st = res && res.status_value;
-    return st !== "cancelled" && st !== "closed" && st !== "checked_out";
-  };
-
-  c.confirmReservation = function(res) {
-    c.submitting[res.sys_id] = true;
-    c.data.action = "confirm";
-    c.data.reservationId = res.sys_id;
-    c.server.update().then(function() {
-      c.submitting[res.sys_id] = false;
-      if (c.data.actionMessage) {
-        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
-      }
-    });
-  };
-
-  c.cancelReservation = function(res) {
-    c.submitting[res.sys_id] = true;
-    c.data.action = "cancel";
-    c.data.reservationId = res.sys_id;
-    c.server.update().then(function() {
-      c.submitting[res.sys_id] = false;
-      if (c.data.actionMessage) {
-        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
-      }
-      if (c.data.actionMessageType === "info") c.editing[res.sys_id] = false;
-    });
-  };
-
-  c.startEdit = function(res) {
-    if (c.editing[res.sys_id]) {
-      c.editing[res.sys_id] = false;
-      return;
+    function toLocalDateStr(val) {
+        if (!val) return "";
+        if (typeof val === "string") return val.substring(0, 10);
+        if (val instanceof Date && !isNaN(val.getTime())) {
+            var y = val.getFullYear();
+            var m = ("0" + (val.getMonth() + 1)).slice(-2);
+            var d = ("0" + val.getDate()).slice(-2);
+            return y + "-" + m + "-" + d;
+        }
+        return String(val).substring(0, 10);
     }
-    c.editForms[res.sys_id] = {
-      checkInDate: parseYmd(res.raw_check_in),
-      checkOutDate: parseYmd(res.raw_check_out),
-      adults: res.raw_adults,
-      children: res.raw_children
+
+    c.toggleDetails = function(id) {
+        c.expanded[id] = !c.expanded[id];
     };
-    c.editing[res.sys_id] = true;
-  };
 
-  c.cancelEdit = function(res) {
-    c.editing[res.sys_id] = false;
-  };
+    c.canModify = function(res) {
+        var st = res && res.status_value;
+        return st !== "cancelled" && st !== "closed" && st !== "checked_out";
+    };
 
-  c.saveUpdate = function(res) {
-    var f = c.editForms[res.sys_id];
-    if (!f) return;
-    c.submitting[res.sys_id] = true;
-    c.data.action = "update";
-    c.data.reservationId = res.sys_id;
-    c.data.editCheckIn = toLocalDateStr(f.checkInDate);
-    c.data.editCheckOut = toLocalDateStr(f.checkOutDate);
-    c.data.editAdults = f.adults;
-    c.data.editChildren = f.children;
-    c.server.update().then(function() {
-      c.submitting[res.sys_id] = false;
-      if (c.data.actionMessage) {
-        c.actionMessages[res.sys_id] = { text: c.data.actionMessage, type: c.data.actionMessageType || "info" };
-      }
-      if (c.data.actionMessageType === "info") {
+    c.confirmReservation = function(res) {
+        c.submitting[res.sys_id] = true;
+        c.data.action = "confirm";
+        c.data.reservationId = res.sys_id;
+        c.server.update().then(function() {
+            c.submitting[res.sys_id] = false;
+            if (c.data.actionMessage) {
+                c.actionMessages[res.sys_id] = {
+                    text: c.data.actionMessage,
+                    type: c.data.actionMessageType || "info"
+                };
+            }
+        });
+    };
+
+    c.cancelReservation = function(res) {
+        c.submitting[res.sys_id] = true;
+        c.data.action = "cancel";
+        c.data.reservationId = res.sys_id;
+        c.server.update().then(function() {
+            c.submitting[res.sys_id] = false;
+            if (c.data.actionMessage) {
+                c.actionMessages[res.sys_id] = {
+                    text: c.data.actionMessage,
+                    type: c.data.actionMessageType || "info"
+                };
+            }
+            if (c.data.actionMessageType === "info") {
+                c.editing[res.sys_id] = false;
+            }
+        });
+    };
+
+    c.startEdit = function(res) {
+        if (c.editing[res.sys_id]) {
+            c.editing[res.sys_id] = false;
+            return;
+        }
+
+        c.editForms[res.sys_id] = {
+            checkInDate: parseYmd(res.raw_check_in),
+            checkOutDate: parseYmd(res.raw_check_out),
+            adults: res.raw_adults,
+            children: res.raw_children
+        };
+
+        c.editErrors[res.sys_id] = "";
+        c.editing[res.sys_id] = true;
+    };
+
+    c.cancelEdit = function(res) {
         c.editing[res.sys_id] = false;
-      }
-    });
-  };
+        c.editErrors[res.sys_id] = "";
+    };
+
+    c.saveUpdate = function(res) {
+        var f = c.editForms[res.sys_id];
+        if (!f) return;
+
+        c.submitting[res.sys_id] = true;
+        c.editErrors[res.sys_id] = "";
+        c.actionMessages[res.sys_id] = null;
+
+        c.data.action = "update";
+        c.data.reservationId = res.sys_id;
+        c.data.editCheckIn = toLocalDateStr(f.checkInDate);
+        c.data.editCheckOut = toLocalDateStr(f.checkOutDate);
+        c.data.editAdults = f.adults;
+        c.data.editChildren = f.children;
+
+        c.server.update().then(function() {
+            c.submitting[res.sys_id] = false;
+
+            if (c.data.actionMessage) {
+                var message = c.data.actionMessage;
+                var lowerMessage = message.toLowerCase();
+
+                var isGuestValidation =
+                    lowerMessage.indexOf("capacity") !== -1 ||
+                    lowerMessage.indexOf("guest counts") !== -1;
+
+                if (c.data.actionMessageType === "error" && isGuestValidation) {
+                    c.editErrors[res.sys_id] = message;
+                    c.actionMessages[res.sys_id] = null;
+                } else {
+                    c.actionMessages[res.sys_id] = {
+                        text: message,
+                        type: c.data.actionMessageType || "info"
+                    };
+                }
+            }
+
+            if (c.data.actionMessageType === "info") {
+                c.editErrors[res.sys_id] = "";
+                c.editing[res.sys_id] = false;
+            }
+        });
+    };
 };]]></client_script>
         <controller_as>c</controller_as>
         <css>&#13;
@@ -539,14 +575,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:58:17</sys_created_on>
         <sys_id>fae985709394df10a3b6703efaba102d</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Hotel My Reservations</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_fae985709394df10a3b6703efaba102d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-21 13:08:00</sys_updated_on>
+        <sys_updated_on>2026-11-22 16:42:31</sys_updated_on>
         <template><![CDATA[<div class="my-reservations-page">
   <div class="reservations-heading">
     <span class="reservations-eyebrow">YOUR STAY</span>
@@ -625,6 +661,10 @@
             <label>Children</label>
             <input type="number" min="0" ng-model="c.editForms[reservation.sys_id].children">
           </div>
+        </div>
+        <div class="res-feedback error" ng-if="c.editErrors[reservation.sys_id]">
+          <i class="fa fa-exclamation-circle"></i>
+          <span>{{c.editErrors[reservation.sys_id]}}</span>
         </div>
         <div class="res-edit-buttons">
           <button type="button" class="res-btn res-btn-confirm" ng-click="c.saveUpdate(reservation)" ng-disabled="c.submitting[reservation.sys_id]">

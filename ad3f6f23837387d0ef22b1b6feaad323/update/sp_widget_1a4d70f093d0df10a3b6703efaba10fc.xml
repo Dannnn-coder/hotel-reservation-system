@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[api.controller=function($scope, $window) {
+        <client_script><![CDATA[api.controller = function($scope, $window) {
     var c = this;
+
+    // Mobile menu
+    c.menuOpen = false;
+    c.toggleMenu = function() {
+        c.menuOpen = !c.menuOpen;
+    };
 
     if (typeof g_user !== 'undefined' && g_user.hasRole('x_2206701_hotel_0.registered_user') &&
         !g_user.hasRole('x_2206701_hotel_0.receptionist') &&
@@ -15,102 +21,106 @@
     }
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>.hotel-header {&#13;
+        <css>.ch-header {&#13;
+  position: sticky;&#13;
+  top: 0;&#13;
+  z-index: 50;&#13;
   width: 100%;&#13;
+  background: rgba(250, 246, 239, .94);&#13;
+  -webkit-backdrop-filter: blur(10px);&#13;
+  backdrop-filter: blur(10px);&#13;
+  border-bottom: 1px solid #e7e1d4;&#13;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;&#13;
+  font-size: 15px;&#13;
+  line-height: 1.6;&#13;
+}&#13;
+.ch-header, .ch-header * { box-sizing: border-box; }&#13;
+.ch-header a, .ch-header a:hover, .ch-header a:focus { text-decoration: none; }&#13;
+&#13;
+.ch-container { width: 92%; max-width: 1120px; margin: 0 auto; }&#13;
+.ch-nav { display: flex; align-items: center; justify-content: space-between; height: 76px; position: relative; }&#13;
+&#13;
+/* Logo */&#13;
+.ch-logo { display: flex; align-items: center; flex-shrink: 0; }&#13;
+.ch-logo img { height: 50px; width: auto; display: block; }&#13;
+&#13;
+/* Links */&#13;
+.ch-links { display: flex; gap: 30px; align-items: center; }&#13;
+.ch-links a:not(.ch-btn) {&#13;
+  font-size: .75rem;&#13;
+  letter-spacing: .14em;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 500;&#13;
+  color: #2a2d29;&#13;
+  padding: 6px 0;&#13;
+  border-bottom: 2px solid transparent;&#13;
+  transition: .2s;&#13;
+  white-space: nowrap;&#13;
+}&#13;
+.ch-links a:not(.ch-btn):hover,&#13;
+.ch-links a.active { border-color: #d4b07c; color: #1f3a30; }&#13;
+&#13;
+/* Logged-in user */&#13;
+.ch-user { display: flex; align-items: center; gap: 8px; max-width: 190px; }&#13;
+.ch-avatar {&#13;
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;&#13;
+  background: #1f3a30; color: #e6c79c;&#13;
+  display: grid; place-items: center;&#13;
+  font-family: 'Cormorant Garamond', Georgia, serif;&#13;
+  font-size: 1rem; font-weight: 700; text-transform: uppercase;&#13;
+}&#13;
+.ch-user-name {&#13;
+  font-size: .8rem; font-weight: 600; color: #1f3a30;&#13;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;&#13;
+}&#13;
+&#13;
+/* Book Now button */&#13;
+.ch-header a.ch-btn {&#13;
+  display: inline-block;&#13;
+  padding: 9px 18px;&#13;
+  border-radius: 6px;&#13;
   background: #1f3a30;&#13;
   color: #ffffff;&#13;
-  padding: 18px 5%;&#13;
-  box-sizing: border-box;&#13;
-  font-family: Arial, sans-serif;&#13;
+  font-size: .7rem;&#13;
+  letter-spacing: .12em;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 600;&#13;
+  border: 1px solid transparent;&#13;
+  transition: .25s ease;&#13;
+  white-space: nowrap;&#13;
 }&#13;
+.ch-header a.ch-btn:hover { background: #162a22; color: #ffffff; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(31, 58, 48, .08); }&#13;
 &#13;
-.hotel-header-inner {&#13;
-  max-width: 1400px;&#13;
-  margin: 0 auto;&#13;
-  display: flex;&#13;
-  align-items: center;&#13;
-  justify-content: space-between;&#13;
-  gap: 30px;&#13;
-}&#13;
-&#13;
-.hotel-brand {&#13;
-  display: flex;&#13;
-  flex-direction: column;&#13;
-  text-decoration: none;&#13;
-  color: #ffffff;&#13;
-  flex-shrink: 0;&#13;
-}&#13;
-&#13;
-.brand-name {&#13;
-  font-family: Georgia, serif;&#13;
-  font-size: 25px;&#13;
-  font-weight: bold;&#13;
-  letter-spacing: 0.5px;&#13;
-}&#13;
-&#13;
-.brand-subtitle {&#13;
-  color: #e6c79c;&#13;
-  font-size: 9px;&#13;
-  letter-spacing: 2.5px;&#13;
-  margin-top: 4px;&#13;
-}&#13;
-&#13;
-.hotel-navigation {&#13;
-  display: flex;&#13;
-  align-items: center;&#13;
-  justify-content: center;&#13;
-  gap: 28px;&#13;
-}&#13;
-&#13;
-.hotel-navigation a {&#13;
-  color: #ffffff;&#13;
-  text-decoration: none;&#13;
-  font-size: 13px;&#13;
-  transition: color 0.2s ease;&#13;
-}&#13;
-&#13;
-.hotel-navigation a:hover {&#13;
-  color: #e6c79c;&#13;
-}&#13;
-&#13;
-.hotel-login {&#13;
-  background: #e6c79c;&#13;
+/* Mobile toggle (hidden on desktop) */&#13;
+.ch-toggle {&#13;
+  display: none;&#13;
+  background: none;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 6px;&#13;
+  font-size: 1.3rem;&#13;
+  width: 42px; height: 42px;&#13;
   color: #1f3a30;&#13;
-  text-decoration: none;&#13;
-  padding: 11px 24px;&#13;
-  border-radius: 4px;&#13;
-  font-size: 13px;&#13;
-  font-weight: bold;&#13;
-  white-space: nowrap;&#13;
-  transition: background 0.2s ease;&#13;
+  cursor: pointer;&#13;
 }&#13;
 &#13;
-.hotel-login:hover {&#13;
-  background: #d4b07c;&#13;
-}&#13;
-&#13;
-@media (max-width: 850px) {&#13;
-  .hotel-header-inner {&#13;
-    flex-wrap: wrap;&#13;
-    justify-content: center;&#13;
+@media (max-width: 900px) {&#13;
+  .ch-toggle { display: block; }&#13;
+  .ch-links {&#13;
+    display: none;&#13;
+    position: absolute;&#13;
+    top: 100%; left: -4%; right: -4%;&#13;
+    background: #faf6ef;&#13;
+    flex-direction: column;&#13;
+    align-items: stretch;&#13;
+    gap: 0;&#13;
+    padding: 8px 4% 20px;&#13;
+    border-bottom: 1px solid #e7e1d4;&#13;
+    box-shadow: 0 10px 30px rgba(31, 58, 48, .08);&#13;
   }&#13;
-&#13;
-  .hotel-navigation {&#13;
-    flex-wrap: wrap;&#13;
-    gap: 15px;&#13;
-  }&#13;
-}&#13;
-&#13;
-.hotel-user-actions {&#13;
-  display: flex;&#13;
-  align-items: center;&#13;
-  gap: 14px;&#13;
-}&#13;
-.hotel-user-name {&#13;
-  color: #e6c79c;&#13;
-  font-size: 13px;&#13;
-  font-weight: bold;&#13;
-  white-space: nowrap;&#13;
+  .ch-links.open { display: flex; }&#13;
+  .ch-links a:not(.ch-btn) { padding: 14px 0; border-bottom: 1px solid #e7e1d4; }&#13;
+  .ch-user { max-width: none; padding: 14px 0; border-bottom: 1px solid #e7e1d4; }&#13;
+  .ch-header a.ch-btn { margin-top: 14px; text-align: center; }&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -125,46 +135,72 @@
 }]]></link>
         <name>Hotel Header</name>
         <option_schema/>
-        <public>false</public>
+        <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
-  data.isLoggedIn = gs.isLoggedIn();
-  data.userName = gs.isLoggedIn() ? gs.getUserDisplayName() : '';
+    data.isLoggedIn = gs.isLoggedIn();
+    data.userName = gs.isLoggedIn() ? gs.getUserDisplayName() : '';
+
+    data.pages = {
+        home: 'hotel_reservation_home_page',
+        rooms: 'hotel_rooms',
+        reservations: 'my_reservations',
+        lookup: 'guest_lookup',
+        login: 'login',
+        activities: 'book_sports',
+        book: 'book_room'
+    };
+
+    data.page = $sp.getParameter('id') || data.pages.home;
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:03:02</sys_created_on>
         <sys_id>1a4d70f093d0df10a3b6703efaba10fc</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Hotel Header</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_1a4d70f093d0df10a3b6703efaba10fc</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-21 11:48:36</sys_updated_on>
-        <template><![CDATA[<header class="hotel-header">
-  <div class="hotel-header-inner">
-    <a class="hotel-brand" href="?id=hotel_reservation_home_page">
-      <span class="brand-name">CITÉLLE</span>
-      <span class="brand-subtitle">HOTEL &amp; RESORT</span>
+        <sys_updated_on>2026-11-22 14:30:30</sys_updated_on>
+        <template><![CDATA[<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<header class="ch-header">
+  <div class="ch-container ch-nav">
+
+    <a class="ch-logo" ng-href="?id={{c.data.pages.home}}" aria-label="Citélle Hotel &amp; Resort – Home">
+      <img src="/x_2206701_hotel_0.citelle-logo-horizontal.svg" alt="Citélle Hotel &amp; Resort">
     </a>
 
-    <nav class="hotel-navigation">
-      <a href="?id=hotel_reservation_home_page">Home</a>
-      <a href="?id=hotel_rooms">Rooms</a>
-      <a href="?id=my_reservations">My Reservations</a>
-      <a href="?id=guest_lookup">Guest Lookup</a>
+    <button class="ch-toggle" type="button" ng-click="c.toggleMenu()"
+            aria-label="Toggle menu" aria-expanded="{{c.menuOpen}}">
+      <span ng-if="!c.menuOpen">☰</span><span ng-if="c.menuOpen">✕</span>
+    </button>
+
+    <nav class="ch-links" ng-class="{open: c.menuOpen}">
+      <a ng-href="?id={{c.data.pages.home}}"         ng-class="{active: c.data.page === c.data.pages.home}">Home</a>
+      <a ng-href="?id={{c.data.pages.rooms}}"        ng-class="{active: c.data.page === c.data.pages.rooms}">Rooms</a>
+      <a ng-href="?id={{c.data.pages.activities}}"   ng-class="{active: c.data.page === c.data.pages.activities}">Activities</a>
+      <a ng-href="?id={{c.data.pages.lookup}}"       ng-class="{active: c.data.page === c.data.pages.lookup}">Guest Lookup</a>
+      <a ng-href="?id={{c.data.pages.reservations}}" ng-class="{active: c.data.page === c.data.pages.reservations}">My Reservations</a>
+
+      <!-- Logged out -->
+      <a ng-if="!c.data.isLoggedIn" class="ch-signin" ng-href="?id={{c.data.pages.login}}"
+         ng-class="{active: c.data.page === c.data.pages.login}">Sign In</a>
+
+      <!-- Logged in -->
+      <span ng-if="c.data.isLoggedIn" class="ch-user">
+        <span class="ch-avatar">{{c.data.userName.charAt(0)}}</span>
+        <span class="ch-user-name">{{c.data.userName}}</span>
+      </span>
+      <a ng-if="c.data.isLoggedIn" class="ch-logout" href="/logout.do" target="_self">Log Out</a>
+
+      <a class="ch-btn" ng-href="?id={{c.data.pages.book}}">Book Now</a>
     </nav>
 
-    <a class="hotel-login" href="?id=login" ng-if="!c.data.isLoggedIn">Sign In</a>
-    <div class="hotel-user-actions" ng-if="c.data.isLoggedIn">
-      <span class="hotel-user-name">{{c.data.userName}}</span>
-      <a class="hotel-login" href="/logout.do">Sign Out</a>
-    </div>
   </div>
-</header>
-]]></template>
+</header>]]></template>
     </sp_widget>
 </record_update>

@@ -1,139 +1,235 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[api.controller = function($scope) {
-  var c = this;
+        <client_script><![CDATA[api.controller = function($scope, $location) {
+    var c = this;
+    var params = $location.search();
 
-  // Defaults
-  c.data.adults = 1;
-  c.data.children = 0;
-  c.checkInDate = null;
-  c.checkOutDate = null;
-  c.showModal = false;
-  c.bookingConfirmed = false;
-  c.isSubmitting = false;
+    c.data.adults = 1;
+    c.data.children = 0;
+    c.checkInDate = null;
+    c.checkOutDate = null;
+    c.showModal = false;
+    c.bookingConfirmed = false;
+    c.isSubmitting = false;
 
-  // If user is logged in, default guest info
-  if (c.data.isLoggedIn) {
-    c.data.guestName = c.data.userName;
-    c.data.guestEmail = c.data.userEmail;
-  }
-
-  c.toLocalDateStr = function(val) {
-    if (!val) return "";
-    if (typeof val === "string") return val.substring(0, 10);
-    if (val instanceof Date && !isNaN(val.getTime())) {
-      var y = val.getFullYear();
-      var m = ("0" + (val.getMonth() + 1)).slice(-2);
-      var d = ("0" + val.getDate()).slice(-2);
-      return y + "-" + m + "-" + d;
+    if (c.data.isLoggedIn) {
+        c.data.guestName = c.data.userName;
+        c.data.guestEmail = c.data.userEmail;
     }
-    return String(val).substring(0, 10);
-  };
 
-  // Triggered when room or dates change
-  c.onFormChange = function() {
-    c.data.dateError = "";
-    c.data.availReason = "";
+    c.toLocalDateStr = function(val) {
+        if (!val) return "";
+
+        if (typeof val === "string") {
+            return val.substring(0, 10);
+        }
+
+        if (val instanceof Date && !isNaN(val.getTime())) {
+            var y = val.getFullYear();
+            var m = ("0" + (val.getMonth() + 1)).slice(-2);
+            var d = ("0" + val.getDate()).slice(-2);
+            return y + "-" + m + "-" + d;
+        }
+
+        return String(val).substring(0, 10);
+    };
+
+    function parseDate(value) {
+        if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+            return null;
+        }
+
+        var parts = value.split("-");
+        var date = new Date(
+            parseInt(parts[0], 10),
+            parseInt(parts[1], 10) - 1,
+            parseInt(parts[2], 10)
+        );
+
+        if (
+            date.getFullYear() !== parseInt(parts[0], 10) ||
+            date.getMonth() !== parseInt(parts[1], 10) - 1 ||
+            date.getDate() !== parseInt(parts[2], 10)
+        ) {
+            return null;
+        }
+
+        return date;
+    }
+
+    function selectRoomByType(roomType) {
+        if (!roomType || !c.data.rooms) return;
+
+        var requestedType = String(roomType).toLowerCase().trim();
+
+        for (var i = 0; i < c.data.rooms.length; i++) {
+            var room = c.data.rooms[i];
+            var actualType = String(room.type || "").toLowerCase().trim();
+
+            if (actualType === requestedType) {
+                c.data.selectedRoom = room.sys_id;
+                return;
+            }
+        }
+    }
+
+    function initializeFromSearch() {
+    c.checkInDate = parseDate(params.checkin);
+    c.checkOutDate = parseDate(params.checkout);
+
+    var guests = parseInt(params.guests, 10);
+
+    if (!isNaN(guests) && guests >= 1 && guests <= 10) {
+      c.data.adults = guests;
+    }
+
+    c.data.children = 0;
+
+    if (params.room_id && c.data.rooms) {
+      var requestedRoomId = String(params.room_id);
+
+      for (var i = 0; i < c.data.rooms.length; i++) {
+        if (c.data.rooms[i].sys_id === requestedRoomId) {
+          c.data.selectedRoom = requestedRoomId;
+          break;
+        }
+      }
+    } else {
+      selectRoomByType(params.room_type);
+    }
+
     c.data.checkIn = c.toLocalDateStr(c.checkInDate);
     c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
 
     if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
-      var savedRoomId = c.data.selectedRoom; // ✅ Backup selected room
-
-      c.data.action = "calculateEstimate";
-      c.server.update().then(function() {
-        // ✅ Restore selected room if c.server.update() cleared it
-        if (!c.data.selectedRoom && savedRoomId) {
-          c.data.selectedRoom = savedRoomId;
-        }
-      });
-    } else {
-      c.data.estimatedTotal = 0;
-      c.data.nights = 0;
+      c.onFormChange();
     }
-  };
+}
 
-  c.onGuestCountChange = function() {
-    if (c.data.selectedRoom) {
-      var room = c.getRoomObject(c.data.selectedRoom);
-      if (room && (parseInt(c.data.adults, 10) + parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)) {
-        c.data.dateError = "Total guests exceed the maximum room capacity (" + room.capacity + ").";
-      } else {
+    c.onFormChange = function() {
         c.data.dateError = "";
-      }
-    }
-  };
+        c.data.availReason = "";
+        c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+        c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
 
-  c.canReview = function() {
-    return c.data.selectedRoom &&
-           c.data.checkIn &&
-           c.data.checkOut &&
-           c.data.guestName &&
-           c.data.guestEmail &&
-           c.data.isAvailable &&
-           !c.data.dateError;
-  };
+        if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
+            var savedRoomId = c.data.selectedRoom;
 
-  c.openConfirmModal = function() {
-    if (c.canReview()) {
-      c.data.checkIn = c.toLocalDateStr(c.checkInDate);
-      c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
-      c.showModal = true;
-      c.bookingConfirmed = false;
-    }
-  };
+            c.data.action = "calculateEstimate";
 
-  c.closeModal = function() {
-    c.showModal = false;
-  };
+            c.server.update().then(function() {
+                if (!c.data.selectedRoom && savedRoomId) {
+                    c.data.selectedRoom = savedRoomId;
+                }
+            });
+        } else {
+            c.data.estimatedTotal = 0;
+            c.data.nights = 0;
+            c.data.isAvailable = false;
+        }
+    };
 
-  c.confirmBooking = function() {
-    c.isSubmitting = true;
-    c.data.checkIn = c.toLocalDateStr(c.checkInDate);
-    c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
-    c.data.action = "createBooking";
-    c.server.update().then(function() {
-      c.isSubmitting = false;
-      if (c.data.bookingSuccess) {
-        c.bookingConfirmed = true;
-      }
-    });
-  };
+    c.onGuestCountChange = function() {
+        if (c.data.selectedRoom) {
+            var room = c.getRoomObject(c.data.selectedRoom);
 
-  c.resetForm = function() {
-    c.showModal = false;
-    c.bookingConfirmed = false;
-    c.data.selectedRoom = "";
-    c.checkInDate = null;
-    c.checkOutDate = null;
-    c.data.checkIn = "";
-    c.data.checkOut = "";
-    c.data.estimatedTotal = 0;
-    c.data.nights = 0;
-    c.data.dateError = "";
-    c.data.availReason = "";
-  };
+            if (
+                room &&
+                (parseInt(c.data.adults, 10) +
+                    parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)
+            ) {
+                c.data.dateError =
+                    "Total guests exceed the maximum room capacity (" +
+                    room.capacity + ").";
+            } else {
+                c.data.dateError = "";
+            }
+        }
+    };
 
-  c.getRoomObject = function(roomId) {
-    if (!c.data.rooms) return null;
-    for (var i = 0; i < c.data.rooms.length; i++) {
-      if (c.data.rooms[i].sys_id === roomId) return c.data.rooms[i];
-    }
-    return null;
-  };
+    c.canReview = function() {
+        return c.data.selectedRoom &&
+            c.data.checkIn &&
+            c.data.checkOut &&
+            c.data.guestName &&
+            c.data.guestEmail &&
+            c.data.isAvailable &&
+            !c.data.dateError;
+    };
 
-  // ✅ FIX: Falls back to r.type (e.g. "Presidential Suite") so it never returns empty string
-  c.getSelectedRoomName = function() {
-    var r = c.getRoomObject(c.data.selectedRoom);
-    if (!r) return "";
-    return r.name || r.type || "Selected Room";
-  };
+    c.openConfirmModal = function() {
+        if (c.canReview()) {
+            c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+            c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+            c.showModal = true;
+            c.bookingConfirmed = false;
+        }
+    };
 
-  c.getSelectedRoomRate = function() {
-    var r = c.getRoomObject(c.data.selectedRoom);
-    return r ? r.rate : 0;
-  };
+    c.closeModal = function() {
+        c.showModal = false;
+    };
+
+    c.confirmBooking = function() {
+        c.isSubmitting = true;
+        c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+        c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+        c.data.action = "createBooking";
+
+        c.server.update().then(function() {
+            c.isSubmitting = false;
+
+            if (c.data.bookingSuccess) {
+                c.bookingConfirmed = true;
+            }
+        });
+    };
+
+    c.resetForm = function() {
+        c.showModal = false;
+        c.bookingConfirmed = false;
+        c.data.selectedRoom = "";
+        c.checkInDate = null;
+        c.checkOutDate = null;
+        c.data.checkIn = "";
+        c.data.checkOut = "";
+        c.data.estimatedTotal = 0;
+        c.data.nights = 0;
+        c.data.dateError = "";
+        c.data.availReason = "";
+        c.data.isAvailable = false;
+        c.data.adults = 1;
+        c.data.children = 0;
+    };
+
+    c.getRoomObject = function(roomId) {
+        if (!c.data.rooms) return null;
+
+        for (var i = 0; i < c.data.rooms.length; i++) {
+            if (c.data.rooms[i].sys_id === roomId) {
+                return c.data.rooms[i];
+            }
+        }
+
+        return null;
+    };
+
+    c.getSelectedRoomName = function() {
+        var r = c.getRoomObject(c.data.selectedRoom);
+
+        if (!r) return "";
+
+        return r.name || r.type || "Selected Room";
+    };
+
+    c.getSelectedRoomRate = function() {
+        var r = c.getRoomObject(c.data.selectedRoom);
+
+        return r ? r.rate : 0;
+    };
+
+    initializeFromSearch();
 };]]></client_script>
         <controller_as>c</controller_as>
         <css>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
@@ -565,14 +661,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-22 09:51:06</sys_updated_on>
+        <sys_updated_on>2026-11-22 16:14:39</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->

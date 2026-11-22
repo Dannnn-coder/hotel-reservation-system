@@ -33,15 +33,15 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-16 15:01:04</sys_created_on>
         <sys_id>9edf79d283201310e87256d6feaad32d</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>CITÉLLE Hotel &amp; Resort</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_portal_9edf79d283201310e87256d6feaad32d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-21 11:37:18</sys_updated_on>
-        <theme display_value="Coral">281507c44317d210ca4c1f425db8f2fd</theme>
+        <sys_updated_on>2026-11-22 13:05:01</sys_updated_on>
+        <theme display_value="Citelle Theme">77de141cc37c17507f96b71ed40131c6</theme>
         <title>CITÉLLE Hotel &amp; Resort</title>
         <ts_index_group/>
         <url_suffix>hotel</url_suffix>

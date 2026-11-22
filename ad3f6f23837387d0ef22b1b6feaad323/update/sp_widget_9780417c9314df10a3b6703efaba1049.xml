@@ -6,69 +6,66 @@
   var c = this;
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>&#13;
-.hotel-features {&#13;
+        <css>.ch-features {&#13;
   width: 100%;&#13;
   box-sizing: border-box;&#13;
-  padding: 65px 7%;&#13;
-  background: #ffffff;&#13;
-  font-family: Arial, sans-serif;&#13;
+  padding: 56px 0 8px;&#13;
+  background: #faf6ef;&#13;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;&#13;
+  font-size: 15px;&#13;
+  line-height: 1.6;&#13;
 }&#13;
+.ch-features *, .ch-features *::before, .ch-features *::after { box-sizing: border-box; }&#13;
 &#13;
-.features-grid {&#13;
-  max-width: 1300px;&#13;
-  margin: 0 auto;&#13;
+.ch-features-container { width: 92%; max-width: 1120px; margin: 0 auto; }&#13;
+&#13;
+.ch-features-grid {&#13;
   display: grid;&#13;
   grid-template-columns: repeat(4, 1fr);&#13;
-  gap: 35px;&#13;
+  gap: 20px;&#13;
 }&#13;
 &#13;
-.feature-item {&#13;
+.ch-feature {&#13;
   text-align: center;&#13;
-  padding: 15px;&#13;
+  padding: 0 14px;&#13;
+  border-right: 1px solid #e7e1d4;&#13;
+}&#13;
+.ch-feature:last-child { border-right: none; }&#13;
+&#13;
+.ch-feature-icon {&#13;
+  margin-bottom: 8px;&#13;
+  color: #d4b07c;&#13;
+  font-size: 1.6rem;&#13;
+  line-height: 1.3;&#13;
 }&#13;
 &#13;
-.feature-icon {&#13;
-  width: 65px;&#13;
-  height: 65px;&#13;
-  margin: 0 auto 20px;&#13;
-  display: flex;&#13;
-  align-items: center;&#13;
-  justify-content: center;&#13;
-  border-radius: 50%;&#13;
-  background: #e8eee9;&#13;
+.ch-feature h3 {&#13;
+  margin: 0 0 4px;&#13;
+  font-family: inherit;&#13;
+  font-size: 1.05rem;&#13;
+  font-weight: 600;&#13;
+  letter-spacing: .08em;&#13;
+  line-height: 1.3;&#13;
+  text-transform: uppercase;&#13;
   color: #1f3a30;&#13;
-  font-size: 23px;&#13;
 }&#13;
 &#13;
-.feature-item h3 {&#13;
-  color: #1f3a30;&#13;
-  font-family: Georgia, serif;&#13;
-  font-size: 22px;&#13;
-  font-weight: normal;&#13;
-  margin: 0 0 12px;&#13;
-}&#13;
-&#13;
-.feature-item p {&#13;
-  color: #6f756f;&#13;
-  font-size: 13px;&#13;
-  line-height: 1.8;&#13;
+.ch-feature p {&#13;
   margin: 0;&#13;
+  color: #6f756f;&#13;
+  font-size: .85rem;&#13;
+  line-height: 1.6;&#13;
 }&#13;
 &#13;
-@media (max-width: 850px) {&#13;
-  .features-grid {&#13;
-    grid-template-columns: repeat(2, 1fr);&#13;
-    gap: 25px;&#13;
-  }&#13;
+@media (max-width: 900px) {&#13;
+  .ch-features-grid { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }&#13;
+  .ch-feature:nth-child(2) { border-right: none; }&#13;
 }&#13;
 &#13;
-@media (max-width: 480px) {&#13;
-  .features-grid {&#13;
-    grid-template-columns: 1fr;&#13;
-  }&#13;
-}&#13;
-</css>
+@media (max-width: 520px) {&#13;
+  .ch-features-grid { grid-template-columns: 1fr; }&#13;
+  .ch-feature { border-right: none; }&#13;
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -82,7 +79,7 @@
 }]]></link>
         <name>Hotel Features</name>
         <option_schema/>
-        <public>false</public>
+        <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
   /* populate the 'data' object */
@@ -94,52 +91,44 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:17:27</sys_created_on>
         <sys_id>9780417c9314df10a3b6703efaba1049</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Hotel Features</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_9780417c9314df10a3b6703efaba1049</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-30 08:17:27</sys_updated_on>
-        <template><![CDATA[
-<section class="hotel-features">
-  <div class="features-grid">
+        <sys_updated_on>2026-11-22 15:41:24</sys_updated_on>
+        <template><![CDATA[<section class="ch-features">
+  <div class="ch-features-container">
+    <div class="ch-features-grid">
 
-    <div class="feature-item">
-      <div class="feature-icon">
-        <span class="glyphicon glyphicon-globe"></span>
+      <div class="ch-feature">
+        <div class="ch-feature-icon"><i class="fa fa-bed" aria-hidden="true"></i></div>
+        <h3>Rooms for Every Stay</h3>
+        <p>From single rooms to suites, find the right fit for your group.</p>
       </div>
-      <h3>Oceanfront</h3>
-      <p>Wake up to beautiful ocean views and the calming sound of the waves.</p>
-    </div>
 
-    <div class="feature-item">
-      <div class="feature-icon">
-        <span class="glyphicon glyphicon-bed"></span>
+      <div class="ch-feature">
+        <div class="ch-feature-icon"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></div>
+        <h3>Easy Booking</h3>
+        <p>Pick your dates, preview your total and confirm in a few steps.</p>
       </div>
-      <h3>Luxury Rooms</h3>
-      <p>Relax in thoughtfully designed spaces made for comfort and rest.</p>
-    </div>
 
-    <div class="feature-item">
-      <div class="feature-icon">
-        <span class="glyphicon glyphicon-cutlery"></span>
+      <div class="ch-feature">
+        <div class="ch-feature-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></div>
+        <h3>Guest or Member</h3>
+        <p>No account needed to book. Sign in to track your reservations.</p>
       </div>
-      <h3>Fine Dining</h3>
-      <p>Enjoy delicious meals and memorable dining experiences.</p>
-    </div>
 
-    <div class="feature-item">
-      <div class="feature-icon">
-        <span class="glyphicon glyphicon-leaf"></span>
+      <div class="ch-feature">
+        <div class="ch-feature-icon"><i class="fa fa-futbol-o" aria-hidden="true"></i></div>
+        <h3>Sports Activities</h3>
+        <p>Add a sports activity to your stay.</p>
       </div>
-      <h3>Spa & Wellness</h3>
-      <p>Take time to unwind, recharge, and enjoy a little relaxation.</p>
-    </div>
 
+    </div>
   </div>
-</section>
-]]></template>
+</section>]]></template>
     </sp_widget>
 </record_update>
