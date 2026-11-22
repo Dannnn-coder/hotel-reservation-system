@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_day_type" label="day_type" language="en" table="x_2206701_hotel_0_calendar_days_import">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_day_type</element>
+            <help/>
+            <hint/>
+            <label>day_type</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_calendar_days_import</name>
+            <plural>day_types</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-11-22 09:51:36</sys_created_on>
+            <sys_id>4fd27740837c13101c92f955eeaad3fe</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>day_type</sys_name>
+            <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+            <sys_update_name>sys_documentation_x_2206701_hotel_0_calendar_days_import_u_day_type_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-11-22 09:51:36</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

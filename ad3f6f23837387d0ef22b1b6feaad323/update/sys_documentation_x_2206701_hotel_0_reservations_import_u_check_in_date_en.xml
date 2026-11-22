@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_check_in_date" label="check_in_date" language="en" table="x_2206701_hotel_0_reservations_import">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_check_in_date</element>
+            <help/>
+            <hint/>
+            <label>check_in_date</label>
+            <language>en</language>
+            <name>x_2206701_hotel_0_reservations_import</name>
+            <plural>check_in_dates</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-11-22 09:51:34</sys_created_on>
+            <sys_id>92d23740837c13101c92f955eeaad3be</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>check_in_date</sys_name>
+            <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+            <sys_update_name>sys_documentation_x_2206701_hotel_0_reservations_import_u_check_in_date_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-11-22 09:51:34</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
