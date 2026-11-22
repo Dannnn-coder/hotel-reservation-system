@@ -23,9 +23,14 @@
     c.data.availReason = '';
 
     if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
+      var savedRoomId = c.data.selectedRoom; // ✅ Backup selected room
+
       c.data.action = 'calculateEstimate';
       c.server.update().then(function() {
-        // Updated state from server
+        // ✅ Restore selected room if c.server.update() cleared it
+        if (!c.data.selectedRoom && savedRoomId) {
+          c.data.selectedRoom = savedRoomId;
+        }
       });
     } else {
       c.data.estimatedTotal = 0;
@@ -98,9 +103,11 @@
     return null;
   };
 
+  // ✅ FIX: Falls back to r.type (e.g. "Presidential Suite") so it never returns empty string
   c.getSelectedRoomName = function() {
     var r = c.getRoomObject(c.data.selectedRoom);
-    return r ? r.name : '';
+    if (!r) return '';
+    return r.name || r.type || 'Selected Room';
   };
 
   c.getSelectedRoomRate = function() {
@@ -434,24 +441,43 @@
   data.userId = gs.getUserID();
   data.userName = gs.getUserDisplayName();
   data.userEmail = gs.getUser().getEmail();
-  // 2. Fetch Active Rooms for dropdown
+
+  // 2. Fetch Active Rooms for dropdown (With fallback if room_name in DB is blank)
   data.rooms = [];
   var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
   roomGr.addQuery('availability_status', '!=', 'maintenance');
   roomGr.orderBy('rate');
   roomGr.query();
   while (roomGr.next()) {
+    var rName = roomGr.getValue('room_name') || roomGr.getDisplayValue('room_name') || roomGr.getDisplayValue() || '';
+    var rType = roomGr.getDisplayValue('room_type') || roomGr.getValue('room_type') || '';
+    
+    // ✅ FIX: If database room_name is empty, use room_type so name is never blank
+    if (!rName) {
+      rName = rType ? (rType + ' Suite') : ('Room ' + roomGr.getUniqueValue().substring(0, 5));
+    }
+
     data.rooms.push({
       sys_id: roomGr.getUniqueValue(),
-      name: roomGr.getValue('room_name') || roomGr.getDisplayValue(),
-      type: roomGr.getDisplayValue('room_type'),
-      capacity: roomGr.getValue('capacity') || 2,
+      name: rName,
+      type: rType,
+      capacity: parseInt(roomGr.getValue('capacity'), 10) || 2,
       rate: parseFloat(roomGr.getValue('rate')) || 0
     });
   }
-// Role 2: Room Reservation Booking Engine - Nico John G. Colo
+
+  // Role 2: Room Reservation Booking Engine - Nico John G. Colo
   // 3. Handle Client Controller Actions
   if (input) {
+    // ✅ FIX: Preserve form inputs so c.server.update() does NOT wipe out selectedRoom
+    data.selectedRoom = input.selectedRoom;
+    data.checkIn = input.checkIn;
+    data.checkOut = input.checkOut;
+    data.adults = input.adults;
+    data.children = input.children;
+    data.guestName = input.guestName;
+    data.guestEmail = input.guestEmail;
+
     var pricingUtil = new x_2206701_hotel_0.PricingUtils();
     var resUtil = new x_2206701_hotel_0.ReservationUtils();
 
@@ -484,14 +510,16 @@
 
     // ACTION: Submit Reservation to Database via Sarsonas's ReservationUtils
     if (input.action === 'createBooking') {
+      var targetRoom = input.selectedRoom || data.selectedRoom;
+
       var bookingPayload = {
-        room: input.selectedRoom,
-        guest_name: input.guestName,
-        guest_email: input.guestEmail,
-        check_in_date: input.checkIn,
-        check_out_date: input.checkOut,
-        number_of_adults: parseInt(input.adults, 10) || 1,
-        number_of_children: parseInt(input.children, 10) || 0,
+        room: targetRoom,
+        guest_name: input.guestName || data.guestName,
+        guest_email: input.guestEmail || data.guestEmail,
+        check_in_date: input.checkIn || data.checkIn,
+        check_out_date: input.checkOut || data.checkOut,
+        number_of_adults: parseInt(input.adults || data.adults, 10) || 1,
+        number_of_children: parseInt(input.children || data.children, 10) || 0,
         registered_user: data.isLoggedIn ? data.userId : ''
       };
 
@@ -519,14 +547,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-20 13:13:37</sys_updated_on>
+        <sys_updated_on>2026-11-22 09:51:06</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->
