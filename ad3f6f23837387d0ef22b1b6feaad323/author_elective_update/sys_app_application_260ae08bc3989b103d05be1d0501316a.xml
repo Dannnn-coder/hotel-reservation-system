@@ -81,7 +81,7 @@
         <update_guid_history>9a800e7f3f601310146974c0b8d3463c:1355603318</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="Hotel Reservation System">96ad467b3be01310b24a9cc643e45afb</sys_audit_delete>
+        <sys_audit_delete display_value="">96ad467b3be01310b24a9cc643e45afb</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-21 07:50:59</sys_created_on>

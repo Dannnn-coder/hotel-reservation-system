@@ -6,6 +6,7 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2026-11-20 16:38:48</sys_created_on>
+            <sys_id>013edbff472c5f50ebbc8c1f316d4310</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>booking_status</sys_name>
             <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -29,6 +30,7 @@
             <sys_created_on>2026-11-20 16:38:48</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>d5e6974447b8df50ebbc8c1f316d4356</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-11-20 16:38:48</sys_updated_on>
@@ -48,6 +50,7 @@
             <sys_created_on>2026-11-20 16:39:23</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>9de6974447b8df50ebbc8c1f316d4357</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-11-20 16:39:23</sys_updated_on>
@@ -67,6 +70,7 @@
             <sys_created_on>2026-11-20 16:39:46</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>55e6974447b8df50ebbc8c1f316d4359</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-11-20 16:39:46</sys_updated_on>

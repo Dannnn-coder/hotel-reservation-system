@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="20f8fee7c32813106869564ed4013193" label="Sports Bookings" max_length="40" name="x_2206701_hotel_0_sports_bookings" type="collection">
         <element label="Sports activity" mandatory="true" max_length="32" name="sports_activity" reference="x_2206701_hotel_0_sports_activities" type="reference"/>
-        <element label="Rate" max_length="20" name="rate" read_only="true" read_only_option="display_read_only" type="currency"/>
-        <element label="Guest email" mandatory="true" max_length="254" name="guest_email" type="string"/>
-        <element label="Registered user" max_length="32" name="registered_user" reference="x_2206701_hotel_0_users" type="reference"/>
         <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Rate" max_length="20" name="rate" read_only="true" read_only_option="display_read_only" type="currency"/>
         <element choice="3" default="booked" label="Booking status" mandatory="true" max_length="40" name="booking_status" type="choice">
             <choice>
                 <element inactive_on_update="false" label="Completed" sequence="300" value="completed"/>
-                <element inactive_on_update="false" label="Booked" sequence="100" value="booked"/>
                 <element inactive_on_update="false" label="Cancelled" sequence="200" value="cancelled"/>
+                <element inactive_on_update="false" label="Booked" sequence="100" value="booked"/>
             </choice>
         </element>
         <element label="Guest name" mandatory="true" max_length="100" name="guest_name" type="string"/>
+        <element label="Guest email" mandatory="true" max_length="254" name="guest_email" type="string"/>
+        <element label="Registered user" max_length="32" name="registered_user" reference="x_2206701_hotel_0_users" type="reference"/>
         <index name="index">
             <element name="registered_user"/>
         </index>
