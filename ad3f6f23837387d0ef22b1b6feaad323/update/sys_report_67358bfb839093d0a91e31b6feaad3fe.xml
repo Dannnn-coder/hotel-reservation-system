@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_report">
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_report">
     <sys_report action="INSERT_OR_UPDATE">
         <active>true</active>
         <additional_groupby/>
@@ -10,6 +10,7 @@
         <axis_min_color display_value="White">65b303c7a9fe3dba00629aff95ee3597</axis_min_color>
         <bar_unstack>false</bar_unstack>
         <calendar/>
+        <certified>false</certified>
         <chart_background_color/>
         <chart_border_color/>
         <chart_border_radius>0</chart_border_radius>
@@ -48,7 +49,7 @@
         <exp_report_attrs>true</exp_report_attrs>
         <field/>
         <field_list>number,check_in_date,check_out_date,guest_email,guest_name,number_of_adults,number_of_children,number_of_days,registered_user,reservation_status,room,total_payment</field_list>
-        <filter table="x_2206701_hotel_0_scheduled_reservations">reservation_statusINconfirmed,checked_in,checked_out,no_show^EQ<item display_value="confirmed,checked_in,checked_out,no_show" endquery="false" field="reservation_status" goto="false" newquery="false" operator="IN" or="false" value="confirmed,checked_in,checked_out,no_show"/>
+        <filter table="x_2206701_hotel_0_scheduled_reservations">reservation_statusINconfirmed,checked_in,checked_out,no_show,closed^EQ<item display_value="confirmed,checked_in,checked_out,no_show,closed" endquery="false" field="reservation_status" goto="false" newquery="false" operator="IN" or="false" value="confirmed,checked_in,checked_out,no_show,closed"/>
             <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
         </filter>
         <formatting_configuration>{"table":"incident","stringFormattingProperties":{},"durationFormattingProperties":{},"dateFormattingProperties":{},"numberFormattingProperties":{}}</formatting_configuration>
@@ -72,17 +73,22 @@
         <list_ui_view/>
         <location_field/>
         <lower_limit/>
+        <macroponent/>
         <map display_value="World">93b8a3a2d7101200bd4a4ebfae61033a</map>
         <map_source/>
+        <name>Gross Sales by Month</name>
         <no_bulk_migration>true</no_bulk_migration>
         <orderby_list/>
         <other_threshold>-2</other_threshold>
         <others>true</others>
         <page_hdrftr/>
         <pivot_expanded>true</pivot_expanded>
+        <properties/>
         <report_drilldown/>
         <report_source/>
-        <roles>x_2206701_hotel_0.administrator</roles>
+        <requested_by/>
+        <required_translations/>
+        <roles>x_2206701_hotel_0.administrator,x_2206701_hotel_0.manager</roles>
         <row/>
         <sc_groupby_item_id/>
         <sc_groupby_variable_id/>
@@ -109,15 +115,17 @@
         <sys_class_name>sys_report</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-09 01:38:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
         <sys_id>67358bfb839093d0a91e31b6feaad3fe</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Gross Sales by Month</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sys_report_67358bfb839093d0a91e31b6feaad3fe</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-09 01:52:46</sys_updated_on>
+        <sys_updated_on>2026-11-21 07:30:35</sys_updated_on>
         <table>x_2206701_hotel_0_scheduled_reservations</table>
         <title>Gross Sales by Month</title>
         <title_horizontal_alignment>center</title_horizontal_alignment>

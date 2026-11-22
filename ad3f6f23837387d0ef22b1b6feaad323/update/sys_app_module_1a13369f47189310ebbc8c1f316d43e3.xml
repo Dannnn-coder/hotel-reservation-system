@@ -8,6 +8,7 @@
         <hint>Update room availability and maintenance status</hint>
         <homepage/>
         <image/>
+        <karuna_route/>
         <link_type>LIST</link_type>
         <map_page/>
         <mobile_title>Room Availability</mobile_title>
@@ -18,14 +19,16 @@
         <query/>
         <report/>
         <require_confirmation>true</require_confirmation>
-        <roles>x_2206701_hotel_0.receptionist,x_2206701_hotel_0.administator,admin</roles>
+        <roles>x_2206701_hotel_0.receptionist,admin,x_2206701_hotel_0.administrator</roles>
+        <route/>
+        <screen/>
         <sys_class_name>sys_app_module</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-07 11:03:17</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>1a13369f47189310ebbc8c1f316d43e3</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Room Availability</sys_name>
         <sys_overrides/>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -33,10 +36,11 @@
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sys_app_module_1a13369f47189310ebbc8c1f316d43e3</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-07 11:03:17</sys_updated_on>
+        <sys_updated_on>2026-11-21 07:03:26</sys_updated_on>
         <timeline_page/>
         <title>Room Availability</title>
         <uncancelable>false</uncancelable>
+        <ux_list/>
         <view_name/>
         <window_name/>
     </sys_app_module>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_2206701_hotel_0_scheduled_reservations</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Notify Receptionists Reservation Change</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+    var emails = [];
+    var seen = {};
+
+    // 1. Dynamically look up members of any active Receptionist(s) group by name
+    var grp = new GlideRecord('sys_user_group');
+    grp.addQuery('name', 'CONTAINS', 'Receptionist');
+    grp.addActiveQuery();
+    grp.query();
+    while (grp.next()) {
+        var mem = new GlideRecord('sys_user_grmember');
+        mem.addQuery('group', grp.getUniqueValue());
+        mem.query();
+        while (mem.next()) {
+            var u = mem.user.getRefRecord();
+            if (u.isValidRecord() && u.active == true && u.email) {
+                var em = u.getValue('email');
+                if (!seen[em]) {
+                    seen[em] = true;
+                    emails.push(em);
+                }
+            }
+        }
+    }
+
+    // 2. Fallback: active users holding the receptionist role directly (works on fresh instances without groups)
+    if (emails.length === 0) {
+        var hr = new GlideRecord('sys_user_has_role');
+        hr.addQuery('role.name', 'x_2206701_hotel_0.receptionist');
+        hr.addQuery('user.active', true);
+        hr.query();
+        while (hr.next()) {
+            var ru = hr.user.getRefRecord();
+            if (ru.isValidRecord() && ru.email && ru.getValue('user_name') != 'admin') {
+                var rem = ru.getValue('email');
+                if (!seen[rem]) {
+                    seen[rem] = true;
+                    emails.push(rem);
+                }
+            }
+        }
+    }
+
+    if (emails.length > 0) {
+        var actionLabel = current.operation() == 'insert' ? 'Created' : 'Updated';
+        gs.eventQueue('x_2206701_hotel_0.reservation.changed', current, emails.join(','), actionLabel);
+    }
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-21 07:12:04</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>e4548e3b3ba01310b24a9cc643e45afb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Notify Receptionists Reservation Change</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_script_e4548e3b3ba01310b24a9cc643e45afb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 07:12:04</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=e4548e3b3ba01310b24a9cc643e45afb"/>
+</record_update>
