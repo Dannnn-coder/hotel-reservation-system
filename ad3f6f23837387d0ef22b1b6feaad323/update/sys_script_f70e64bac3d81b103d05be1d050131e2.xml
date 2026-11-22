@@ -28,14 +28,16 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-    // Find all reservations linked to the room being updated
     var grRes = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
     grRes.addQuery('room', current.sys_id);
+    grRes.addQuery('reservation_status', 'IN', 'pending,confirmed,checked_in');
     grRes.query();
-    
+
     while (grRes.next()) {
-        // Fire the custom event and pass the guest's email as Parameter 1
-        gs.eventQueue('x_2206701_hotel_0.room.changed', current, grRes.guest_email.toString(), '');
+        var guestEmail = grRes.getValue('guest_email');
+        if (guestEmail) {
+            gs.eventQueue('x_2206701_hotel_0.room.changed', current, guestEmail, '');
+        }
     }
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -44,7 +46,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>f70e64bac3d81b103d05be1d050131e2</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Trigger Room Change Event</sys_name>
         <sys_overrides/>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -52,7 +54,7 @@
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sys_script_f70e64bac3d81b103d05be1d050131e2</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-05 12:06:24</sys_updated_on>
+        <sys_updated_on>2026-11-21 07:19:12</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

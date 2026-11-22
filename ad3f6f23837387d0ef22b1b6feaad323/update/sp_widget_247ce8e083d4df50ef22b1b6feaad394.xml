@@ -52,6 +52,8 @@
       c.isSubmitting = false;
       if (c.data.bookingSuccess) {
         c.bookingConfirmed = true;
+      } else {
+        c.showModal = false;
       }
     });
   };
@@ -438,8 +440,10 @@
   data.userName = gs.getUserDisplayName();
   data.userEmail = gs.getUser().getEmail();
 
-  // 1. Fetch Sports Activities directly from Database
+  // 1. Fetch Sports Activities from Database ONLY
   data.activities = [];
+  data.noActivities = false;
+
   var actGr = new GlideRecord('x_2206701_hotel_0_sports_activities');
   actGr.orderBy('rate');
   actGr.query();
@@ -452,36 +456,71 @@
     });
   }
 
-  // Fallback defaults if table has no records yet
+  // ✅ FIX (Bug #11): Removed hardcoded fake activities.
+  // Show "no activities" message if table is empty instead.
   if (data.activities.length === 0) {
-    data.activities = [
-      { sys_id: 'snorkeling_tour', name: 'Snorkeling Tour', rate: 45.00, schedule: 'Daily · 9:00 AM' },
-      { sys_id: 'paddleboarding', name: 'Paddleboarding', rate: 35.00, schedule: 'Daily · 2:00 PM' },
-      { sys_id: 'sunset_sailing', name: 'Sunset Sailing', rate: 80.00, schedule: 'Daily · 5:00 PM' },
-      { sys_id: 'kayaking', name: 'Guided Kayaking', rate: 30.00, schedule: 'Daily · 8:00 AM' }
-    ];
+    data.noActivities = true;
   }
 
   // 2. Handle Booking Action
   if (input && input.action === 'bookActivity') {
     var pricingUtil = new x_2206701_hotel_0.PricingUtils();
 
-    // Enforce Rule: Only one sports activity per booking (Cauban's function)
-    var singleCheck = pricingUtil.validateSingleSportsActivity([input.selectedActivityId]);
+    // Check existing active sports bookings for this guest/user (1 activity at a time rule)
+    var activityList = [input.selectedActivityId];
+    var existingGr = new GlideRecord('x_2206701_hotel_0_sports_bookings');
+    existingGr.addQuery('booking_status', '!=', 'cancelled');
+    existingGr.addQuery('booking_status', '!=', 'completed');
+    if (gs.isLoggedIn() && input.guestEmail) {
+      var qc = existingGr.addQuery('registered_user', gs.getUserID());
+      qc.addOrCondition('guest_email', input.guestEmail);
+    } else if (gs.isLoggedIn()) {
+      existingGr.addQuery('registered_user', gs.getUserID());
+    } else if (input.guestEmail) {
+      existingGr.addQuery('guest_email', input.guestEmail);
+    }
+    existingGr.query();
+    if (existingGr.next()) {
+      activityList.push(existingGr.getValue('sports_activity') || existingGr.getUniqueValue());
+    }
+
+    // Enforce Rule: Only one sports activity per booking / active stay
+    var singleCheck = pricingUtil.validateSingleSportsActivity(activityList);
     if (!singleCheck.valid) {
       data.bookingSuccess = false;
       data.bookingError = singleCheck.message;
+      data.ruleWarning = singleCheck.message;
       return;
     }
 
     // Call Cauban's Pricing calculation
     var actPricing = pricingUtil.calculateSportsActivity(input.selectedActivityId);
 
-    // Generate unique Activity Reference
-    var refNum = 'ACT-' + Math.floor(100000 + Math.random() * 900000);
-    data.bookingSuccess = true;
-    data.activityBookingRef = refNum;
-    data.confirmedRate = actPricing.ok ? actPricing.rate : 0;
+    // ✅ FIX (PR #20): Save to real Sports Bookings table instead of fake ACT- reference
+    var booking = new GlideRecord('x_2206701_hotel_0_sports_bookings');
+    booking.initialize();
+    booking.setValue('sports_activity', input.selectedActivityId);
+    booking.setValue('guest_name', input.guestName);
+    booking.setValue('guest_email', input.guestEmail);
+    booking.setValue('rate', actPricing.ok ? actPricing.rate : 0);
+    booking.setValue('booking_status', 'booked');
+
+    if (gs.isLoggedIn()) {
+      booking.setValue('registered_user', gs.getUserID());
+    }
+
+    var newSysId = booking.insert();
+
+    if (newSysId) {
+      var saved = new GlideRecord('x_2206701_hotel_0_sports_bookings');
+      saved.get(newSysId);
+      data.bookingSuccess = true;
+      data.activityBookingRef = saved.getValue('number');
+      data.confirmedRate = actPricing.ok ? actPricing.rate : 0;
+    } else {
+      data.bookingSuccess = false;
+      data.bookingError = 'Booking failed. Please try again.';
+    }
   }
 })();]]></script>
         <servicenow>false</servicenow>
@@ -489,14 +528,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 12:15:47</sys_created_on>
         <sys_id>247ce8e083d4df50ef22b1b6feaad394</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Hotel Sports Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_247ce8e083d4df50ef22b1b6feaad394</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-29 12:15:47</sys_updated_on>
+        <sys_updated_on>2026-11-21 13:06:20</sys_updated_on>
         <template><![CDATA[<div class="hotel-sports-widget">
 
   <!-- Page Banner -->

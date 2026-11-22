@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_portal">
+    <sp_portal action="INSERT_OR_UPDATE">
+        <alternate_portal/>
+        <communication_channels/>
+        <css_variables/>
+        <dark_theme/>
+        <default>false</default>
+        <embeddable_macroponents/>
+        <enable_ais>false</enable_ais>
+        <enable_certificate_based_authentication>false</enable_certificate_based_authentication>
+        <enable_embeddables>false</enable_embeddables>
+        <enable_favorites>false</enable_favorites>
+        <hide_portal_name>false</hide_portal_name>
+        <homepage display_value="hotel_reservation_home_page">1c7a3c309314df10a3b6703efaba1049</homepage>
+        <icon/>
+        <inactive>false</inactive>
+        <kb_knowledge_base/>
+        <kb_knowledge_page/>
+        <login_page display_value="landing">36c61807cb31120000f8d856634c9ca9</login_page>
+        <logo/>
+        <logo_alt_text>CITÉLLE Hotel &amp; Resort</logo_alt_text>
+        <notfound_page/>
+        <quick_start_config/>
+        <rtl_enabled>false</rtl_enabled>
+        <sc_catalog/>
+        <sc_catalog_page/>
+        <sc_category_page/>
+        <search_application/>
+        <search_results_configuration/>
+        <sp_chat_queue/>
+        <sp_rectangle_menu/>
+        <sys_class_name>sp_portal</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-16 15:01:04</sys_created_on>
+        <sys_id>9edf79d283201310e87256d6feaad32d</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>CITÉLLE Hotel &amp; Resort</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_portal_9edf79d283201310e87256d6feaad32d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 11:37:18</sys_updated_on>
+        <theme display_value="Coral">281507c44317d210ca4c1f425db8f2fd</theme>
+        <title>CITÉLLE Hotel &amp; Resort</title>
+        <ts_index_group/>
+        <url_suffix>hotel</url_suffix>
+    </sp_portal>
+    <sys_translated_text action="delete_multiple" query="documentkey=9edf79d283201310e87256d6feaad32d"/>
+</record_update>

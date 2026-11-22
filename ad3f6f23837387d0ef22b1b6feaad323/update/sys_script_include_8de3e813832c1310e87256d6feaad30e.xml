@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_2206701_hotel_0.SPEntryPage</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>SPEntryPage</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var SPEntryPage = Class.create();
+
+SPEntryPage.prototype = {
+
+    initialize: function() {
+        this.logVariables = false; // for debugging 
+        this.portal = this.getDefaultPortal(); // The URL suffix for default portal
+    },
+
+    getDefaultPortal: function() {
+        var gr = new GlideRecord("sp_portal");
+        gr.addQuery("default", true);
+        gr.query();
+        if (gr.next())
+            return "/" + gr.getValue("url_suffix") + "/";
+
+        return "/esc/";
+    },
+
+    getLoginURL: function() {
+        var session = gs.getSession();
+        var nt = session.getProperty("nav_to");
+        var sPage = session.getProperty("starting_page");
+        if (nt == "welcome.do")
+            session.putProperty("nav_to", null);
+
+        if (!sPage && !nt)
+            session.putProperty("starting_page", gs.getProperty("glide.login.home"));
+
+        var portalGR = new GlideRecord("sp_portal");
+        portalGR.addQuery("url_suffix", this.portal.replace(/\//g, ""));
+        portalGR.addNotNullQuery("login_page");
+        portalGR.query();
+        if (portalGR.next())
+            return this.portal + "?id=" + portalGR.login_page.id;
+
+        return this.portal + "?id=login";
+    },
+
+    getFirstPageURL: function() {
+        var session = gs.getSession();
+        this.logProperties('before', session);
+
+        var isReceptionistOrAdmin = gs.hasRole('admin') ||
+                                  gs.hasRole('x_2206701_hotel_0.administrator') ||
+                                  gs.hasRole('x_2206701_hotel_0.receptionist') ||
+                                  gs.hasRole('x_2206701_hotel_0.manager');
+
+        if (!isReceptionistOrAdmin) {
+            return "/hotel?id=hotel_reservation_home_page";
+        }
+
+        var currentUser = (typeof user !== "undefined" && user) ? user : gs.getUser();
+        var nt = session.getProperty("nav_to");
+        var isServicePortalURL = new GlideSPScriptable().isServicePortalURL(nt);
+        var redirectURL = session.getProperty("login_redirect");
+
+        if (currentUser.hasRoles() && !redirectURL && !isServicePortalURL)
+            return;
+
+        if (!redirectURL) {
+            var sPage = session.getProperty("starting_page");
+            if (sPage && nt == "welcome.do")
+                nt = sPage;
+
+            var ep = gs.getProperty("glide.login.home");
+            if (nt) {
+                if (ep == nt)
+                    nt = null;
+            }
+            if (nt == "welcome.do") {
+                return;
+            }
+
+            return "/login_redirect.do?sysparm_stack=no";
+        }
+
+        if (redirectURL && redirectURL.indexOf("sys_attachment.do") > -1)
+            return redirectURL;
+        var returnUrl = this.portal;
+        if (redirectURL && redirectURL != "true") {
+            var spUrl = new GlideSPScriptable().mapUrlToSPUrl(redirectURL);
+            returnUrl = spUrl ? this.portal + "?" + spUrl : redirectURL;
+            if (!currentUser.hasRoles() && !spUrl && redirectURL.indexOf("home_splash.do") > -1)
+                returnUrl = this.portal;
+        }
+
+        this.logProperties('after', session);
+        if (!this.logVariables) {
+            gs.info('redirectURL: ' + redirectURL);
+            gs.info('User: ' + currentUser.getName());
+            gs.info('is internal: ' + (!currentUser.hasRoles()));
+            gs.info('returnUrl: ' + returnUrl);
+        }
+
+        return returnUrl;
+    },
+
+    logProperties: function(beforeOrAfter, session) {
+        if (!this.logVariables)
+            return;
+
+        gs.info('SPEntryPage: Redirect ------------------------------- ' + beforeOrAfter);
+        gs.info('session.starting_page: ' + session.getProperty("starting_page"));
+        gs.info('session.nav_to: ' + session.getProperty("nav_to"));
+        gs.info('session.login_redirect: ' + session.getProperty("login_redirect"));
+        gs.info('gs.fURI: ' + session.getURI());
+    },
+
+    type: 'SPEntryPage'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-19 10:51:54</sys_created_on>
+        <sys_id>8de3e813832c1310e87256d6feaad30e</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>SPEntryPage</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_script_include_8de3e813832c1310e87256d6feaad30e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 07:31:39</sys_updated_on>
+    </sys_script_include>
+</record_update>
