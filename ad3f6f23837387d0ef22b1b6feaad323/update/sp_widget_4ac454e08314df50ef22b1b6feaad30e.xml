@@ -150,6 +150,8 @@
       c.isSubmitting = false;
       if (c.data.bookingSuccess) {
         c.bookingConfirmed = true;
+      } else {
+        c.showModal = false;
       }
     });
   };
@@ -534,21 +536,23 @@
   data.userName = gs.getUserDisplayName();
   data.userEmail = gs.getUser().getEmail() || '';
 
-  // 1. Fetch Rooms from Database
-  data.rooms = [];
-  var roomGr = new GlideRecord("x_2206701_hotel_0_rooms");
-  roomGr.addQuery("availability_status", "!=", "maintenance");
-  roomGr.orderBy("rate");
-  roomGr.query();
+  var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+  var resUtil = new x_2206701_hotel_0.ReservationUtils();
 
+  // 1. Fetch active non-maintenance rooms using PricingUtils.isRoomUnderMaintenance
+  data.rooms = [];
+  var roomGr = new GlideRecord('x_2206701_hotel_0_rooms');
+  roomGr.orderBy('rate');
+  roomGr.query();
   while (roomGr.next()) {
+    if (pricingUtil.isRoomUnderMaintenance(roomGr)) {
+      continue;
+    }
     var rName = roomGr.getValue('room_name') || roomGr.getDisplayValue('room_name') || roomGr.getDisplayValue() || '';
     var rType = roomGr.getDisplayValue('room_type') || roomGr.getValue('room_type') || '';
-    
     if (!rName) {
       rName = rType ? (rType + ' Suite') : ('Room ' + roomGr.getUniqueValue().substring(0, 5));
     }
-
     data.rooms.push({
       sys_id: roomGr.getUniqueValue(),
       name: rName,
@@ -558,12 +562,28 @@
     });
   }
 
+  if (!input && typeof $sp !== 'undefined') {
+    var urlRoomId = $sp.getParameter('room_id');
+    if (urlRoomId && pricingUtil.isRoomUnderMaintenance(urlRoomId)) {
+      data.isAvailable = false;
+      data.availReason = 'This room is currently under maintenance.';
+    }
+  }
+
   function normalizeDateStr(val) {
-    if (!val) return "";
+    if (!val) return '';
     return String(val).substring(0, 10);
   }
 
-  // 2. Handle Actions
+  function getRoomBaseRate(roomId) {
+    for (var i = 0; i < data.rooms.length; i++) {
+      if (data.rooms[i].sys_id === roomId) return data.rooms[i].rate;
+    }
+    var rg = new GlideRecord('x_2206701_hotel_0_rooms');
+    if (rg.get(roomId)) return parseFloat(rg.getValue('rate')) || 0;
+    return 0;
+  }
+
   if (input) {
     data.selectedRoom = input.selectedRoom;
     data.checkIn = input.checkIn;
@@ -576,109 +596,65 @@
     var checkInStr = normalizeDateStr(input.checkIn);
     var checkOutStr = normalizeDateStr(input.checkOut);
 
-    // ACTION: Calculate Estimate
-    if (input.action === "calculateEstimate") {
+    if (input.action === 'calculateEstimate') {
       var dIn = new GlideDate();
       dIn.setValue(checkInStr);
       var dOut = new GlideDate();
       dOut.setValue(checkOutStr);
-
       var dur = GlideDate.subtract(dIn, dOut);
       var nights = dur.getDayPart();
 
       if (nights <= 0) {
-        data.dateError = "Check-out date must be after check-in date.";
+        data.dateError = 'Check-out date must be after the check-in date.';
         data.isAvailable = false;
         data.estimatedTotal = 0;
         data.discountAmount = 0;
+        data.discountAmountDisplay = '$0.00';
+        data.estimatedTotalDisplay = '$0.00';
         data.nights = 0;
         return;
       }
 
-      data.dateError = "";
+      data.dateError = '';
       data.nights = nights;
 
-      // Find base rate
-      var baseRate = 0;
-      for (var i = 0; i < data.rooms.length; i++) {
-        if (data.rooms[i].sys_id === input.selectedRoom) {
-          baseRate = data.rooms[i].rate;
-          break;
-        }
-      }
+      var availCheck = pricingUtil.isRoomAvailable(input.selectedRoom, checkInStr, checkOutStr);
+      data.isAvailable = availCheck.available;
+      data.availReason = availCheck.available ? '' : availCheck.reason;
 
-      var subtotal = baseRate * nights;
-      var totalDiscount = 0;
-
-      // Check PricingUtils if present
-      try {
-        var pricingUtil = new x_2206701_hotel_0.PricingUtils();
-        if (typeof pricingUtil.calculateRoomTotal === 'function') {
-          var pTotal = parseFloat(pricingUtil.calculateRoomTotal(input.selectedRoom, nights, checkInStr));
-          totalDiscount = Math.max(0, subtotal - pTotal);
-        }
-      } catch (e) {
-        // Handled below
-      }
-
-      // ITEM 12 FIX: Check Calendar Days table for discounts
-      var grCal = new GlideRecord('x_2206701_hotel_0_calendar_days');
-      var dateField = grCal.isValidField('date') ? 'date' : 'u_date';
-      grCal.addQuery(dateField, '>=', checkInStr);
-      grCal.addQuery(dateField, '<', checkOutStr);
-      grCal.query();
-
-      while (grCal.next()) {
-        var pct = parseFloat(grCal.getValue('discount_percentage') || grCal.getValue('u_discount_percentage') || 0);
-        if (pct > 0) {
-          totalDiscount += (baseRate * (pct / 100));
-        }
-      }
-
-      var finalTotal = Math.max(0, subtotal - totalDiscount);
-      data.discountAmount = totalDiscount;
-      data.discountAmountDisplay = '$' + totalDiscount.toFixed(2);
-      data.estimatedTotal = finalTotal;
-      data.estimatedTotalDisplay = '$' + finalTotal.toFixed(2);
-
-      // ITEM 13 FIX: Direct Database Room Availability Check
-      data.isAvailable = true;
-      data.availReason = '';
-
-      var grResCheck = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
-      grResCheck.addQuery('room', input.selectedRoom);
-      grResCheck.addQuery('check_in_date', '<', checkOutStr);
-      grResCheck.addQuery('check_out_date', '>', checkInStr);
-      grResCheck.addQuery('reservation_status', '!=', 'cancelled');
-      grResCheck.query();
-
-      if (grResCheck.hasNext()) {
-        data.isAvailable = false;
-        data.availReason = 'This room is already reserved for the selected dates.';
-      }
-
-      var grRoomCheck = new GlideRecord('x_2206701_hotel_0_rooms');
-      if (grRoomCheck.get(input.selectedRoom)) {
-        var roomStatus = (grRoomCheck.getValue('status') || grRoomCheck.getValue('state') || grRoomCheck.getValue('availability_status') || '').toLowerCase();
-        var roomName = (grRoomCheck.getValue('room_name') || '').toLowerCase();
-        if (roomStatus === 'maintenance' || roomName.indexOf('maintenance') > -1) {
-          data.isAvailable = false;
-          data.availReason = 'This room is currently under maintenance.';
-        }
-      }
-
-      if (!data.isAvailable) {
+      if (data.isAvailable) {
+        var baseRate = getRoomBaseRate(input.selectedRoom);
+        var subtotal = baseRate * nights;
+        var finalTotal = parseFloat(pricingUtil.calculateRoomTotal(input.selectedRoom, nights, checkInStr));
+        var totalDiscount = Math.round(Math.max(0, subtotal - finalTotal) * 100) / 100;
+        data.discountAmount = totalDiscount;
+        data.discountAmountDisplay = '$' + totalDiscount.toFixed(2);
+        data.estimatedTotal = finalTotal;
+        data.estimatedTotalDisplay = '$' + finalTotal.toFixed(2);
+      } else {
+        data.discountAmount = 0;
+        data.discountAmountDisplay = '$0.00';
+        data.estimatedTotal = 0;
         data.estimatedTotalDisplay = 'Unavailable';
       }
     }
 
-    // ACTION: Create Booking
-    if (input.action === "createBooking") {
+    if (input.action === 'createBooking') {
       var targetRoom = input.selectedRoom || data.selectedRoom;
+      var createAvail = pricingUtil.isRoomAvailable(targetRoom, checkInStr, checkOutStr);
+      if (!createAvail.available) {
+        data.bookingSuccess = false;
+        data.bookingError = createAvail.reason;
+        data.isAvailable = false;
+        data.availReason = createAvail.reason;
+        return;
+      }
+
+      var calcNights = resUtil.calculateDays(checkInStr, checkOutStr);
+      var calcTotal = pricingUtil.calculateRoomTotal(targetRoom, calcNights, checkInStr);
 
       var grBook = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
       grBook.initialize();
-
       if (grBook.isValidField('room')) grBook.setValue('room', targetRoom);
       if (grBook.isValidField('check_in_date')) grBook.setValue('check_in_date', checkInStr);
       if (grBook.isValidField('check_out_date')) grBook.setValue('check_out_date', checkOutStr);
@@ -686,24 +662,24 @@
       if (grBook.isValidField('guest_email')) grBook.setValue('guest_email', input.guestEmail);
       if (grBook.isValidField('number_of_adults')) grBook.setValue('number_of_adults', parseInt(input.adults, 10) || 1);
       if (grBook.isValidField('number_of_children')) grBook.setValue('number_of_children', parseInt(input.children, 10) || 0);
-      if (grBook.isValidField('number_of_days')) grBook.setValue('number_of_days', data.nights);
-      if (grBook.isValidField('total_payment')) grBook.setValue('total_payment', data.estimatedTotal);
-      if (grBook.isValidField('total_amount')) grBook.setValue('total_amount', data.estimatedTotal);
+      if (grBook.isValidField('number_of_days')) grBook.setValue('number_of_days', calcNights);
+      if (grBook.isValidField('total_payment')) grBook.setValue('total_payment', calcTotal);
+      if (grBook.isValidField('total_amount')) grBook.setValue('total_amount', calcTotal);
       if (grBook.isValidField('reservation_status')) grBook.setValue('reservation_status', 'pending');
       if (grBook.isValidField('registered_user') && data.userId) grBook.setValue('registered_user', data.userId);
 
       var newId = grBook.insert();
       if (newId) {
         data.bookingSuccess = true;
-        var resGr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
+        var resGr = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
         if (resGr.get(newId)) {
-          data.reservationDisplayNumber = resGr.getValue("number") || newId;
+          data.reservationDisplayNumber = resGr.getValue('number') || newId;
         } else {
           data.reservationDisplayNumber = newId;
         }
       } else {
         data.bookingSuccess = false;
-        data.bookingError = "Could not create the reservation.";
+        data.bookingError = 'Could not create the reservation.';
       }
     }
   }
@@ -713,14 +689,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>14</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-23 07:27:51</sys_updated_on>
+        <sys_updated_on>2026-11-23 10:16:55</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->
