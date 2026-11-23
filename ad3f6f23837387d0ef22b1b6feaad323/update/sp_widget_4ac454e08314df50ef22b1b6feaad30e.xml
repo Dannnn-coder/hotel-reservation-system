@@ -2,93 +2,69 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller = function($scope, $location) {
-    var c = this;
-    var params = $location.search();
+  var c = this;
+  var params = $location.search();
 
-    c.data.adults = 1;
-    c.data.children = 0;
-    c.checkInDate = null;
-    c.checkOutDate = null;
-    c.showModal = false;
-    c.bookingConfirmed = false;
-    c.isSubmitting = false;
+  c.data.adults = 1;
+  c.data.children = 0;
+  c.checkInDate = null;
+  c.checkOutDate = null;
+  c.showModal = false;
+  c.bookingConfirmed = false;
+  c.isSubmitting = false;
 
-    if (c.data.isLoggedIn) {
-        c.data.guestName = c.data.userName;
-        c.data.guestEmail = c.data.userEmail;
+  if (c.data.isLoggedIn) {
+    c.data.guestName = c.data.userName;
+    c.data.guestEmail = c.data.userEmail;
+  }
+
+  c.toLocalDateStr = function(val) {
+    if (!val) return "";
+    if (typeof val === "string") return val.substring(0, 10);
+    if (val instanceof Date && !isNaN(val.getTime())) {
+      var y = val.getFullYear();
+      var m = ("0" + (val.getMonth() + 1)).slice(-2);
+      var d = ("0" + val.getDate()).slice(-2);
+      return y + "-" + m + "-" + d;
     }
+    return String(val).substring(0, 10);
+  };
 
-    c.toLocalDateStr = function(val) {
-        if (!val) return "";
-
-        if (typeof val === "string") {
-            return val.substring(0, 10);
-        }
-
-        if (val instanceof Date && !isNaN(val.getTime())) {
-            var y = val.getFullYear();
-            var m = ("0" + (val.getMonth() + 1)).slice(-2);
-            var d = ("0" + val.getDate()).slice(-2);
-            return y + "-" + m + "-" + d;
-        }
-
-        return String(val).substring(0, 10);
-    };
-
-    function parseDate(value) {
-        if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-            return null;
-        }
-
-        var parts = value.split("-");
-        var date = new Date(
-            parseInt(parts[0], 10),
-            parseInt(parts[1], 10) - 1,
-            parseInt(parts[2], 10)
-        );
-
-        if (
-            date.getFullYear() !== parseInt(parts[0], 10) ||
-            date.getMonth() !== parseInt(parts[1], 10) - 1 ||
-            date.getDate() !== parseInt(parts[2], 10)
-        ) {
-            return null;
-        }
-
-        return date;
+  function parseDate(value) {
+    if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    var parts = value.split("-");
+    var date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    if (date.getFullYear() !== parseInt(parts[0], 10) || date.getMonth() !== parseInt(parts[1], 10) - 1 || date.getDate() !== parseInt(parts[2], 10)) {
+      return null;
     }
+    return date;
+  }
 
-    function selectRoomByType(roomType) {
-        if (!roomType || !c.data.rooms) return;
-
-        var requestedType = String(roomType).toLowerCase().trim();
-
-        for (var i = 0; i < c.data.rooms.length; i++) {
-            var room = c.data.rooms[i];
-            var actualType = String(room.type || "").toLowerCase().trim();
-
-            if (actualType === requestedType) {
-                c.data.selectedRoom = room.sys_id;
-                return;
-            }
-        }
+  function selectRoomByType(roomType) {
+    if (!roomType || !c.data.rooms) return;
+    var requestedType = String(roomType).toLowerCase().trim();
+    for (var i = 0; i < c.data.rooms.length; i++) {
+      var room = c.data.rooms[i];
+      var actualType = String(room.type || "").toLowerCase().trim();
+      if (actualType === requestedType) {
+        c.data.selectedRoom = room.sys_id;
+        return;
+      }
     }
+  }
 
-    function initializeFromSearch() {
+  function initializeFromSearch() {
     c.checkInDate = parseDate(params.checkin);
     c.checkOutDate = parseDate(params.checkout);
 
     var guests = parseInt(params.guests, 10);
-
     if (!isNaN(guests) && guests >= 1 && guests <= 10) {
       c.data.adults = guests;
     }
-
     c.data.children = 0;
 
     if (params.room_id && c.data.rooms) {
       var requestedRoomId = String(params.room_id);
-
       for (var i = 0; i < c.data.rooms.length; i++) {
         if (c.data.rooms[i].sys_id === requestedRoomId) {
           c.data.selectedRoom = requestedRoomId;
@@ -105,131 +81,116 @@
     if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
       c.onFormChange();
     }
-}
+  }
 
-    c.onFormChange = function() {
+  c.onFormChange = function() {
+    c.data.dateError = "";
+    c.data.availReason = "";
+    c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+    c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+
+    if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
+      var savedRoomId = c.data.selectedRoom;
+      c.data.action = "calculateEstimate";
+
+      c.server.update().then(function() {
+        if (!c.data.selectedRoom && savedRoomId) {
+          c.data.selectedRoom = savedRoomId;
+        }
+      });
+    } else {
+      c.data.estimatedTotal = 0;
+      c.data.nights = 0;
+      c.data.isAvailable = false;
+    }
+  };
+
+  // ITEM 11 FIX: Capacity grammar
+  c.onGuestCountChange = function() {
+    if (c.data.selectedRoom) {
+      var room = c.getRoomObject(c.data.selectedRoom);
+      if (room && (parseInt(c.data.adults, 10) + parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)) {
+        c.data.dateError = "Total guests exceed the maximum room capacity (" + room.capacity + " " + (room.capacity == 1 ? "guest" : "guests") + ").";
+      } else {
         c.data.dateError = "";
-        c.data.availReason = "";
-        c.data.checkIn = c.toLocalDateStr(c.checkInDate);
-        c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+      }
+    }
+  };
 
-        if (c.data.selectedRoom && c.data.checkIn && c.data.checkOut) {
-            var savedRoomId = c.data.selectedRoom;
+  c.canReview = function() {
+    return c.data.selectedRoom &&
+           c.data.checkIn &&
+           c.data.checkOut &&
+           c.data.guestName &&
+           c.data.guestEmail &&
+           c.data.isAvailable &&
+           !c.data.dateError;
+  };
 
-            c.data.action = "calculateEstimate";
+  c.openConfirmModal = function() {
+    if (c.canReview()) {
+      c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+      c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+      c.showModal = true;
+      c.bookingConfirmed = false;
+    }
+  };
 
-            c.server.update().then(function() {
-                if (!c.data.selectedRoom && savedRoomId) {
-                    c.data.selectedRoom = savedRoomId;
-                }
-            });
-        } else {
-            c.data.estimatedTotal = 0;
-            c.data.nights = 0;
-            c.data.isAvailable = false;
-        }
-    };
+  c.closeModal = function() {
+    c.showModal = false;
+  };
 
-    c.onGuestCountChange = function() {
-        if (c.data.selectedRoom) {
-            var room = c.getRoomObject(c.data.selectedRoom);
+  c.confirmBooking = function() {
+    c.isSubmitting = true;
+    c.data.checkIn = c.toLocalDateStr(c.checkInDate);
+    c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
+    c.data.action = "createBooking";
 
-            if (
-                room &&
-                (parseInt(c.data.adults, 10) +
-                    parseInt(c.data.children || 0, 10)) > parseInt(room.capacity, 10)
-            ) {
-                c.data.dateError =
-                    "Total guests exceed the maximum room capacity (" +
-                    room.capacity + ").";
-            } else {
-                c.data.dateError = "";
-            }
-        }
-    };
+    c.server.update().then(function() {
+      c.isSubmitting = false;
+      if (c.data.bookingSuccess) {
+        c.bookingConfirmed = true;
+      }
+    });
+  };
 
-    c.canReview = function() {
-        return c.data.selectedRoom &&
-            c.data.checkIn &&
-            c.data.checkOut &&
-            c.data.guestName &&
-            c.data.guestEmail &&
-            c.data.isAvailable &&
-            !c.data.dateError;
-    };
+  c.resetForm = function() {
+    c.showModal = false;
+    c.bookingConfirmed = false;
+    c.data.selectedRoom = "";
+    c.checkInDate = null;
+    c.checkOutDate = null;
+    c.data.checkIn = "";
+    c.data.checkOut = "";
+    c.data.estimatedTotal = 0;
+    c.data.nights = 0;
+    c.data.dateError = "";
+    c.data.availReason = "";
+    c.data.isAvailable = false;
+    c.data.adults = 1;
+    c.data.children = 0;
+  };
 
-    c.openConfirmModal = function() {
-        if (c.canReview()) {
-            c.data.checkIn = c.toLocalDateStr(c.checkInDate);
-            c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
-            c.showModal = true;
-            c.bookingConfirmed = false;
-        }
-    };
+  c.getRoomObject = function(roomId) {
+    if (!c.data.rooms) return null;
+    for (var i = 0; i < c.data.rooms.length; i++) {
+      if (c.data.rooms[i].sys_id === roomId) return c.data.rooms[i];
+    }
+    return null;
+  };
 
-    c.closeModal = function() {
-        c.showModal = false;
-    };
+  c.getSelectedRoomName = function() {
+    var r = c.getRoomObject(c.data.selectedRoom);
+    if (!r) return "";
+    return r.name || r.type || "Selected Room";
+  };
 
-    c.confirmBooking = function() {
-        c.isSubmitting = true;
-        c.data.checkIn = c.toLocalDateStr(c.checkInDate);
-        c.data.checkOut = c.toLocalDateStr(c.checkOutDate);
-        c.data.action = "createBooking";
+  c.getSelectedRoomRate = function() {
+    var r = c.getRoomObject(c.data.selectedRoom);
+    return r ? r.rate : 0;
+  };
 
-        c.server.update().then(function() {
-            c.isSubmitting = false;
-
-            if (c.data.bookingSuccess) {
-                c.bookingConfirmed = true;
-            }
-        });
-    };
-
-    c.resetForm = function() {
-        c.showModal = false;
-        c.bookingConfirmed = false;
-        c.data.selectedRoom = "";
-        c.checkInDate = null;
-        c.checkOutDate = null;
-        c.data.checkIn = "";
-        c.data.checkOut = "";
-        c.data.estimatedTotal = 0;
-        c.data.nights = 0;
-        c.data.dateError = "";
-        c.data.availReason = "";
-        c.data.isAvailable = false;
-        c.data.adults = 1;
-        c.data.children = 0;
-    };
-
-    c.getRoomObject = function(roomId) {
-        if (!c.data.rooms) return null;
-
-        for (var i = 0; i < c.data.rooms.length; i++) {
-            if (c.data.rooms[i].sys_id === roomId) {
-                return c.data.rooms[i];
-            }
-        }
-
-        return null;
-    };
-
-    c.getSelectedRoomName = function() {
-        var r = c.getRoomObject(c.data.selectedRoom);
-
-        if (!r) return "";
-
-        return r.name || r.type || "Selected Room";
-    };
-
-    c.getSelectedRoomRate = function() {
-        var r = c.getRoomObject(c.data.selectedRoom);
-
-        return r ? r.rate : 0;
-    };
-
-    initializeFromSearch();
+  initializeFromSearch();
 };]]></client_script>
         <controller_as>c</controller_as>
         <css>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
@@ -264,11 +225,11 @@
 }&#13;
 &#13;
 .hotel-booking-widget .eyebrow {&#13;
-  font-size: .72rem;&#13;
+  font-size: .75rem;&#13;
   letter-spacing: .22em;&#13;
   text-transform: uppercase;&#13;
   color: var(--muted);&#13;
-  font-weight: 500;&#13;
+  font-weight: 600;&#13;
   display: block;&#13;
   margin-bottom: 6px;&#13;
 }&#13;
@@ -280,7 +241,7 @@
   text-align: center;&#13;
 }&#13;
 .hotel-booking-widget .page-banner h1 { color: var(--white); font-size: 2.8rem; margin: 0; }&#13;
-.hotel-booking-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1rem; }&#13;
+.hotel-booking-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1.05rem; }&#13;
 .hotel-booking-widget .page-banner .eyebrow { color: var(--sand); }&#13;
 &#13;
 .hotel-booking-widget .booking-section { padding: 40px 15px; }&#13;
@@ -304,17 +265,17 @@
   padding: 34px;&#13;
 }&#13;
 &#13;
-.hotel-booking-widget .form-title { font-size: 2rem; margin: 0 0 4px; }&#13;
-.hotel-booking-widget .form-sub { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }&#13;
+.hotel-booking-widget .form-title { font-size: 2.1rem; margin: 0 0 4px; }&#13;
+.hotel-booking-widget .form-sub { color: var(--muted); font-size: .95rem; margin-bottom: 24px; }&#13;
 &#13;
 .hotel-booking-widget .user-status-banner {&#13;
   background: var(--green-soft);&#13;
   border: 1px solid #c2d6c6;&#13;
   color: var(--green);&#13;
-  padding: 10px 16px;&#13;
+  padding: 12px 16px;&#13;
   border-radius: var(--radius);&#13;
   margin-bottom: 20px;&#13;
-  font-size: .88rem;&#13;
+  font-size: .95rem;&#13;
   display: flex;&#13;
   gap: 10px;&#13;
   align-items: center;&#13;
@@ -341,23 +302,31 @@
 }&#13;
 .hotel-booking-widget .field.full { grid-column: 1 / -1; }&#13;
 .hotel-booking-widget .field label {&#13;
-  font-size: .72rem;&#13;
+  font-size: .8rem;&#13;
   letter-spacing: .12em;&#13;
   text-transform: uppercase;&#13;
   font-weight: 600;&#13;
   color: var(--green);&#13;
 }&#13;
 .hotel-booking-widget .field label .req { color: #b4483a; }&#13;
-.hotel-booking-widget .field input, .hotel-booking-widget .field select {&#13;
-  padding: 11px 14px;&#13;
+&#13;
+/* ITEM 11 FIX: Explicit 48px height and 1rem font for clean readability */&#13;
+.hotel-booking-widget .field input, &#13;
+.hotel-booking-widget .field select {&#13;
+  height: 48px !important;&#13;
+  line-height: 1.4 !important;&#13;
+  padding: 10px 14px !important;&#13;
   border: 1px solid var(--line);&#13;
   border-radius: var(--radius);&#13;
   background: var(--cream);&#13;
-  font-size: .92rem;&#13;
+  font-size: 1rem !important;&#13;
+  color: var(--text);&#13;
   outline: none;&#13;
+  box-sizing: border-box;&#13;
   transition: .2s;&#13;
 }&#13;
-.hotel-booking-widget .field input:focus, .hotel-booking-widget .field select:focus {&#13;
+.hotel-booking-widget .field input:focus, &#13;
+.hotel-booking-widget .field select:focus {&#13;
   border-color: var(--sand-dark);&#13;
   background: var(--white);&#13;
   box-shadow: 0 0 0 3px rgba(230,199,156,.3);&#13;
@@ -369,9 +338,9 @@
 &#13;
 .hotel-booking-widget .btn {&#13;
   display: inline-block;&#13;
-  padding: 13px 24px;&#13;
+  padding: 15px 24px;&#13;
   border-radius: var(--radius);&#13;
-  font-size: .78rem;&#13;
+  font-size: .85rem;&#13;
   letter-spacing: .12em;&#13;
   text-transform: uppercase;&#13;
   font-weight: 600;&#13;
@@ -392,13 +361,6 @@
   background: var(--green-dark);&#13;
   transform: translateY(-2px);&#13;
 }&#13;
-.hotel-booking-widget .btn-sand {&#13;
-  background: var(--sand);&#13;
-  color: var(--green);&#13;
-}&#13;
-.hotel-booking-widget .btn-sand:hover:not(:disabled) {&#13;
-  background: var(--sand-dark);&#13;
-}&#13;
 .hotel-booking-widget .btn-outline {&#13;
   border-color: var(--green);&#13;
   color: var(--green);&#13;
@@ -418,18 +380,23 @@
   position: sticky;&#13;
   top: 30px;&#13;
 }&#13;
-.hotel-booking-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.5rem; }&#13;
+.hotel-booking-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.6rem; }&#13;
 .hotel-booking-widget .summary .eyebrow { color: var(--sand); }&#13;
 &#13;
 .hotel-booking-widget .summary-row {&#13;
   display: flex;&#13;
   justify-content: space-between;&#13;
-  padding: 10px 0;&#13;
+  padding: 11px 0;&#13;
   border-bottom: 1px solid rgba(255,255,255,.14);&#13;
-  font-size: .88rem;&#13;
+  font-size: .95rem;&#13;
   color: rgba(255,255,255,.8);&#13;
 }&#13;
 .hotel-booking-widget .summary-row strong { color: var(--white); font-weight: 600; }&#13;
+&#13;
+.hotel-booking-widget .discount-row .discount-val {&#13;
+  color: #79d2a6;&#13;
+  font-weight: 700;&#13;
+}&#13;
 &#13;
 .hotel-booking-widget .summary-total {&#13;
   display: flex;&#13;
@@ -437,11 +404,12 @@
   align-items: baseline;&#13;
   margin: 22px 0 16px;&#13;
 }&#13;
-.hotel-booking-widget .summary-total span { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
-.hotel-booking-widget .summary-total strong { font-family: var(--serif); font-size: 2.2rem; color: var(--white); }&#13;
+.hotel-booking-widget .summary-total span { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
+.hotel-booking-widget .summary-total strong { font-family: var(--serif); font-size: 2.4rem; color: var(--white); }&#13;
+.hotel-booking-widget .summary-total strong.unavail-total { font-size: 1.6rem; color: #ff9e9e; }&#13;
 &#13;
 .hotel-booking-widget .summary .note {&#13;
-  font-size: .75rem;&#13;
+  font-size: .78rem;&#13;
   color: rgba(255,255,255,.65);&#13;
   margin-top: 14px;&#13;
   line-height: 1.4;&#13;
@@ -450,7 +418,7 @@
 .hotel-booking-widget .alert {&#13;
   padding: 12px 16px;&#13;
   border-radius: var(--radius);&#13;
-  font-size: .86rem;&#13;
+  font-size: .9rem;&#13;
   margin-bottom: 18px;&#13;
   display: flex;&#13;
   gap: 10px;&#13;
@@ -466,11 +434,20 @@
 .hotel-booking-widget .badge.available {&#13;
   background: #dcebdf;&#13;
   color: #2c5a3f;&#13;
-  padding: 3px 8px;&#13;
+  padding: 4px 10px;&#13;
   border-radius: 12px;&#13;
-  font-size: .72rem;&#13;
+  font-size: .75rem;&#13;
   text-transform: uppercase;&#13;
-  font-weight: 600;&#13;
+  font-weight: 700;&#13;
+}&#13;
+.hotel-booking-widget .badge.unavailable {&#13;
+  background: rgba(240, 120, 120, 0.25);&#13;
+  color: #ff9e9e;&#13;
+  padding: 4px 10px;&#13;
+  border-radius: 12px;&#13;
+  font-size: .75rem;&#13;
+  text-transform: uppercase;&#13;
+  font-weight: 700;&#13;
 }&#13;
 &#13;
 .hotel-booking-widget .custom-modal-backdrop {&#13;
@@ -506,7 +483,7 @@
 .hotel-booking-widget .summary-row.dark strong { color: var(--text); }&#13;
 .hotel-booking-widget .dialog-note {&#13;
   color: var(--muted);&#13;
-  font-size: .82rem;&#13;
+  font-size: .85rem;&#13;
   margin-top: 16px;&#13;
 }&#13;
 .hotel-booking-widget .dialog-actions {&#13;
@@ -527,11 +504,11 @@
   text-transform: uppercase;&#13;
   letter-spacing: .12em;&#13;
   color: var(--muted);&#13;
-  font-size: .7rem;&#13;
+  font-size: .75rem;&#13;
 }&#13;
 .hotel-booking-widget .res-num-box .res-num {&#13;
   font-family: var(--serif);&#13;
-  font-size: 2rem;&#13;
+  font-size: 2.2rem;&#13;
   font-weight: 700;&#13;
   color: var(--green);&#13;
   margin-top: 4px;&#13;
@@ -555,19 +532,19 @@
   data.isLoggedIn = gs.isLoggedIn();
   data.userId = gs.getUserID();
   data.userName = gs.getUserDisplayName();
-  data.userEmail = gs.getUser().getEmail();
+  data.userEmail = gs.getUser().getEmail() || '';
 
-  // 2. Fetch Active Rooms for dropdown (With fallback if room_name in DB is blank)
+  // 1. Fetch Rooms from Database
   data.rooms = [];
   var roomGr = new GlideRecord("x_2206701_hotel_0_rooms");
   roomGr.addQuery("availability_status", "!=", "maintenance");
   roomGr.orderBy("rate");
   roomGr.query();
+
   while (roomGr.next()) {
     var rName = roomGr.getValue('room_name') || roomGr.getDisplayValue('room_name') || roomGr.getDisplayValue() || '';
     var rType = roomGr.getDisplayValue('room_type') || roomGr.getValue('room_type') || '';
     
-    // ✅ FIX: If database room_name is empty, use room_type so name is never blank
     if (!rName) {
       rName = rType ? (rType + ' Suite') : ('Room ' + roomGr.getUniqueValue().substring(0, 5));
     }
@@ -586,10 +563,8 @@
     return String(val).substring(0, 10);
   }
 
-  // Role 2: Room Reservation Booking Engine - Nico John G. Colo
-  // 3. Handle Client Controller Actions
+  // 2. Handle Actions
   if (input) {
-    // ✅ FIX: Preserve form inputs so c.server.update() does NOT wipe out selectedRoom
     data.selectedRoom = input.selectedRoom;
     data.checkIn = input.checkIn;
     data.checkOut = input.checkOut;
@@ -598,60 +573,137 @@
     data.guestName = input.guestName;
     data.guestEmail = input.guestEmail;
 
-    var pricingUtil = new x_2206701_hotel_0.PricingUtils();
-    var resUtil = new x_2206701_hotel_0.ReservationUtils();
     var checkInStr = normalizeDateStr(input.checkIn);
     var checkOutStr = normalizeDateStr(input.checkOut);
 
+    // ACTION: Calculate Estimate
     if (input.action === "calculateEstimate") {
-      var dateCheck = resUtil.validateDates(checkInStr, checkOutStr);
-      if (!dateCheck.ok) {
-        data.dateError = dateCheck.message;
+      var dIn = new GlideDate();
+      dIn.setValue(checkInStr);
+      var dOut = new GlideDate();
+      dOut.setValue(checkOutStr);
+
+      var dur = GlideDate.subtract(dIn, dOut);
+      var nights = dur.getDayPart();
+
+      if (nights <= 0) {
+        data.dateError = "Check-out date must be after check-in date.";
         data.isAvailable = false;
         data.estimatedTotal = 0;
+        data.discountAmount = 0;
         data.nights = 0;
         return;
       }
 
       data.dateError = "";
-      data.nights = resUtil.calculateDays(checkInStr, checkOutStr);
-      var availCheck = pricingUtil.isRoomAvailable(input.selectedRoom, checkInStr, checkOutStr);
-      data.isAvailable = availCheck.available;
-      data.availReason = availCheck.reason;
-      if (data.isAvailable) {
-        data.estimatedTotal = pricingUtil.calculateRoomTotal(input.selectedRoom, data.nights, checkInStr);
-      } else {
-        data.estimatedTotal = 0;
+      data.nights = nights;
+
+      // Find base rate
+      var baseRate = 0;
+      for (var i = 0; i < data.rooms.length; i++) {
+        if (data.rooms[i].sys_id === input.selectedRoom) {
+          baseRate = data.rooms[i].rate;
+          break;
+        }
+      }
+
+      var subtotal = baseRate * nights;
+      var totalDiscount = 0;
+
+      // Check PricingUtils if present
+      try {
+        var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+        if (typeof pricingUtil.calculateRoomTotal === 'function') {
+          var pTotal = parseFloat(pricingUtil.calculateRoomTotal(input.selectedRoom, nights, checkInStr));
+          totalDiscount = Math.max(0, subtotal - pTotal);
+        }
+      } catch (e) {
+        // Handled below
+      }
+
+      // ITEM 12 FIX: Check Calendar Days table for discounts
+      var grCal = new GlideRecord('x_2206701_hotel_0_calendar_days');
+      var dateField = grCal.isValidField('date') ? 'date' : 'u_date';
+      grCal.addQuery(dateField, '>=', checkInStr);
+      grCal.addQuery(dateField, '<', checkOutStr);
+      grCal.query();
+
+      while (grCal.next()) {
+        var pct = parseFloat(grCal.getValue('discount_percentage') || grCal.getValue('u_discount_percentage') || 0);
+        if (pct > 0) {
+          totalDiscount += (baseRate * (pct / 100));
+        }
+      }
+
+      var finalTotal = Math.max(0, subtotal - totalDiscount);
+      data.discountAmount = totalDiscount;
+      data.discountAmountDisplay = '$' + totalDiscount.toFixed(2);
+      data.estimatedTotal = finalTotal;
+      data.estimatedTotalDisplay = '$' + finalTotal.toFixed(2);
+
+      // ITEM 13 FIX: Direct Database Room Availability Check
+      data.isAvailable = true;
+      data.availReason = '';
+
+      var grResCheck = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+      grResCheck.addQuery('room', input.selectedRoom);
+      grResCheck.addQuery('check_in_date', '<', checkOutStr);
+      grResCheck.addQuery('check_out_date', '>', checkInStr);
+      grResCheck.addQuery('reservation_status', '!=', 'cancelled');
+      grResCheck.query();
+
+      if (grResCheck.hasNext()) {
+        data.isAvailable = false;
+        data.availReason = 'This room is already reserved for the selected dates.';
+      }
+
+      var grRoomCheck = new GlideRecord('x_2206701_hotel_0_rooms');
+      if (grRoomCheck.get(input.selectedRoom)) {
+        var roomStatus = (grRoomCheck.getValue('status') || grRoomCheck.getValue('state') || grRoomCheck.getValue('availability_status') || '').toLowerCase();
+        var roomName = (grRoomCheck.getValue('room_name') || '').toLowerCase();
+        if (roomStatus === 'maintenance' || roomName.indexOf('maintenance') > -1) {
+          data.isAvailable = false;
+          data.availReason = 'This room is currently under maintenance.';
+        }
+      }
+
+      if (!data.isAvailable) {
+        data.estimatedTotalDisplay = 'Unavailable';
       }
     }
 
-    // ACTION: Submit Reservation to Database via Sarsonas's ReservationUtils
+    // ACTION: Create Booking
     if (input.action === "createBooking") {
       var targetRoom = input.selectedRoom || data.selectedRoom;
 
-      var bookingPayload = {
-        room: targetRoom,
-        guest_name: input.guestName || data.guestName,
-        guest_email: input.guestEmail || data.guestEmail,
-        check_in_date: checkInStr,
-        check_out_date: checkOutStr,
-        number_of_adults: parseInt(input.adults || data.adults, 10) || 1,
-        number_of_children: parseInt(input.children || data.children, 10) || 0,
-        registered_user: data.isLoggedIn ? data.userId : ""
-      };
-      var createResult = resUtil.createReservation(bookingPayload);
-      if (createResult.ok) {
+      var grBook = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+      grBook.initialize();
+
+      if (grBook.isValidField('room')) grBook.setValue('room', targetRoom);
+      if (grBook.isValidField('check_in_date')) grBook.setValue('check_in_date', checkInStr);
+      if (grBook.isValidField('check_out_date')) grBook.setValue('check_out_date', checkOutStr);
+      if (grBook.isValidField('guest_name')) grBook.setValue('guest_name', input.guestName);
+      if (grBook.isValidField('guest_email')) grBook.setValue('guest_email', input.guestEmail);
+      if (grBook.isValidField('number_of_adults')) grBook.setValue('number_of_adults', parseInt(input.adults, 10) || 1);
+      if (grBook.isValidField('number_of_children')) grBook.setValue('number_of_children', parseInt(input.children, 10) || 0);
+      if (grBook.isValidField('number_of_days')) grBook.setValue('number_of_days', data.nights);
+      if (grBook.isValidField('total_payment')) grBook.setValue('total_payment', data.estimatedTotal);
+      if (grBook.isValidField('total_amount')) grBook.setValue('total_amount', data.estimatedTotal);
+      if (grBook.isValidField('reservation_status')) grBook.setValue('reservation_status', 'pending');
+      if (grBook.isValidField('registered_user') && data.userId) grBook.setValue('registered_user', data.userId);
+
+      var newId = grBook.insert();
+      if (newId) {
         data.bookingSuccess = true;
-        data.createdSysId = createResult.reservationId;
         var resGr = new GlideRecord("x_2206701_hotel_0_scheduled_reservations");
-        if (resGr.get(createResult.reservationId)) {
-          data.reservationDisplayNumber = resGr.getValue("number") || createResult.reservationId;
+        if (resGr.get(newId)) {
+          data.reservationDisplayNumber = resGr.getValue("number") || newId;
         } else {
-          data.reservationDisplayNumber = createResult.reservationId;
+          data.reservationDisplayNumber = newId;
         }
       } else {
         data.bookingSuccess = false;
-        data.bookingError = createResult.message;
+        data.bookingError = "Could not create the reservation.";
       }
     }
   }
@@ -661,14 +713,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 10:34:36</sys_created_on>
         <sys_id>4ac454e08314df50ef22b1b6feaad30e</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>14</sys_mod_count>
         <sys_name>Hotel Room Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_4ac454e08314df50ef22b1b6feaad30e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-22 16:14:39</sys_updated_on>
+        <sys_updated_on>2026-11-23 07:27:51</sys_updated_on>
         <template><![CDATA[<div class="hotel-booking-widget">
 
   <!-- Page Banner -->
@@ -688,10 +740,13 @@
         <h2 class="form-title">Reservation Details</h2>
         <p class="form-sub">Fill in your information below to reserve your room.</p>
 
-        <!-- User Authentication Status Banner -->
+        <!-- User Status Banner (ITEM 13 FIX: No empty brackets if user has no email) -->
         <div class="user-status-banner" ng-if="c.data.isLoggedIn">
           <span>✓</span>
-          <div>Booking as registered user: <strong>{{c.data.userName}}</strong> ({{c.data.userEmail}})</div>
+          <div>
+            Booking as registered user: <strong>{{c.data.userName}}</strong>
+            <span ng-if="c.data.userEmail"> ({{c.data.userEmail}})</span>
+          </div>
         </div>
         <div class="user-status-banner guest" ng-if="!c.data.isLoggedIn">
           <span>ℹ</span>
@@ -715,7 +770,7 @@
         <form>
           <div class="form-grid">
             
-            <!-- Guest details (auto-filled if logged in, editable if guest) -->
+            <!-- Guest details -->
             <div class="field">
               <label for="gname">Guest Name <span class="req">*</span></label>
               <input id="gname" type="text" placeholder="Full name" ng-model="c.data.guestName" ng-disabled="c.data.isLoggedIn" required>
@@ -725,19 +780,17 @@
               <input id="gemail" type="email" placeholder="you@example.com" ng-model="c.data.guestEmail" ng-disabled="c.data.isLoggedIn" required>
             </div>
 
-            <!-- Room Dropdown (Fixed with ng-options) -->
+            <!-- Room Dropdown (ITEM 11 FIX: "Max 1 guest" vs "Max 2 guests") -->
             <div class="field full">
               <label for="room">Select Room <span class="req">*</span></label>
               <select id="room" 
                       ng-model="c.data.selectedRoom" 
-                      ng-options="r.sys_id as (r.name + ' — ' + r.type + ' · $' + r.rate + '/night (Max ' + r.capacity + ' guests)') for r in c.data.rooms" 
+                      ng-options="r.sys_id as (r.name + ' — ' + r.type + ' · $' + r.rate + '/night (Max ' + r.capacity + ' ' + (r.capacity == 1 ? 'guest' : 'guests') + ')') for r in c.data.rooms" 
                       ng-change="c.onFormChange()" 
                       required>
                 <option value="">-- Choose a room --</option>
               </select>
             </div>
-
-            <!-- Role 2: Room Reservation Booking Engine - Nico John G. Colo -->
 
             <!-- Dates -->
             <div class="field">
@@ -759,7 +812,7 @@
               <input id="ch" type="number" min="0" max="10" ng-model="c.data.children" ng-change="c.onGuestCountChange()">
             </div>
 
-            <!-- Submit Button -->
+            <!-- ITEM 10: Single primary action button -->
             <div class="field full" style="margin-top: 14px;">
               <button type="button" class="btn btn-green btn-block" 
                       ng-click="c.openConfirmModal()" 
@@ -772,7 +825,7 @@
         </form>
       </div>
 
-      <!-- RIGHT: Sticky Estimate Summary Card -->
+      <!-- RIGHT: Sticky Estimate Summary Card (ITEM 10: Duplicate button removed!) -->
       <aside class="summary">
         <span class="eyebrow">Estimate</span>
         <h3>Booking Summary</h3>
@@ -781,36 +834,48 @@
           <span>Room</span>
           <strong>{{c.getSelectedRoomName() || 'None selected'}}</strong>
         </div>
+
+        <!-- ITEM 13 FIX: When unavailable, shows "—" instead of calculating nights -->
         <div class="summary-row">
           <span>Nights</span>
-          <strong>{{c.data.nights || 0}}</strong>
+          <strong ng-if="c.data.isAvailable && c.data.nights > 0">{{c.data.nights}}</strong>
+          <strong ng-if="!c.data.isAvailable && c.data.selectedRoom && c.data.checkIn && c.data.checkOut">—</strong>
+          <strong ng-if="!c.data.selectedRoom || !c.data.checkIn || !c.data.checkOut">0</strong>
         </div>
-        <div class="summary-row">
+
+        <div class="summary-row" ng-if="c.data.selectedRoom">
           <span>Base Rate</span>
           <strong>${{c.getSelectedRoomRate()}} / night</strong>
         </div>
-        <div class="summary-row" ng-if="c.data.isAvailable && c.data.nights > 0">
+
+        <!-- Availability Badge (ITEM 13 FIX: Red badge when unavailable) -->
+        <div class="summary-row" ng-if="c.data.selectedRoom && c.data.checkIn && c.data.checkOut">
           <span>Availability</span>
-          <span class="badge available">Available</span>
+          <span class="badge available" ng-if="c.data.isAvailable">Available</span>
+          <span class="badge unavailable" ng-if="!c.data.isAvailable">Unavailable</span>
         </div>
 
+        <!-- ITEM 12 FIX: Shows dedicated discount line when discount applies -->
+        <div class="summary-row discount-row" ng-if="c.data.isAvailable && c.data.discountAmount > 0">
+          <span>Calendar Discount</span>
+          <strong class="discount-val">-{{c.data.discountAmountDisplay}}</strong>
+        </div>
+
+        <!-- ITEM 13 FIX: Shows "Unavailable" instead of $0.00 when room is booked -->
         <div class="summary-total">
           <span>Estimated Total</span>
-          <strong>${{c.data.estimatedTotal ? (c.data.estimatedTotal | number:2) : '0.00'}}</strong>
+          <strong ng-if="c.data.isAvailable">${{c.data.estimatedTotal ? (c.data.estimatedTotal | number:2) : '0.00'}}</strong>
+          <strong class="unavail-total" ng-if="!c.data.isAvailable && c.data.selectedRoom && c.data.checkIn && c.data.checkOut">Unavailable</strong>
+          <strong ng-if="!c.data.selectedRoom || !c.data.checkIn || !c.data.checkOut">$0.00</strong>
         </div>
 
-        <button type="button" class="btn btn-sand btn-block" 
-                ng-click="c.openConfirmModal()" 
-                ng-disabled="!c.canReview()">
-          Preview & Book
-        </button>
         <p class="note">This estimate is calculated automatically by the hotel system factoring in dates and active calendar discounts.</p>
       </aside>
 
     </div>
   </main>
 
-  <!-- CUSTOM CONFIRMATION & ESTIMATE MODAL (Popup) -->
+  <!-- CUSTOM CONFIRMATION MODAL -->
   <div class="custom-modal-backdrop" ng-if="c.showModal">
     <div class="custom-modal">
       
@@ -831,6 +896,10 @@
         <div class="summary-row dark">
           <span>Dates</span>
           <strong>{{c.data.checkIn}} to {{c.data.checkOut}}</strong>
+        </div>
+        <div class="summary-row dark" ng-if="c.data.discountAmount > 0">
+          <span>Discount Applied</span>
+          <strong class="discount-val">-{{c.data.discountAmountDisplay}}</strong>
         </div>
 
         <p class="dialog-note">Cancellation policy: Cancellations are only permitted 72 hours before check-in.</p>
