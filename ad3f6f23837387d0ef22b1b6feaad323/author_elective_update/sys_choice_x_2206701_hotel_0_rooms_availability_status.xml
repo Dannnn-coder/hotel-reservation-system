@@ -6,6 +6,7 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2026-10-21 11:23:24</sys_created_on>
+            <sys_id>c46746a347acd75048c9e481e36d4392</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>availability_status</sys_name>
             <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -29,6 +30,7 @@
             <sys_created_on>2026-10-21 11:23:24</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>994494a047309f5048c9e481e36d437c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:23:24</sys_updated_on>
@@ -48,6 +50,7 @@
             <sys_created_on>2026-10-21 11:23:24</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>514494a047309f5048c9e481e36d437f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:23:24</sys_updated_on>
@@ -67,6 +70,7 @@
             <sys_created_on>2026-10-21 11:23:24</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>194494a047309f5048c9e481e36d4380</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:23:24</sys_updated_on>
@@ -86,6 +90,7 @@
             <sys_created_on>2026-10-21 11:23:24</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>dd4494a047309f5048c9e481e36d4381</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:23:24</sys_updated_on>

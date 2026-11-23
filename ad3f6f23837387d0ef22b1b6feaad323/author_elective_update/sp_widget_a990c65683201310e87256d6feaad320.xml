@@ -76,7 +76,6 @@
         <file_path/>
         <instance_id>28d47e6ffb9c539c1feef633beefdce3</instance_id>
         <instance_name>dev477301</instance_name>
-        <merge_base/>
         <name>sp_widget_a990c65683201310e87256d6feaad320</name>
         <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[api.controller=function($window) {
     var c = this;
@@ -134,7 +133,7 @@
         <update_guid_history>8bbe2aa653a09310c80f34a82d4e211c:-1107900974,160de6e291a093100c2be2edc63b6ad6:584962958,a15ca2a26ea093102afd625500b40a83:935859383,a90ce662cba09310edf1f188d93f0ad3:-304370918,024b22227aa093109b5b1824fb8d38a3:679186166,807a66ae0560931086158b0c2ce630e1:-1694416877,aa29aaead76093102f66c99cf8193aef:64400772,e8a7ae2a34609310ea9d3c820d2adfc9:-755416192,5923ce1e1f20131071166bf721163703:110173281,78b3069e12201310570329bb8865b2ef:-1968972587,5923ce1e1f20131071166bf721163703:110173281,fed0c296b62013100306d144275982b5:-728087314</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="Hotel Staff Redirect">4806a057832c1310e87256d6feaad391</sys_audit_delete>
+        <sys_audit_delete display_value="">4806a057832c1310e87256d6feaad391</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-19 11:01:08</sys_created_on>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role_contains">
     <sys_user_role_contains action="INSERT_OR_UPDATE">
         <contains display_value="x_2206701_hotel_0.receptionist" name="x_2206701_hotel_0.receptionist">039b19ba83841f109231f4c6feaad381</contains>
-        <role display_value="x_2206701_hotel_0.administator" name="x_2206701_hotel_0.administator">753f6f23837387d0ef22b1b6feaad342</role>
+        <role display_value="x_2206701_hotel_0.administrator" name="x_2206701_hotel_0.administrator">753f6f23837387d0ef22b1b6feaad342</role>
         <sys_class_name>sys_user_role_contains</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-24 05:13:57</sys_created_on>

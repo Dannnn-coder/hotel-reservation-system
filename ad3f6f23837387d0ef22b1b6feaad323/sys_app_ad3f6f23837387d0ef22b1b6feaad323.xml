@@ -17,12 +17,14 @@
         <menu/>
         <name>Hotel Reservation System</name>
         <package_json/>
+        <package_resolver_version/>
         <private>false</private>
         <restrict_table_access>false</restrict_table_access>
         <runtime_access_tracking>permissive</runtime_access_tracking>
         <scope>x_2206701_hotel_0</scope>
         <scoped_administration>false</scoped_administration>
         <short_description>A Hotel Reservation System </short_description>
+        <sn_managed>false</sn_managed>
         <source>x_2206701_hotel_0</source>
         <store_correlation_id/>
         <store_url/>

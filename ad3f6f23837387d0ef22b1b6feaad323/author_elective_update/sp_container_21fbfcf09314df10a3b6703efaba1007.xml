@@ -52,7 +52,7 @@
         <update_guid_history>fa87453c1a54df103997c4e98849eee9:-752763445,99d64db84354df10568ad7055c714ea9:651068365,2056c9781f54df10e087efb70412d2bd:-752763445,1275c9f41854df10a401f6436da52ba9:-1497031476,e774c9747e54df1044d0b87f33dfbd21:2053667789,575385f0fd54df105efc328547428923:724851437,65d041bc0514df10d22c507ed3537b84:-576286226,29fbfcf02e14df10915ef158d746a209:-1877423889</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="Hotel Reservation Home Page - Container 9">6f87853c9354df10a3b6703efaba1001</sys_audit_delete>
+        <sys_audit_delete display_value="">6f87853c9354df10a3b6703efaba1001</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:47:13</sys_created_on>
