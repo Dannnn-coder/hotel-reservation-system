@@ -4,13 +4,13 @@
             <element>number</element>
             <position>0</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:21:39</sys_created_on>
-            <sys_id>05f8322bc32813106869564ed4013135</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>d0ab7cecc33013106869564ed40131b6</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:21:39</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -18,83 +18,97 @@
             <element>sports_activity</element>
             <position>1</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:29:57</sys_created_on>
-            <sys_id>a2dafeebc32813106869564ed4013136</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>d4ab7cecc33013106869564ed40131b7</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:29:57</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>room_reservation</element>
+            <position>2</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>90ab7cecc33013106869564ed40131b8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>registered_user</element>
-            <position>2</position>
+            <position>3</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:31:24</sys_created_on>
-            <sys_id>eb2bf62fc32813106869564ed40131d4</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>5cab7cecc33013106869564ed40131b8</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:31:24</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>guest_name</element>
-            <position>3</position>
+            <position>4</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:33:28</sys_created_on>
-            <sys_id>4eab3a6fc32813106869564ed4013169</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>18ab7cecc33013106869564ed40131b9</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:33:28</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>guest_email</element>
-            <position>4</position>
+            <position>5</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:34:44</sys_created_on>
-            <sys_id>28fb72afc32813106869564ed4013133</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>d0ab7cecc33013106869564ed40131ba</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:34:44</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>rate</element>
-            <position>5</position>
+            <position>6</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:35:50</sys_created_on>
-            <sys_id>a83c7aafc32813106869564ed40131b7</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>9cab7cecc33013106869564ed40131ba</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:35:50</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>booking_status</element>
-            <position>6</position>
+            <position>7</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2026-11-20 16:37:09</sys_created_on>
-            <sys_id>888c36efc32813106869564ed401311c</sys_id>
+            <sys_created_on>2026-11-23 09:48:01</sys_created_on>
+            <sys_id>58ab7cecc33013106869564ed40131bb</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_2206701_hotel_0_sports_bookings" sys_domain="global" view="Default view">c1f8322bc32813106869564ed401312e</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2026-11-20 16:37:09</sys_updated_on>
+            <sys_updated_on>2026-11-23 09:48:01</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

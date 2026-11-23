@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="20f8fee7c32813106869564ed4013193" label="Sports Bookings" max_length="40" name="x_2206701_hotel_0_sports_bookings" type="collection">
         <element label="Sports activity" mandatory="true" max_length="32" name="sports_activity" reference="x_2206701_hotel_0_sports_activities" type="reference"/>
+        <element label="Room Reservation" max_length="32" name="room_reservation" reference="x_2206701_hotel_0_scheduled_reservations" type="reference"/>
         <element label="Rate" max_length="20" name="rate" read_only="true" read_only_option="display_read_only" type="currency"/>
         <element label="Guest email" mandatory="true" max_length="254" name="guest_email" type="string"/>
         <element label="Registered user" max_length="32" name="registered_user" reference="x_2206701_hotel_0_users" type="reference"/>
@@ -17,6 +18,9 @@
             <element name="registered_user"/>
         </index>
         <index name="index2">
+            <element name="room_reservation"/>
+        </index>
+        <index name="index3">
             <element name="sports_activity"/>
         </index>
     </element>
