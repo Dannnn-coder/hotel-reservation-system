@@ -28,32 +28,46 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-
     var ru = new x_2206701_hotel_0.ReservationUtils();
+    var pu = new x_2206701_hotel_0.PricingUtils();
 
+    var roomId = current.getValue('room');
     var checkIn = current.getValue('check_in_date');
     var checkOut = current.getValue('check_out_date');
 
-    // Auto-calculate number of days + total when both dates are set
+    var status = (current.getValue('reservation_status') || 'pending').toLowerCase();
+    var isActiveStatus = (status !== 'cancelled' && status !== 'closed' && status !== 'checked_out');
+    if (roomId && isActiveStatus) {
+        if (pu.isRoomUnderMaintenance(roomId)) {
+            gs.addErrorMessage('This room is currently under maintenance and cannot be booked.');
+            current.setAbortAction(true);
+            return;
+        }
+        if (checkIn && checkOut && (current.isNewRecord() || current.room.changes() || current.check_in_date.changes() || current.check_out_date.changes())) {
+            var excludeId = current.isNewRecord() ? '' : current.getUniqueValue();
+            var avail = pu.isRoomAvailable(roomId, checkIn, checkOut, excludeId);
+            if (!avail.available) {
+                gs.addErrorMessage(avail.reason);
+                current.setAbortAction(true);
+                return;
+            }
+        }
+    }
+
     if (checkIn && checkOut) {
         var nights = ru.calculateDays(checkIn, checkOut);
         current.setValue('number_of_days', nights);
-
-        // Total from Role 4 (Cauban)'s PricingUtils, applying per-night
-        // event/holiday discounts from the Calendar Days table.
-        var total = new x_2206701_hotel_0.PricingUtils().calculateRoomTotal(current.getValue('room'), nights, checkIn);
+        var total = pu.calculateRoomTotal(roomId, nights, checkIn);
         current.setValue('total_payment', total);
     }
-
-})(current, previous);
-]]></script>
+})(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-24 09:11:27</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>39d25276c3c41f50709de04bb00131fb</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Calculate Reservation Days and Total</sys_name>
         <sys_overrides/>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -61,7 +75,7 @@
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sys_script_39d25276c3c41f50709de04bb00131fb</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-10-24 09:11:27</sys_updated_on>
+        <sys_updated_on>2026-11-23 10:16:55</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
