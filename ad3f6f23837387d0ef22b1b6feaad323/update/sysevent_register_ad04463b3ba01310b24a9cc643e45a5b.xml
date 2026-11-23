@@ -5,7 +5,6 @@
         <description/>
         <event_name>x_2206701_hotel_0.reservation.changed</event_name>
         <fired_by>Business Rule: Notify Receptionists on Reservation Change</fired_by>
-        <preserve_null_parm1>false</preserve_null_parm1>
         <priority>100</priority>
         <queue/>
         <suffix>reservation.changed</suffix>
