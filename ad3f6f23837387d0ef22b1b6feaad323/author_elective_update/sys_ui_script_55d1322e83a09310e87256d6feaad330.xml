@@ -48,7 +48,6 @@
         <file_path/>
         <instance_id>28d47e6ffb9c539c1feef633beefdce3</instance_id>
         <instance_name>dev477301</instance_name>
-        <merge_base/>
         <name>sys_ui_script_55d1322e83a09310e87256d6feaad330</name>
         <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_script"&gt;&lt;sys_ui_script action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;description/&gt;&lt;global&gt;false&lt;/global&gt;&lt;ignore_in_now_experience&gt;false&lt;/ignore_in_now_experience&gt;&lt;name&gt;x_2206701_hotel_0.Hotel Portal Auto Redi&lt;/name&gt;&lt;script&gt;&lt;![CDATA[addLoadEvent(function() {
     // Check if the user is logged in

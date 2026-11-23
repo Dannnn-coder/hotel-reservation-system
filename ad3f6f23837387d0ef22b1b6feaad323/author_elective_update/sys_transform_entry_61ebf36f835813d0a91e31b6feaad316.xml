@@ -37,7 +37,6 @@
         <file_path/>
         <instance_id>7a979a8c9338d790611eddd548373c06</instance_id>
         <instance_name>dev491751</instance_name>
-        <merge_base/>
         <name>sys_transform_entry_61ebf36f835813d0a91e31b6feaad316</name>
         <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_transform_entry"&gt;
     &lt;sys_transform_entry action="INSERT_OR_UPDATE"&gt;

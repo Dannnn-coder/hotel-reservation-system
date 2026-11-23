@@ -6,6 +6,7 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
+            <sys_id>c86746a347acd75048c9e481e36d4395</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>room_type</sys_name>
             <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
@@ -29,6 +30,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>ae0ce7d847f85f5048c9e481e36d4359</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -48,6 +50,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>660ce7d847f85f5048c9e481e36d435b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -67,6 +70,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>2e0ce7d847f85f5048c9e481e36d435c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -86,6 +90,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>e20ce7d847f85f5048c9e481e36d435e</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -105,6 +110,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>aa0ce7d847f85f5048c9e481e36d435f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -124,6 +130,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>620ce7d847f85f5048c9e481e36d4361</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -143,6 +150,7 @@
             <sys_created_on>2026-10-21 11:05:58</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>2a0ce7d847f85f5048c9e481e36d4362</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:58</sys_updated_on>
@@ -162,6 +170,7 @@
             <sys_created_on>2026-10-21 11:05:59</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>ee0ce7d847f85f5048c9e481e36d4363</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2026-10-21 11:05:59</sys_updated_on>
