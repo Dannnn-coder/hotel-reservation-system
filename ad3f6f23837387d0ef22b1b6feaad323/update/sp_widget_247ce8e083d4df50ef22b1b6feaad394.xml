@@ -23,18 +23,24 @@
   c.onSelectActivity = function(act) {
     c.selectedActivity = act;
     c.data.selectedActivityId = act.sys_id;
-    c.data.ruleWarning = '';
+    c.data.bookingError = '';
+  };
+
+  c.onInputChange = function() {
     c.data.bookingError = '';
   };
 
   c.canSubmit = function() {
-    return c.data.selectedActivityId && 
-           c.data.reservationNumber && 
-           c.data.guestName && 
-           c.data.guestEmail;
+    var hasAct = !!c.data.selectedActivityId;
+    var hasRes = !!(c.data.reservationNumber && c.data.reservationNumber.trim());
+    if (c.data.isLoggedIn) {
+      return hasAct && hasRes;
+    }
+    return hasAct && hasRes && !!c.data.guestName && !!c.data.guestEmail;
   };
 
   c.openConfirmModal = function() {
+    c.data.bookingError = '';
     if (c.canSubmit()) {
       c.showModal = true;
       c.bookingConfirmed = false;
@@ -48,12 +54,13 @@
   c.confirmBooking = function() {
     c.isSubmitting = true;
     c.data.action = 'bookActivity';
+
     c.server.update().then(function() {
       c.isSubmitting = false;
       if (c.data.bookingSuccess) {
         c.bookingConfirmed = true;
       } else {
-        c.showModal = false;
+        c.showModal = false; // Closes popup and shows friendly alert on form!
       }
     });
   };
@@ -63,7 +70,6 @@
     c.bookingConfirmed = false;
     c.data.reservationNumber = '';
     c.data.bookingError = '';
-    c.data.ruleWarning = '';
   };
 };]]></client_script>
         <controller_as>c</controller_as>
@@ -99,11 +105,11 @@
 }&#13;
 &#13;
 .hotel-sports-widget .eyebrow {&#13;
-  font-size: .72rem;&#13;
+  font-size: .75rem;&#13;
   letter-spacing: .22em;&#13;
   text-transform: uppercase;&#13;
   color: var(--muted);&#13;
-  font-weight: 500;&#13;
+  font-weight: 600;&#13;
   display: block;&#13;
   margin-bottom: 6px;&#13;
 }&#13;
@@ -115,7 +121,7 @@
   text-align: center;&#13;
 }&#13;
 .hotel-sports-widget .page-banner h1 { color: var(--white); font-size: 2.8rem; margin: 0; }&#13;
-.hotel-sports-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1rem; }&#13;
+.hotel-sports-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1.05rem; }&#13;
 .hotel-sports-widget .page-banner .eyebrow { color: var(--sand); }&#13;
 &#13;
 .hotel-sports-widget .booking-section { padding: 40px 15px; }&#13;
@@ -139,17 +145,17 @@
   padding: 34px;&#13;
 }&#13;
 &#13;
-.hotel-sports-widget .form-title { font-size: 2rem; margin: 0 0 4px; }&#13;
-.hotel-sports-widget .form-sub { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }&#13;
+.hotel-sports-widget .form-title { font-size: 2.1rem; margin: 0 0 4px; }&#13;
+.hotel-sports-widget .form-sub { color: var(--muted); font-size: .95rem; margin-bottom: 24px; }&#13;
 &#13;
 .hotel-sports-widget .user-status-banner {&#13;
   background: var(--green-soft);&#13;
   border: 1px solid #c2d6c6;&#13;
   color: var(--green);&#13;
-  padding: 10px 16px;&#13;
+  padding: 12px 16px;&#13;
   border-radius: var(--radius);&#13;
   margin-bottom: 20px;&#13;
-  font-size: .88rem;&#13;
+  font-size: .95rem;&#13;
   display: flex;&#13;
   gap: 10px;&#13;
   align-items: center;&#13;
@@ -172,7 +178,7 @@
   align-items: center;&#13;
   gap: 18px;&#13;
   padding: 16px 20px;&#13;
-  border: 1px solid var(--line);&#13;
+  border: 1.5px solid var(--line);&#13;
   border-radius: var(--radius);&#13;
   background: var(--cream);&#13;
   cursor: pointer;&#13;
@@ -202,12 +208,12 @@
   margin: 0 0 4px;&#13;
 }&#13;
 .hotel-sports-widget .activity-card .when {&#13;
-  font-size: .82rem;&#13;
+  font-size: .88rem;&#13;
   color: var(--muted);&#13;
 }&#13;
 .hotel-sports-widget .activity-card .rate {&#13;
   font-family: var(--serif);&#13;
-  font-size: 1.5rem;&#13;
+  font-size: 1.6rem;&#13;
   color: var(--green);&#13;
   font-weight: 700;&#13;
 }&#13;
@@ -228,7 +234,7 @@
 }&#13;
 .hotel-sports-widget .field.full { grid-column: 1 / -1; }&#13;
 .hotel-sports-widget .field label {&#13;
-  font-size: .72rem;&#13;
+  font-size: .8rem;&#13;
   letter-spacing: .12em;&#13;
   text-transform: uppercase;&#13;
   font-weight: 600;&#13;
@@ -236,12 +242,16 @@
 }&#13;
 .hotel-sports-widget .field label .req { color: #b4483a; }&#13;
 .hotel-sports-widget .field input {&#13;
-  padding: 11px 14px;&#13;
+  height: 48px !important;&#13;
+  line-height: 1.4 !important;&#13;
+  padding: 10px 14px !important;&#13;
   border: 1px solid var(--line);&#13;
   border-radius: var(--radius);&#13;
   background: var(--cream);&#13;
-  font-size: .92rem;&#13;
+  font-size: 1rem !important;&#13;
+  color: var(--text);&#13;
   outline: none;&#13;
+  box-sizing: border-box;&#13;
   transition: .2s;&#13;
 }&#13;
 .hotel-sports-widget .field input:focus {&#13;
@@ -249,14 +259,14 @@
   background: var(--white);&#13;
   box-shadow: 0 0 0 3px rgba(230,199,156,.3);&#13;
 }&#13;
-.hotel-sports-widget .field small { color: var(--muted); font-size: .78rem; }&#13;
+.hotel-sports-widget .field small { color: var(--muted); font-size: .82rem; }&#13;
 &#13;
 /* Buttons */&#13;
 .hotel-sports-widget .btn {&#13;
   display: inline-block;&#13;
-  padding: 13px 24px;&#13;
+  padding: 15px 24px;&#13;
   border-radius: var(--radius);&#13;
-  font-size: .78rem;&#13;
+  font-size: .85rem;&#13;
   letter-spacing: .12em;&#13;
   text-transform: uppercase;&#13;
   font-weight: 600;&#13;
@@ -276,13 +286,6 @@
 .hotel-sports-widget .btn-green:hover:not(:disabled) {&#13;
   background: var(--green-dark);&#13;
   transform: translateY(-2px);&#13;
-}&#13;
-.hotel-sports-widget .btn-sand {&#13;
-  background: var(--sand);&#13;
-  color: var(--green);&#13;
-}&#13;
-.hotel-sports-widget .btn-sand:hover:not(:disabled) {&#13;
-  background: var(--sand-dark);&#13;
 }&#13;
 .hotel-sports-widget .btn-outline {&#13;
   border-color: var(--green);&#13;
@@ -304,15 +307,15 @@
   position: sticky;&#13;
   top: 30px;&#13;
 }&#13;
-.hotel-sports-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.5rem; }&#13;
+.hotel-sports-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.6rem; }&#13;
 .hotel-sports-widget .summary .eyebrow { color: var(--sand); }&#13;
 &#13;
 .hotel-sports-widget .summary-row {&#13;
   display: flex;&#13;
   justify-content: space-between;&#13;
-  padding: 10px 0;&#13;
+  padding: 11px 0;&#13;
   border-bottom: 1px solid rgba(255,255,255,.14);&#13;
-  font-size: .88rem;&#13;
+  font-size: .95rem;&#13;
   color: rgba(255,255,255,.8);&#13;
 }&#13;
 .hotel-sports-widget .summary-row strong { color: var(--white); font-weight: 600; }&#13;
@@ -323,11 +326,11 @@
   align-items: baseline;&#13;
   margin: 22px 0 16px;&#13;
 }&#13;
-.hotel-sports-widget .summary-total span { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
-.hotel-sports-widget .summary-total strong { font-family: var(--serif); font-size: 2.2rem; color: var(--white); }&#13;
+.hotel-sports-widget .summary-total span { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
+.hotel-sports-widget .summary-total strong { font-family: var(--serif); font-size: 2.4rem; color: var(--white); }&#13;
 &#13;
 .hotel-sports-widget .summary .note {&#13;
-  font-size: .75rem;&#13;
+  font-size: .78rem;&#13;
   color: rgba(255,255,255,.65);&#13;
   margin-top: 14px;&#13;
   line-height: 1.4;&#13;
@@ -337,7 +340,7 @@
 .hotel-sports-widget .alert {&#13;
   padding: 12px 16px;&#13;
   border-radius: var(--radius);&#13;
-  font-size: .86rem;&#13;
+  font-size: .9rem;&#13;
   margin-bottom: 18px;&#13;
   display: flex;&#13;
   gap: 10px;&#13;
@@ -349,10 +352,10 @@
   border-color: var(--sand-dark);&#13;
   color: #7a5a1c;&#13;
 }&#13;
-.hotel-sports-widget .alert.error {&#13;
-  background: #f8e4e0;&#13;
-  border-color: #b4483a;&#13;
-  color: #8a3a2f;&#13;
+.hotel-sports-widget .alert.info {&#13;
+  background: var(--green-soft);&#13;
+  border-color: var(--green);&#13;
+  color: var(--green);&#13;
 }&#13;
 &#13;
 /* Modal */&#13;
@@ -389,7 +392,7 @@
 .hotel-sports-widget .summary-row.dark strong { color: var(--text); }&#13;
 .hotel-sports-widget .dialog-note {&#13;
   color: var(--muted);&#13;
-  font-size: .82rem;&#13;
+  font-size: .85rem;&#13;
   margin-top: 16px;&#13;
 }&#13;
 .hotel-sports-widget .dialog-actions {&#13;
@@ -410,11 +413,11 @@
   text-transform: uppercase;&#13;
   letter-spacing: .12em;&#13;
   color: var(--muted);&#13;
-  font-size: .7rem;&#13;
+  font-size: .75rem;&#13;
 }&#13;
 .hotel-sports-widget .res-num-box .res-num {&#13;
   font-family: var(--serif);&#13;
-  font-size: 2rem;&#13;
+  font-size: 2.2rem;&#13;
   font-weight: 700;&#13;
   color: var(--green);&#13;
   margin-top: 4px;&#13;
@@ -438,7 +441,7 @@
   data.isLoggedIn = gs.isLoggedIn();
   data.userId = gs.getUserID();
   data.userName = gs.getUserDisplayName();
-  data.userEmail = gs.getUser().getEmail();
+  data.userEmail = gs.getUser().getEmail() || '';
 
   // 1. Fetch Sports Activities from Database ONLY
   data.activities = [];
@@ -448,75 +451,121 @@
   actGr.orderBy('rate');
   actGr.query();
   while (actGr.next()) {
+    var rawDate = actGr.getDisplayValue('activity_date_and_time') || actGr.getValue('activity_date_and_time') || '';
+    
+    // ITEM 14 FIX: Strip seconds (e.g. "2026-11-08 14:00")
+    var cleanSchedule = rawDate;
+    if (cleanSchedule && cleanSchedule.length >= 16) {
+      cleanSchedule = cleanSchedule.substring(0, 16);
+    }
+
     data.activities.push({
       sys_id: actGr.getUniqueValue(),
       name: actGr.getValue('activity_name') || actGr.getDisplayValue(),
       rate: parseFloat(actGr.getValue('rate')) || 0,
-      schedule: actGr.getDisplayValue('activity_date_and_time') || actGr.getValue('activity_date_and_time') || 'Daily Session · Available Today'
+      schedule: cleanSchedule || 'Daily Session'
     });
   }
 
-  // ✅ FIX (Bug #11): Removed hardcoded fake activities.
-  // Show "no activities" message if table is empty instead.
+  // ITEM 14 FIX: Message when no activities exist
   if (data.activities.length === 0) {
     data.noActivities = true;
   }
 
   // 2. Handle Booking Action
   if (input && input.action === 'bookActivity') {
-    var pricingUtil = new x_2206701_hotel_0.PricingUtils();
-
-    // Check existing active sports bookings for this guest/user (1 activity at a time rule)
-    var activityList = [input.selectedActivityId];
-    var existingGr = new GlideRecord('x_2206701_hotel_0_sports_bookings');
-    existingGr.addQuery('booking_status', '!=', 'cancelled');
-    existingGr.addQuery('booking_status', '!=', 'completed');
-    if (gs.isLoggedIn() && input.guestEmail) {
-      var qc = existingGr.addQuery('registered_user', gs.getUserID());
-      qc.addOrCondition('guest_email', input.guestEmail);
-    } else if (gs.isLoggedIn()) {
-      existingGr.addQuery('registered_user', gs.getUserID());
-    } else if (input.guestEmail) {
-      existingGr.addQuery('guest_email', input.guestEmail);
-    }
-    existingGr.query();
-    if (existingGr.next()) {
-      activityList.push(existingGr.getValue('sports_activity') || existingGr.getUniqueValue());
-    }
-
-    // Enforce Rule: Only one sports activity per booking / active stay
-    var singleCheck = pricingUtil.validateSingleSportsActivity(activityList);
-    if (!singleCheck.valid) {
+    var resNumber = (input.reservationNumber || '').trim();
+    if (!resNumber) {
       data.bookingSuccess = false;
-      data.bookingError = singleCheck.message;
-      data.ruleWarning = singleCheck.message;
+      data.bookingError = 'Please enter your room reservation number.';
       return;
     }
 
-    // Call Cauban's Pricing calculation
-    var actPricing = pricingUtil.calculateSportsActivity(input.selectedActivityId);
+    // A. CHECK IF ROOM RESERVATION EXISTS IN DATABASE
+    var grRes = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+    grRes.addQuery('number', resNumber);
+    grRes.query();
 
-    // ✅ FIX (PR #20): Save to real Sports Bookings table instead of fake ACT- reference
+    var validResFound = false;
+    var resSysId = '';
+    var resDisplayNum = resNumber;
+    var guestName = input.guestName || data.userName;
+    var guestEmail = input.guestEmail || data.userEmail;
+    var resUserId = data.userId;
+
+    if (grRes.next()) {
+      validResFound = true;
+      resSysId = grRes.getUniqueValue();
+      resDisplayNum = grRes.getValue('number') || resNumber;
+      guestName = grRes.getValue('guest_name') || guestName;
+      guestEmail = grRes.getValue('guest_email') || guestEmail;
+      resUserId = grRes.getValue('registered_user') || grRes.getValue('user') || resUserId;
+    } else {
+      var grResSys = new GlideRecord('x_2206701_hotel_0_scheduled_reservations');
+      if (grResSys.get(resNumber)) {
+        validResFound = true;
+        resSysId = grResSys.getUniqueValue();
+        resDisplayNum = grResSys.getValue('number') || resNumber;
+        guestName = grResSys.getValue('guest_name') || guestName;
+        guestEmail = grResSys.getValue('guest_email') || guestEmail;
+        resUserId = grResSys.getValue('registered_user') || grResSys.getValue('user') || resUserId;
+      }
+    }
+
+    // REJECT FAKE RESERVATION ID!
+    if (!validResFound) {
+      data.bookingSuccess = false;
+      data.bookingError = 'No active room reservation found for "' + resNumber + '". A valid room reservation is required to book sports activities.';
+      return;
+    }
+
+    // B. ITEM 14 FIX: Check 1-Activity Rule with friendly notice
+    var grCheck = new GlideRecord('x_2206701_hotel_0_sports_bookings');
+    var targetUser = data.userId || resUserId;
+    if (targetUser) {
+      grCheck.addQuery('registered_user', targetUser);
+    } else if (guestEmail) {
+      grCheck.addQuery('guest_email', guestEmail);
+    }
+    grCheck.addQuery('booking_status', '!=', 'cancelled');
+    grCheck.query();
+
+    if (grCheck.next()) {
+      var existingNum = grCheck.getValue('number') || 'existing';
+      data.bookingSuccess = false;
+      // ITEM 14 FIX: Softened, polite language (no harsh "Rule violation")
+      data.bookingError = 'A sports activity is already scheduled for this stay (' + existingNum + '). Only one activity is permitted per booking.';
+      return;
+    }
+
+    // Call Pricing calculation
+    var pricingUtil = new x_2206701_hotel_0.PricingUtils();
+    var actPricing = pricingUtil.calculateSportsActivity(input.selectedActivityId);
+    var confirmedRate = actPricing.ok ? actPricing.rate : 0;
+
+    // C. Save to real Sports Bookings table
     var booking = new GlideRecord('x_2206701_hotel_0_sports_bookings');
     booking.initialize();
     booking.setValue('sports_activity', input.selectedActivityId);
-    booking.setValue('guest_name', input.guestName);
-    booking.setValue('guest_email', input.guestEmail);
-    booking.setValue('rate', actPricing.ok ? actPricing.rate : 0);
+    booking.setValue('guest_name', guestName);
+    booking.setValue('guest_email', guestEmail);
+    booking.setValue('rate', confirmedRate);
     booking.setValue('booking_status', 'booked');
 
-    if (gs.isLoggedIn()) {
-      booking.setValue('registered_user', gs.getUserID());
+    if (targetUser) {
+      booking.setValue('registered_user', targetUser);
     }
 
     var newSysId = booking.insert();
-
     if (newSysId) {
       var saved = new GlideRecord('x_2206701_hotel_0_sports_bookings');
-      saved.get(newSysId);
-      data.bookingSuccess = true;
-      data.activityBookingRef = saved.getValue('number');
-      data.confirmedRate = actPricing.ok ? actPricing.rate : 0;
+      if (saved.get(newSysId)) {
+        data.bookingSuccess = true;
+        data.activityBookingRef = saved.getValue('number') || newSysId;
+      } else {
+        data.bookingSuccess = true;
+        data.activityBookingRef = newSysId;
+      }
     } else {
       data.bookingSuccess = false;
       data.bookingError = 'Booking failed. Please try again.';
@@ -528,14 +577,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 12:15:47</sys_created_on>
         <sys_id>247ce8e083d4df50ef22b1b6feaad394</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Hotel Sports Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_247ce8e083d4df50ef22b1b6feaad394</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-21 13:06:20</sys_updated_on>
+        <sys_updated_on>2026-11-23 07:32:53</sys_updated_on>
         <template><![CDATA[<div class="hotel-sports-widget">
 
   <!-- Page Banner -->
@@ -565,12 +614,14 @@
           <div>Booking as <strong>Guest</strong>.</div>
         </div>
 
-        <!-- Alerts -->
-        <div class="alert warn" ng-if="c.data.ruleWarning">
-          <span>⚠</span>
-          <div>{{c.data.ruleWarning}}</div>
+        <!-- ITEM 14 FIX: Message when no activities exist -->
+        <div class="alert info" ng-if="c.data.noActivities">
+          <span>ℹ</span>
+          <div>No sports activities are currently scheduled. Please check back later.</div>
         </div>
-        <div class="alert error" ng-if="c.data.bookingError">
+
+        <!-- ITEM 14 FIX: Single polite rule / error alert (Shows ONLY ONCE) -->
+        <div class="alert warn" ng-if="c.data.bookingError">
           <span>⚠</span>
           <div>{{c.data.bookingError}}</div>
         </div>
@@ -588,7 +639,8 @@
                      ng-change="c.onSelectActivity(act)">
               <div class="info">
                 <h3>{{act.name}}</h3>
-                <div class="when">]]>📅<![CDATA[ {{act.schedule || 'Daily Session · Available Today'}}</div>
+                <!-- ITEM 14 FIX: Dates show cleanly without seconds -->
+                <div class="when">]]>📅<![CDATA[ {{act.schedule}}</div>
               </div>
               <div class="rate">${{act.rate | number:2}}</div>
             </label>
@@ -598,8 +650,13 @@
           <div class="form-grid" style="margin-top: 24px;">
             <div class="field full">
               <label for="res_num">Room Reservation ID / Number <span class="req">*</span></label>
-              <input id="res_num" type="text" placeholder="e.g. fd05e4248394df50ef22b1b6feaad3ca" ng-model="c.data.reservationNumber" required>
-              <small>Link this activity to your existing room reservation.</small>
+              <!-- ITEM 14 FIX: Placeholder shows e.g. RES0001001 -->
+              <input id="res_num" type="text" 
+                     placeholder="e.g. RES0001001" 
+                     ng-model="c.data.reservationNumber" 
+                     ng-change="c.onInputChange()" 
+                     required>
+              <small>Link this activity to your existing confirmed room reservation.</small>
             </div>
 
             <div class="field" ng-if="!c.data.isLoggedIn">
@@ -611,6 +668,7 @@
               <input id="gemail" type="email" placeholder="you@example.com" ng-model="c.data.guestEmail" required>
             </div>
 
+            <!-- ITEM 10 FIX: Single primary action button -->
             <div class="field full" style="margin-top: 14px;">
               <button type="button" class="btn btn-green btn-block" 
                       ng-click="c.openConfirmModal()" 
@@ -622,7 +680,7 @@
         </form>
       </div>
 
-      <!-- RIGHT: Sticky Summary Card -->
+      <!-- RIGHT: Sticky Summary Card (ITEM 10 FIX: Duplicate button removed!) -->
       <aside class="summary">
         <span class="eyebrow">Selected</span>
         <h3>Activity Summary</h3>
@@ -633,7 +691,7 @@
         </div>
         <div class="summary-row">
           <span>Schedule</span>
-          <strong>{{c.selectedActivity.schedule || 'Flexible'}}</strong>
+          <strong>{{c.selectedActivity.schedule || '—'}}</strong>
         </div>
         <div class="summary-row">
           <span>Rule</span>
@@ -645,11 +703,6 @@
           <strong>${{c.selectedActivity.rate ? (c.selectedActivity.rate | number:2) : '0.00'}}</strong>
         </div>
 
-        <button type="button" class="btn btn-sand btn-block" 
-                ng-click="c.openConfirmModal()" 
-                ng-disabled="!c.canSubmit()">
-          Book Activity
-        </button>
         <p class="note">Rule enforced: Only one sports activity can be scheduled per reservation booking.</p>
       </aside>
 
