@@ -48,6 +48,7 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-23 09:44:03</sys_created_on>
+        <sys_id>30f08dac3b301310b24a9cc643e45ac1</sys_id>
         <sys_name>Room Reservation</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>

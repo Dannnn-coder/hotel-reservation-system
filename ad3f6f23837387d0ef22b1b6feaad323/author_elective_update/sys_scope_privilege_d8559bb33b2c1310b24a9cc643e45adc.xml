@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="DELETE">
+        <operation>execute</operation>
+        <source_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-21 13:04:03</sys_created_on>
+        <sys_id>d8559bb33b2c1310b24a9cc643e45adc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GlideRecord.setWorkflow</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_scope_privilege_d8559bb33b2c1310b24a9cc643e45adc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 13:04:03</sys_updated_on>
+        <target_name>GlideRecord.setWorkflow</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>scriptable</target_type>
+    </sys_scope_privilege>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</application>
+        <file_path/>
+        <instance_id>a3d7690dfb6ffa100921f633beefdc24</instance_id>
+        <instance_name>dev367587</instance_name>
+        <merge_base/>
+        <name>sys_scope_privilege_d8559bb33b2c1310b24a9cc643e45adc</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege"><sys_scope_privilege action="INSERT_OR_UPDATE"><operation>execute</operation><source_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</source_scope><status>allowed</status><sys_class_name>sys_scope_privilege</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-11-21 13:04:03</sys_created_on><sys_id>d8559bb33b2c1310b24a9cc643e45adc</sys_id><sys_mod_count>0</sys_mod_count><sys_name>GlideRecord.setWorkflow</sys_name><sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package><sys_policy/><sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope><sys_update_name>sys_scope_privilege_d8559bb33b2c1310b24a9cc643e45adc</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-11-21 13:04:03</sys_updated_on><target_name>GlideRecord.setWorkflow</target_name><target_scope display_value="Global">global</target_scope><target_type>scriptable</target_type></sys_scope_privilege></record_update>]]></payload>
+        <payload_hash>801643525</payload_hash>
+        <record_name>GlideRecord.setWorkflow</record_name>
+        <reverted_from/>
+        <source>a4e042ff3b601310b24a9cc643e45a77</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-21 13:04:03</sys_created_on>
+        <sys_id>d455d7373b2c1310b24a9cc643e45a34</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a1fe34ea940000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 13:04:03</sys_updated_on>
+        <type>Cross scope privilege</type>
+        <update_guid>9055d7379f2c1310ecf7f18d3b13c933</update_guid>
+        <update_guid_history>9055d7379f2c1310ecf7f18d3b13c933:801643525</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-21 13:05:28</sys_created_on>
+        <sys_db_object display_value="" name="sys_scope_privilege">sys_scope_privilege</sys_db_object>
+        <sys_id>05f9d9405fd0421e82978464a62b2224</sys_id>
+        <sys_metadata>d8559bb33b2c1310b24a9cc643e45adc</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GlideRecord.setWorkflow</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_scope_delete display_value="">37f65ffe085742c4906b1381ece3ee39</sys_scope_delete>
+        <sys_update_name>sys_scope_privilege_d8559bb33b2c1310b24a9cc643e45adc</sys_update_name>
+        <sys_update_version display_value="sys_scope_privilege_d8559bb33b2c1310b24a9cc643e45adc">d455d7373b2c1310b24a9cc643e45a34</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-21 13:05:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

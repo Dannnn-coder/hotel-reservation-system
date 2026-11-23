@@ -5,6 +5,7 @@
         <description>Fires when room details change to notify scheduled guests and copy receptionists.</description>
         <event_name>x_2206701_hotel_0.room.changed</event_name>
         <fired_by>Business Rule: Trigger Room Change Event into the Fired by text box</fired_by>
+        <preserve_null_parm1>false</preserve_null_parm1>
         <priority>100</priority>
         <queue/>
         <suffix>room.changed</suffix>
