@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>GET</http_method>
+        <name>Get room image</name>
+        <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var roomId = request.pathParams.room_id;
+
+    // Only ever serve the photo attached to this room's own "Room image" field
+    var room = new GlideRecord('x_2206701_hotel_0_rooms');
+    if (!roomId || !room.get(roomId)) {
+        response.setStatus(404);
+        return;
+    }
+
+    var attachId = room.getValue('room_image');
+    if (!attachId) {
+        response.setStatus(404);
+        return;
+    }
+
+    var att = new GlideRecord('sys_attachment');
+    if (!att.get(attachId)) {
+        response.setStatus(404);
+        return;
+    }
+
+    // Images only
+    var type = att.getValue('content_type') || '';
+    if (type.indexOf('image/') !== 0) {
+        response.setStatus(404);
+        return;
+    }
+
+    var stream = new GlideSysAttachment().getContentStream(attachId);
+    response.setStatus(200);
+    response.setContentType(type);
+    response.setHeader('Cache-Control', 'public, max-age=300');
+    response.getStreamWriter().writeStream(stream);
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_2206701_hotel_0/hotel_room_images/{room_id}</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/{room_id}</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>false</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-24 07:17:36</sys_created_on>
+        <sys_id>e092ed78c3bc1b507f96b71ed4013119</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Get room image</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sys_ws_operation_e092ed78c3bc1b507f96b71ed4013119</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-24 07:17:36</sys_updated_on>
+        <web_service_definition display_value="Hotel Room Images">aff1ad38c3bc1b507f96b71ed4013112</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

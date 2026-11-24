@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <aria_label/>
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>Sign In - Container 2</name>
+        <order>2</order>
+        <semantic_tag/>
+        <sp_page display_value="hotel_login">4b476db0c3fc1b507f96b71ed4013109</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-24 07:43:19</sys_created_on>
+        <sys_id>9ba82574c3fc1b507f96b71ed401315d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Sign In - Container 2</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_update_name>sp_container_9ba82574c3fc1b507f96b71ed401315d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-24 07:43:27</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</application>
+        <file_path/>
+        <instance_id>ca118e99ff6093dcc812f8e4fc4fd973</instance_id>
+        <instance_name>dev480929</instance_name>
+        <merge_base/>
+        <name>sp_container_9ba82574c3fc1b507f96b71ed401315d</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><aria_label/><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Sign In - Container 2</name><order>2</order><semantic_tag/><sp_page display_value="hotel_login">4b476db0c3fc1b507f96b71ed4013109</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-11-24 07:43:19</sys_created_on><sys_id>9ba82574c3fc1b507f96b71ed401315d</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Sign In - Container 2</sys_name><sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package><sys_policy/><sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope><sys_update_name>sp_container_9ba82574c3fc1b507f96b71ed401315d</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-11-24 07:43:27</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>460198709</payload_hash>
+        <record_name>Sign In - Container 2</record_name>
+        <reverted_from/>
+        <source>7f81a1dec320d7107f96b71ed40131c0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-24 07:43:28</sys_created_on>
+        <sys_id>51b86574c3fc1b507f96b71ed401319c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a20c827d260000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-24 07:43:28</sys_updated_on>
+        <type>Container</type>
+        <update_guid>ddb8657477fc1b501198b355690ba69a</update_guid>
+        <update_guid_history>ddb8657477fc1b501198b355690ba69a:460198709,57a82574ebfc1b50aef8cd6e4dc92ede:-1732451786</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Sign In - Container 2">f6b8a574c3fc1b507f96b71ed401313b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-11-24 07:43:34</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>b1ca613135d14b2c81cb09ad98e23d44</sys_id>
+        <sys_metadata>9ba82574c3fc1b507f96b71ed401315d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Sign In - Container 2</sys_name>
+        <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
+        <sys_scope_delete display_value="">37f65ffe085742c4906b1381ece3ee39</sys_scope_delete>
+        <sys_update_name>sp_container_9ba82574c3fc1b507f96b71ed401315d</sys_update_name>
+        <sys_update_version display_value="sp_container_9ba82574c3fc1b507f96b71ed401315d">51b86574c3fc1b507f96b71ed401319c</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-11-24 07:43:34</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

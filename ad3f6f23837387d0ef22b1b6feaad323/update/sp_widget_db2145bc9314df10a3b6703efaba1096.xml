@@ -209,12 +209,20 @@
         <script><![CDATA[(function() {
     data.rooms = [];
 
-    var gr = new GlideRecordSecure('x_2206701_hotel_0_rooms');
+    var gr = new GlideRecord('x_2206701_hotel_0_rooms');
     gr.orderBy('room_name');
     gr.setLimit(3);
     gr.query();
 
     while (gr.next()) {
+        var image = '';
+
+        // Rooms with a photo get the public image link; the "v" value refreshes it when the record changes
+        if (gr.getValue('room_image')) {
+            var version = new GlideDateTime(gr.getValue('sys_updated_on')).getNumericValue();
+            image = '/api/x_2206701_hotel_0/hotel_room_images/' + gr.getUniqueValue() + '?v=' + version;
+        }
+
         data.rooms.push({
             sys_id: gr.getUniqueValue(),
             name: gr.getDisplayValue('room_name'),
@@ -222,7 +230,7 @@
             capacity: gr.getDisplayValue('capacity'),
             rate: gr.getDisplayValue('rate'),
             availability: gr.getDisplayValue('availability_status'),
-            image: gr.getValue('room_image')
+            image: image
         });
     }
 })();]]></script>
@@ -231,16 +239,15 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:28:35</sys_created_on>
         <sys_id>db2145bc9314df10a3b6703efaba1096</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Hotel Featured Rooms</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_db2145bc9314df10a3b6703efaba1096</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-22 16:35:37</sys_updated_on>
-        <template><![CDATA[
-<section class="featured-rooms">
+        <sys_updated_on>2026-11-24 07:22:59</sys_updated_on>
+        <template><![CDATA[<section class="featured-rooms">
   <div class="rooms-heading">
     <span class="rooms-eyebrow">FIND YOUR PERFECT STAY</span>
     <h2>Featured Rooms</h2>
@@ -250,7 +257,7 @@
   <div class="rooms-grid" ng-if="c.data.rooms.length">
     <article class="room-card" ng-repeat="room in c.data.rooms track by room.sys_id">
       <div class="room-image">
-        <img ng-if="room.image" ng-src="{{room.image + '.iix'}}" alt="{{room.name}}">
+        <img ng-if="room.image" ng-src="{{room.image}}" alt="{{room.name}}">
         <div class="room-image-placeholder" ng-if="!room.image">
           <span>ROOM</span>
         </div>
