@@ -30,7 +30,7 @@ section.page {
         <id>guest_lookup</id>
         <internal>false</internal>
         <omit_watcher>false</omit_watcher>
-        <public>false</public>
+        <public>true</public>
         <roles/>
         <seo_script/>
         <short_description/>
@@ -38,14 +38,14 @@ section.page {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:59:58</sys_created_on>
         <sys_id>1a7a49bc9354df10a3b6703efaba109a</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>guest_lookup</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_page_1a7a49bc9354df10a3b6703efaba109a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-22 16:04:55</sys_updated_on>
+        <sys_updated_on>2026-11-23 16:37:48</sys_updated_on>
         <title>Guest Lookup</title>
         <use_seo_script>false</use_seo_script>
     </sp_page>
