@@ -101,93 +101,107 @@
   };
 };]]></client_script>
         <controller_as>c</controller_as>
-        <css>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap');&#13;
-&#13;
-.hotel-sports-widget {&#13;
-  --green: #1f3a30;&#13;
-  --green-dark: #162a22;&#13;
-  --green-soft: #e8eee9;&#13;
-  --sand: #e6c79c;&#13;
-  --sand-dark: #d4b07c;&#13;
-  --cream: #faf6ef;&#13;
-  --white: #ffffff;&#13;
-  --text: #2a2d29;&#13;
-  --muted: #6f756f;&#13;
-  --line: #e7e1d4;&#13;
-  --radius: 8px;&#13;
-  --shadow: 0 10px 30px rgba(31, 58, 48, .08);&#13;
-  --serif: 'Cormorant Garamond', Georgia, serif;&#13;
-  --sans: 'Inter', system-ui, sans-serif;&#13;
-&#13;
-  font-family: var(--sans);&#13;
-  color: var(--text);&#13;
-  background: var(--cream);&#13;
+        <css>.hotel-sports-widget {&#13;
+  background: #faf6ef;&#13;
   min-height: 100vh;&#13;
+  margin: -20px -15px 0 -15px;&#13;
   padding-bottom: 60px;&#13;
-}&#13;
-&#13;
-.hotel-sports-widget h1, .hotel-sports-widget h2, .hotel-sports-widget h3 {&#13;
-  font-family: var(--serif);&#13;
-  color: var(--green);&#13;
-  font-weight: 600;&#13;
-}&#13;
-&#13;
-.hotel-sports-widget .eyebrow {&#13;
-  font-size: .75rem;&#13;
-  letter-spacing: .22em;&#13;
-  text-transform: uppercase;&#13;
-  color: var(--muted);&#13;
-  font-weight: 600;&#13;
-  display: block;&#13;
-  margin-bottom: 6px;&#13;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;&#13;
+  color: #1a2e26;&#13;
 }&#13;
 &#13;
 .hotel-sports-widget .page-banner {&#13;
-  background: var(--green);&#13;
-  color: var(--white);&#13;
-  padding: 50px 20px;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff;&#13;
+  padding: 55px 20px 50px;&#13;
   text-align: center;&#13;
+  margin-bottom: 40px;&#13;
 }&#13;
-.hotel-sports-widget .page-banner h1 { color: var(--white); font-size: 2.8rem; margin: 0; }&#13;
-.hotel-sports-widget .page-banner p { color: rgba(255,255,255,.75); margin-top: 8px; font-size: 1.05rem; }&#13;
-.hotel-sports-widget .page-banner .eyebrow { color: var(--sand); }&#13;
 &#13;
-.hotel-sports-widget .booking-section { padding: 40px 15px; }&#13;
-.hotel-sports-widget .booking-container { max-width: 1100px; margin: 0 auto; }&#13;
+.hotel-sports-widget .banner-container {&#13;
+  max-width: 800px;&#13;
+  margin: 0 auto;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .page-banner .eyebrow {&#13;
+  display: block;&#13;
+  font-size: 0.75rem;&#13;
+  letter-spacing: 2px;&#13;
+  text-transform: uppercase;&#13;
+  color: #e6c79c;&#13;
+  margin-bottom: 8px;&#13;
+  font-weight: 600;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .page-banner h1 {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 2.8rem;&#13;
+  color: #ffffff;&#13;
+  margin: 0 0 10px;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .page-banner p {&#13;
+  color: rgba(255, 255, 255, 0.8);&#13;
+  font-size: 1rem;&#13;
+  margin: 0;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .booking-section {&#13;
+  padding: 0 24px;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .booking-container {&#13;
+  max-width: 1200px;&#13;
+  margin: 0 auto;&#13;
+}&#13;
 &#13;
 .hotel-sports-widget .form-layout {&#13;
   display: grid;&#13;
-  grid-template-columns: 1.6fr 1fr;&#13;
-  gap: 30px;&#13;
+  grid-template-columns: 1fr 380px;&#13;
+  gap: 32px;&#13;
   align-items: start;&#13;
 }&#13;
+&#13;
 @media (max-width: 900px) {&#13;
-  .hotel-sports-widget .form-layout { grid-template-columns: 1fr; }&#13;
+  .hotel-sports-widget .form-layout {&#13;
+    grid-template-columns: 1fr;&#13;
+  }&#13;
 }&#13;
 &#13;
 .hotel-sports-widget .form-card {&#13;
-  background: var(--white);&#13;
-  border: 1px solid var(--line);&#13;
-  border-radius: var(--radius);&#13;
-  box-shadow: var(--shadow);&#13;
-  padding: 34px;&#13;
+  background: #ffffff;&#13;
+  border: 1px solid #e7e1d4;&#13;
+  border-radius: 12px;&#13;
+  padding: 36px;&#13;
+  box-shadow: 0 4px 20px rgba(31, 58, 48, 0.06);&#13;
 }&#13;
 &#13;
-.hotel-sports-widget .form-title { font-size: 2.1rem; margin: 0 0 4px; }&#13;
-.hotel-sports-widget .form-sub { color: var(--muted); font-size: .95rem; margin-bottom: 24px; }&#13;
+.hotel-sports-widget .form-title {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 2.2rem;&#13;
+  color: #1f3a30;&#13;
+  margin: 0 0 8px 0;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .form-sub {&#13;
+  color: #6f756f;&#13;
+  font-size: 1.05rem;&#13;
+  margin-bottom: 24px;&#13;
+}&#13;
 &#13;
 .hotel-sports-widget .user-status-banner {&#13;
-  background: var(--green-soft);&#13;
-  border: 1px solid #c2d6c6;&#13;
-  color: var(--green);&#13;
-  padding: 12px 16px;&#13;
-  border-radius: var(--radius);&#13;
-  margin-bottom: 20px;&#13;
-  font-size: .95rem;&#13;
+  background: #e8eee9;&#13;
+  border: 1px solid #c8ded1;&#13;
+  color: #1f3a30;&#13;
+  padding: 12px 18px;&#13;
+  border-radius: 8px;&#13;
+  margin-bottom: 26px;&#13;
+  font-size: 1rem;&#13;
   display: flex;&#13;
-  gap: 10px;&#13;
   align-items: center;&#13;
+  gap: 10px;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .user-status-banner.guest {&#13;
   background: #fdf6e9;&#13;
   border-color: #f1ddb6;&#13;
@@ -205,148 +219,229 @@
   display: flex;&#13;
   align-items: center;&#13;
   gap: 18px;&#13;
-  padding: 16px 20px;&#13;
-  border: 1.5px solid var(--line);&#13;
-  border-radius: var(--radius);&#13;
-  background: var(--cream);&#13;
+  padding: 18px 22px;&#13;
+  border: 1.5px solid #e7e1d4;&#13;
+  border-radius: 10px;&#13;
+  background: #faf6ef;&#13;
   cursor: pointer;&#13;
-  transition: .2s;&#13;
+  transition: 0.2s;&#13;
   margin: 0;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .activity-card:hover {&#13;
-  border-color: var(--sand-dark);&#13;
-  background: var(--white);&#13;
+  border-color: #1f3a30;&#13;
+  background: #ffffff;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .activity-card.selected {&#13;
-  border-color: var(--green);&#13;
-  background: var(--white);&#13;
-  box-shadow: 0 0 0 2px var(--green);&#13;
+  border-color: #1f3a30;&#13;
+  background: #ffffff;&#13;
+  box-shadow: 0 0 0 2px #1f3a30;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .activity-card input[type="radio"] {&#13;
-  accent-color: var(--green);&#13;
+  accent-color: #1f3a30;&#13;
   width: 20px;&#13;
   height: 20px;&#13;
   cursor: pointer;&#13;
 }&#13;
-.hotel-sports-widget .activity-card .info { flex: 1; }&#13;
+&#13;
+.hotel-sports-widget .activity-card .info {&#13;
+  flex: 1;&#13;
+}&#13;
+&#13;
 .hotel-sports-widget .activity-card h3 {&#13;
   font-size: 1.15rem;&#13;
-  font-family: var(--sans);&#13;
-  font-weight: 600;&#13;
+  font-weight: 700;&#13;
+  color: #1f3a30;&#13;
   margin: 0 0 4px;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .activity-card .when {&#13;
-  font-size: .88rem;&#13;
-  color: var(--muted);&#13;
+  font-size: 0.9rem;&#13;
+  color: #6f756f;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .activity-card .rate {&#13;
-  font-family: var(--serif);&#13;
+  font-family: Georgia, serif;&#13;
   font-size: 1.6rem;&#13;
-  color: var(--green);&#13;
+  color: #1f3a30;&#13;
   font-weight: 700;&#13;
 }&#13;
 &#13;
+/* Form fields */&#13;
 .hotel-sports-widget .form-grid {&#13;
   display: grid;&#13;
   grid-template-columns: 1fr 1fr;&#13;
-  gap: 18px;&#13;
+  gap: 20px;&#13;
 }&#13;
+&#13;
 @media (max-width: 600px) {&#13;
-  .hotel-sports-widget .form-grid { grid-template-columns: 1fr; }&#13;
+  .hotel-sports-widget .form-grid {&#13;
+    grid-template-columns: 1fr;&#13;
+  }&#13;
 }&#13;
 &#13;
 .hotel-sports-widget .field {&#13;
   display: flex;&#13;
   flex-direction: column;&#13;
-  gap: 6px;&#13;
+  margin-bottom: 18px;&#13;
 }&#13;
-.hotel-sports-widget .field.full { grid-column: 1 / -1; }&#13;
+&#13;
+.hotel-sports-widget .field.full {&#13;
+  grid-column: 1 / -1;&#13;
+}&#13;
+&#13;
 .hotel-sports-widget .field label {&#13;
-  font-size: .8rem;&#13;
-  letter-spacing: .12em;&#13;
+  display: block;&#13;
+  font-size: 0.85rem;&#13;
+  font-weight: 700;&#13;
+  letter-spacing: 0.8px;&#13;
   text-transform: uppercase;&#13;
-  font-weight: 600;&#13;
-  color: var(--green);&#13;
+  color: #1f3a30;&#13;
+  margin-bottom: 8px;&#13;
 }&#13;
-.hotel-sports-widget .field label .req { color: #b4483a; }&#13;
+&#13;
+.hotel-sports-widget .field label .req {&#13;
+  color: #b7382d;&#13;
+}&#13;
+&#13;
 .hotel-sports-widget .field input {&#13;
+  width: 100% !important;&#13;
   height: 48px !important;&#13;
   line-height: 1.4 !important;&#13;
   padding: 10px 14px !important;&#13;
-  border: 1px solid var(--line);&#13;
-  border-radius: var(--radius);&#13;
-  background: var(--cream);&#13;
+  border: 1.5px solid #e7e1d4 !important;&#13;
+  border-radius: 8px !important;&#13;
+  background: #faf6ef !important;&#13;
   font-size: 1rem !important;&#13;
-  color: var(--text);&#13;
-  outline: none;&#13;
-  box-sizing: border-box;&#13;
-  transition: .2s;&#13;
+  color: #1f3a30 !important;&#13;
+  box-sizing: border-box !important;&#13;
+  transition: 0.2s !important;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .field input:focus {&#13;
-  border-color: var(--sand-dark);&#13;
-  background: var(--white);&#13;
-  box-shadow: 0 0 0 3px rgba(230,199,156,.3);&#13;
+  border-color: #1f3a30 !important;&#13;
+  background: #ffffff !important;&#13;
+  outline: none !important;&#13;
 }&#13;
-.hotel-sports-widget .field small { color: var(--muted); font-size: .82rem; }&#13;
 &#13;
-/* Buttons */&#13;
-.hotel-sports-widget .btn {&#13;
-  display: inline-block;&#13;
-  padding: 15px 24px;&#13;
-  border-radius: var(--radius);&#13;
-  font-size: .85rem;&#13;
-  letter-spacing: .12em;&#13;
-  text-transform: uppercase;&#13;
-  font-weight: 600;&#13;
-  cursor: pointer;&#13;
-  border: 1px solid transparent;&#13;
-  transition: .2s;&#13;
-  text-align: center;&#13;
+.hotel-sports-widget .field small {&#13;
+  color: #6f756f;&#13;
+  font-size: 0.85rem;&#13;
+  margin-top: 6px;&#13;
 }&#13;
-.hotel-sports-widget .btn:disabled {&#13;
-  opacity: 0.5;&#13;
-  cursor: not-allowed;&#13;
-}&#13;
-.hotel-sports-widget .btn-green {&#13;
-  background: var(--green);&#13;
-  color: var(--white);&#13;
-}&#13;
-.hotel-sports-widget .btn-green:hover:not(:disabled) {&#13;
-  background: var(--green-dark);&#13;
-  transform: translateY(-2px);&#13;
-}&#13;
-.hotel-sports-widget .btn-outline {&#13;
-  border-color: var(--green);&#13;
-  color: var(--green);&#13;
-  background: transparent;&#13;
-}&#13;
-.hotel-sports-widget .btn-outline:hover {&#13;
-  background: var(--green);&#13;
-  color: var(--white);&#13;
-}&#13;
-.hotel-sports-widget .btn-block { width: 100%; }&#13;
 &#13;
-/* Summary */&#13;
+/* Long, Full-Width Side-by-Side Action Buttons */&#13;
+.hotel-sports-widget .form-actions-row {&#13;
+  display: flex !important;&#13;
+  gap: 14px !important;&#13;
+  margin-top: 28px !important;&#13;
+  width: 100% !important;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-clear {&#13;
+  flex: 0 0 160px !important;&#13;
+  height: 52px !important;&#13;
+  background: #ffffff !important;&#13;
+  color: #5c635c !important;&#13;
+  border: 1.5px solid #d9e2dc !important;&#13;
+  border-radius: 8px !important;&#13;
+  font-size: 0.9rem !important;&#13;
+  font-weight: 700 !important;&#13;
+  cursor: pointer !important;&#13;
+  white-space: nowrap !important;&#13;
+  transition: all 0.2s ease !important;&#13;
+  display: flex !important;&#13;
+  align-items: center !important;&#13;
+  justify-content: center !important;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-clear:hover {&#13;
+  background: #f5f1e8 !important;&#13;
+  color: #1f3a30 !important;&#13;
+  border-color: #1f3a30 !important;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-main {&#13;
+  flex: 1 !important;&#13;
+  width: 100% !important;&#13;
+  height: 52px !important;&#13;
+  background: #1f3a30 !important;&#13;
+  color: #ffffff !important;&#13;
+  border: none !important;&#13;
+  border-radius: 8px !important;&#13;
+  font-size: 0.95rem !important;&#13;
+  font-weight: 700 !important;&#13;
+  letter-spacing: 0.5px !important;&#13;
+  text-transform: uppercase !important;&#13;
+  white-space: nowrap !important;&#13;
+  cursor: pointer !important;&#13;
+  transition: 0.2s !important;&#13;
+  display: flex !important;&#13;
+  align-items: center !important;&#13;
+  justify-content: center !important;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-main:hover:not(:disabled) {&#13;
+  background: #162a22 !important;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-main:disabled {&#13;
+  background: #b2c2ba !important;&#13;
+  cursor: not-allowed !important;&#13;
+}&#13;
+&#13;
+@media (max-width: 600px) {&#13;
+  .hotel-sports-widget .form-actions-row {&#13;
+    flex-direction: column-reverse;&#13;
+  }&#13;
+  .hotel-sports-widget .btn-clear,&#13;
+  .hotel-sports-widget .btn-main {&#13;
+    width: 100% !important;&#13;
+  }&#13;
+}&#13;
+&#13;
+/* RIGHT: Dark Green Summary Card */&#13;
 .hotel-sports-widget .summary {&#13;
-  background: var(--green);&#13;
-  color: var(--white);&#13;
-  border-radius: var(--radius);&#13;
-  padding: 28px;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff;&#13;
+  border-radius: 12px;&#13;
+  padding: 36px 30px;&#13;
+  box-shadow: 0 6px 24px rgba(31, 58, 48, 0.2);&#13;
   position: sticky;&#13;
   top: 30px;&#13;
 }&#13;
-.hotel-sports-widget .summary h3 { color: var(--white); margin: 0 0 16px; font-size: 1.6rem; }&#13;
-.hotel-sports-widget .summary .eyebrow { color: var(--sand); }&#13;
+&#13;
+.hotel-sports-widget .summary .eyebrow {&#13;
+  font-size: 0.8rem;&#13;
+  letter-spacing: 1.5px;&#13;
+  color: #e6c79c;&#13;
+  font-weight: 600;&#13;
+  margin-bottom: 6px;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .summary h3 {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 1.8rem;&#13;
+  color: #ffffff;&#13;
+  margin: 0 0 24px 0;&#13;
+}&#13;
 &#13;
 .hotel-sports-widget .summary-row {&#13;
   display: flex;&#13;
   justify-content: space-between;&#13;
-  padding: 11px 0;&#13;
-  border-bottom: 1px solid rgba(255,255,255,.14);&#13;
-  font-size: .95rem;&#13;
-  color: rgba(255,255,255,.8);&#13;
+  align-items: center;&#13;
+  padding: 12px 0;&#13;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);&#13;
+  font-size: 1rem;&#13;
+  color: rgba(255, 255, 255, 0.8);&#13;
 }&#13;
-.hotel-sports-widget .summary-row strong { color: var(--white); font-weight: 600; }&#13;
+&#13;
+.hotel-sports-widget .summary-row strong {&#13;
+  color: #ffffff;&#13;
+  font-weight: 600;&#13;
+}&#13;
 &#13;
 .hotel-sports-widget .summary-total {&#13;
   display: flex;&#13;
@@ -354,101 +449,151 @@
   align-items: baseline;&#13;
   margin: 22px 0 16px;&#13;
 }&#13;
-.hotel-sports-widget .summary-total span { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }&#13;
-.hotel-sports-widget .summary-total strong { font-family: var(--serif); font-size: 2.4rem; color: var(--white); }&#13;
+&#13;
+.hotel-sports-widget .summary-total span {&#13;
+  font-size: 0.85rem;&#13;
+  letter-spacing: 1.2px;&#13;
+  text-transform: uppercase;&#13;
+  color: #e6c79c;&#13;
+  font-weight: 700;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .summary-total strong {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 2.4rem;&#13;
+  color: #ffffff;&#13;
+  font-weight: 700;&#13;
+}&#13;
 &#13;
 .hotel-sports-widget .summary .note {&#13;
-  font-size: .78rem;&#13;
-  color: rgba(255,255,255,.65);&#13;
-  margin-top: 14px;&#13;
+  font-size: 0.8rem;&#13;
+  color: rgba(255, 255, 255, 0.65);&#13;
+  margin-top: 18px;&#13;
   line-height: 1.4;&#13;
 }&#13;
 &#13;
 /* Alerts */&#13;
 .hotel-sports-widget .alert {&#13;
-  padding: 12px 16px;&#13;
-  border-radius: var(--radius);&#13;
-  font-size: .9rem;&#13;
-  margin-bottom: 18px;&#13;
+  padding: 14px 18px;&#13;
+  border-radius: 8px;&#13;
+  font-size: 0.95rem;&#13;
+  margin-bottom: 20px;&#13;
   display: flex;&#13;
   gap: 10px;&#13;
   align-items: center;&#13;
-  border-left: 4px solid;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .alert.warn {&#13;
-  background: #fbf1dc;&#13;
-  border-color: var(--sand-dark);&#13;
-  color: #7a5a1c;&#13;
+  background: #fdf6e9;&#13;
+  border-left: 4px solid #d4b07c;&#13;
+  color: #8a6420;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .alert.info {&#13;
-  background: var(--green-soft);&#13;
-  border-color: var(--green);&#13;
-  color: var(--green);&#13;
+  background: #e8eee9;&#13;
+  border-left: 4px solid #1f3a30;&#13;
+  color: #1f3a30;&#13;
 }&#13;
 &#13;
 /* Modal */&#13;
 .hotel-sports-widget .custom-modal-backdrop {&#13;
   position: fixed;&#13;
   top: 0; left: 0; right: 0; bottom: 0;&#13;
-  background: rgba(22,42,34,.65);&#13;
-  z-index: 1050;&#13;
+  background: rgba(31, 58, 48, 0.6);&#13;
+  z-index: 10000;&#13;
   display: flex;&#13;
   align-items: center;&#13;
   justify-content: center;&#13;
   padding: 20px;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .custom-modal {&#13;
-  background: var(--white);&#13;
+  background: #ffffff;&#13;
   border-radius: 12px;&#13;
-  max-width: 480px;&#13;
+  max-width: 500px;&#13;
   width: 100%;&#13;
-  box-shadow: 0 25px 60px rgba(0,0,0,.25);&#13;
-  overflow: hidden;&#13;
+  padding: 36px;&#13;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);&#13;
 }&#13;
-.hotel-sports-widget .dialog-body { padding: 32px; }&#13;
+&#13;
+.hotel-sports-widget .dialog-body {&#13;
+  padding: 0;&#13;
+}&#13;
+&#13;
 .hotel-sports-widget .dialog-total {&#13;
-  font-family: var(--serif);&#13;
-  font-size: 2.8rem;&#13;
-  color: var(--green);&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 2.4rem;&#13;
+  color: #1f3a30;&#13;
   font-weight: 700;&#13;
-  margin: 8px 0 16px;&#13;
+  margin-bottom: 20px;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .summary-row.dark {&#13;
-  color: var(--muted);&#13;
-  border-color: var(--line);&#13;
+  color: #6f756f;&#13;
+  border-color: #e7e1d4;&#13;
+  padding: 8px 0;&#13;
 }&#13;
-.hotel-sports-widget .summary-row.dark strong { color: var(--text); }&#13;
+&#13;
+.hotel-sports-widget .summary-row.dark strong {&#13;
+  color: #1a2e26;&#13;
+}&#13;
+&#13;
 .hotel-sports-widget .dialog-note {&#13;
-  color: var(--muted);&#13;
-  font-size: .85rem;&#13;
-  margin-top: 16px;&#13;
+  font-size: 0.85rem;&#13;
+  color: #6f756f;&#13;
+  margin: 18px 0 24px 0;&#13;
 }&#13;
+&#13;
 .hotel-sports-widget .dialog-actions {&#13;
   display: flex;&#13;
-  gap: 12px;&#13;
-  justify-content: flex-end;&#13;
-  margin-top: 24px;&#13;
+  gap: 14px;&#13;
 }&#13;
-.hotel-sports-widget .res-num-box {&#13;
-  background: var(--cream);&#13;
-  border: 2px dashed var(--sand-dark);&#13;
-  padding: 16px;&#13;
+&#13;
+.hotel-sports-widget .btn-outline {&#13;
+  flex: 1;&#13;
+  height: 48px;&#13;
+  border: 1.5px solid #d9e2dc;&#13;
+  background: #ffffff;&#13;
+  color: #1f3a30;&#13;
   border-radius: 8px;&#13;
-  text-align: center;&#13;
-  margin-top: 14px;&#13;
-}&#13;
-.hotel-sports-widget .res-num-box small {&#13;
-  text-transform: uppercase;&#13;
-  letter-spacing: .12em;&#13;
-  color: var(--muted);&#13;
-  font-size: .75rem;&#13;
-}&#13;
-.hotel-sports-widget .res-num-box .res-num {&#13;
-  font-family: var(--serif);&#13;
-  font-size: 2.2rem;&#13;
   font-weight: 700;&#13;
-  color: var(--green);&#13;
-  margin-top: 4px;&#13;
+  cursor: pointer;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .btn-green {&#13;
+  flex: 1;&#13;
+  height: 48px;&#13;
+  background: #1f3a30;&#13;
+  color: #ffffff;&#13;
+  border: none;&#13;
+  border-radius: 8px;&#13;
+  font-weight: 700;&#13;
+  cursor: pointer;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .res-num-box {&#13;
+  background: #f3f8f5;&#13;
+  border: 2px dashed #79d2a6;&#13;
+  border-radius: 10px;&#13;
+  padding: 24px;&#13;
+  text-align: center;&#13;
+  margin: 20px 0;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .res-num-box small {&#13;
+  font-size: 0.8rem;&#13;
+  letter-spacing: 1.5px;&#13;
+  color: #6f756f;&#13;
+  font-weight: 700;&#13;
+  text-transform: uppercase;&#13;
+}&#13;
+&#13;
+.hotel-sports-widget .res-num-box .res-num {&#13;
+  font-family: Georgia, serif;&#13;
+  font-size: 2.2rem;&#13;
+  color: #1f3a30;&#13;
+  font-weight: 700;&#13;
+  margin-top: 6px;&#13;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -526,18 +671,28 @@
       grBook.setValue('sports_activity', input.selectedActivityId);
       grBook.setValue('room_reservation', validation.reservationSysId);
       grBook.setValue('reservation_number', (input.reservationNumber || '').trim().toUpperCase());
-      grBook.setValue('activity_rate', confirmedRate);
+      
+      // FIX 1: rate imbes activity_rate
+      grBook.setValue('rate', confirmedRate);
+      
       grBook.setValue('guest_name', guestName);
       grBook.setValue('guest_email', guestEmail);
-      grBook.setValue('booking_status', 'confirmed');
+      
+      // FIX 3: booked imbes confirmed
+      grBook.setValue('booking_status', 'booked');
+      
+      // FIX 2: registered_user imbes user
       if (data.isLoggedIn) {
-        grBook.setValue('user', data.userId);
+        grBook.setValue('registered_user', data.userId);
       }
 
       var newSysId = grBook.insert();
       if (newSysId) {
         data.bookingSuccess = true;
-        data.bookingNumber = grBook.getDisplayValue('number') || newSysId;
+        // FIX 4: activityBookingRef para sa HTML confirmation popup
+        var refNum = grBook.getDisplayValue('number') || newSysId;
+        data.activityBookingRef = refNum;
+        data.bookingNumber = refNum;
       } else {
         data.bookingSuccess = false;
         data.bookingError = 'Booking failed. Please try again.';
@@ -550,14 +705,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 12:15:47</sys_created_on>
         <sys_id>247ce8e083d4df50ef22b1b6feaad394</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Hotel Sports Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_247ce8e083d4df50ef22b1b6feaad394</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-24 16:13:07</sys_updated_on>
+        <sys_updated_on>2026-11-24 16:56:12</sys_updated_on>
         <template><![CDATA[<div class="hotel-sports-widget">
 
   <!-- Page Banner -->
@@ -587,13 +742,13 @@
           <div>Booking as <strong>Guest</strong>.</div>
         </div>
 
-        <!-- ITEM 14 FIX: Message when no activities exist -->
+        <!-- Alert when no activities exist -->
         <div class="alert info" ng-if="c.data.noActivities">
           <span>ℹ</span>
           <div>No sports activities are currently scheduled. Please check back later.</div>
         </div>
 
-        <!-- ITEM 14 FIX: Single polite rule / error alert (Shows ONLY ONCE) -->
+        <!-- Single polite rule / error alert -->
         <div class="alert warn" ng-if="c.data.bookingError">
           <span>⚠</span>
           <div>{{c.data.bookingError}}</div>
@@ -612,18 +767,16 @@
                      ng-change="c.onSelectActivity(act)">
               <div class="info">
                 <h3>{{act.name}}</h3>
-                <!-- ITEM 14 FIX: Dates show cleanly without seconds -->
                 <div class="when">]]>📅<![CDATA[ {{act.schedule}}</div>
               </div>
               <div class="rate">${{act.rate | number:2}}</div>
             </label>
           </div>
 
-          <!-- Reservation Linking & Guest Info -->
+          <!-- Reservation Linking & Guest Info Grid -->
           <div class="form-grid" style="margin-top: 24px;">
             <div class="field full">
               <label for="res_num">Room Reservation ID / Number <span class="req">*</span></label>
-              <!-- ITEM 14 FIX: Placeholder shows e.g. RES0001001 -->
               <input id="res_num" type="text" 
                      placeholder="e.g. RES0001001" 
                      ng-model="c.data.reservationNumber" 
@@ -640,20 +793,21 @@
               <label for="gemail">Guest Email <span class="req">*</span></label>
               <input id="gemail" type="email" placeholder="you@example.com" ng-model="c.data.guestEmail" required>
             </div>
+          </div>
 
-            <!-- ITEM 10 FIX: Single primary action button -->
-            <div class="field full" style="margin-top: 14px;">
-              <button type="button" class="btn btn-green btn-block" 
-                      ng-click="c.openConfirmModal()" 
-                      ng-disabled="!c.canSubmit()">
-                Confirm Activity Booking
-              </button>
-            </div>
+          <!-- FULL-WIDTH SIDE-BY-SIDE ACTION BUTTONS (OUTSIDE GRID) -->
+          <div class="form-actions-row">
+            <button type="button" class="btn-clear" ng-click="c.clearForm()">
+              Clear Selection
+            </button>
+            <button type="button" class="btn-main" ng-click="c.openConfirmModal()" ng-disabled="!c.canSubmit()">
+              CONFIRM ACTIVITY BOOKING
+            </button>
           </div>
         </form>
       </div>
 
-      <!-- RIGHT: Sticky Summary Card (ITEM 10 FIX: Duplicate button removed!) -->
+      <!-- RIGHT: Sticky Dark Green Summary Card -->
       <aside class="summary">
         <span class="eyebrow">Selected</span>
         <h3>Activity Summary</h3>
@@ -682,7 +836,7 @@
     </div>
   </main>
 
-  <!-- CUSTOM CONFIRMATION MODAL -->
+  <!-- CONFIRMATION MODAL -->
   <div class="custom-modal-backdrop" ng-if="c.showModal">
     <div class="custom-modal">
       
@@ -691,6 +845,11 @@
         <span class="eyebrow">Confirm Activity</span>
         <h3>{{c.selectedActivity.name}}</h3>
         <div class="dialog-total">${{c.selectedActivity.rate | number:2}}</div>
+
+        <div class="alert warn" ng-if="c.data.bookingError" style="margin-bottom: 16px;">
+          <span>⚠</span>
+          <div>{{c.data.bookingError}}</div>
+        </div>
 
         <div class="summary-row dark">
           <span>Reservation Reference</span>
