@@ -16,7 +16,7 @@
         <inactive>false</inactive>
         <kb_knowledge_base/>
         <kb_knowledge_page/>
-        <login_page display_value="landing">36c61807cb31120000f8d856634c9ca9</login_page>
+        <login_page display_value="hotel_login">4b476db0c3fc1b507f96b71ed4013109</login_page>
         <logo/>
         <logo_alt_text>CITÉLLE Hotel &amp; Resort</logo_alt_text>
         <notfound_page/>
@@ -33,14 +33,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-16 15:01:04</sys_created_on>
         <sys_id>9edf79d283201310e87256d6feaad32d</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>CITÉLLE Hotel &amp; Resort</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_portal_9edf79d283201310e87256d6feaad32d</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-22 13:05:01</sys_updated_on>
+        <sys_updated_on>2026-11-24 07:47:24</sys_updated_on>
         <theme display_value="Citelle Theme">77de141cc37c17507f96b71ed40131c6</theme>
         <title>CITÉLLE Hotel &amp; Resort</title>
         <ts_index_group/>
