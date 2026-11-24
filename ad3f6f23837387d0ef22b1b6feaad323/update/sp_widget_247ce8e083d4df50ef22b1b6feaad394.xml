@@ -41,9 +41,27 @@
     return hasAct && hasRes && !!c.data.guestName && !!c.data.guestEmail;
   };
 
+  // Compact Clear Selection Action
+  c.clearForm = function() {
+    c.selectedActivity = {};
+    c.data.selectedActivityId = '';
+    c.data.reservationNumber = '';
+    c.data.bookingError = '';
+    c.data.canBookActivity = false;
+    c.showModal = false;
+    c.bookingConfirmed = false;
+
+    if (!c.data.isLoggedIn) {
+      c.data.guestName = '';
+      c.data.guestEmail = '';
+    }
+  };
+
+  // Upfront activity validation check before modal opens
   c.openConfirmModal = function() {
     c.data.bookingError = '';
     if (!c.canSubmit() || c.isSubmitting) return;
+
     c.isSubmitting = true;
     c.data.action = 'validateActivityBooking';
     c.server.update().then(function() {
@@ -64,22 +82,22 @@
   c.confirmBooking = function() {
     c.isSubmitting = true;
     c.data.action = 'bookActivity';
-
     c.server.update().then(function() {
       c.isSubmitting = false;
       if (c.data.bookingSuccess) {
         c.bookingConfirmed = true;
       } else {
-        c.showModal = false; // Closes popup and shows friendly alert on form!
+        c.showModal = false;
       }
     });
   };
 
   c.resetForm = function() {
-    c.showModal = false;
-    c.bookingConfirmed = false;
-    c.data.reservationNumber = '';
-    c.data.bookingError = '';
+    c.clearForm();
+    if (c.data.activities && c.data.activities.length > 0) {
+      c.data.selectedActivityId = c.data.activities[0].sys_id;
+      c.selectedActivity = c.data.activities[0];
+    }
   };
 };]]></client_script>
         <controller_as>c</controller_as>
@@ -453,7 +471,7 @@
   data.userName = gs.getUserDisplayName();
   data.userEmail = gs.getUser().getEmail() || '';
 
-  // 1. Fetch Sports Activities from Database ONLY
+  // 1. Fetch Sports Activities with clean schedule format (no trailing seconds)
   data.activities = [];
   data.noActivities = false;
   var actGr = new GlideRecord('x_2206701_hotel_0_sports_activities');
@@ -476,7 +494,7 @@
     data.noActivities = true;
   }
 
-  // 2. Handle Upfront Validation & Booking Action via PricingUtils
+  // 2. Upfront Validation & Booking via PricingUtils (Andrew PR #29 & Habon PR #28)
   if (input && (input.action === 'validateActivityBooking' || input.action === 'bookActivity')) {
     var pricingUtil = new x_2206701_hotel_0.PricingUtils();
     var validation = pricingUtil.validateSportsActivityBooking(
@@ -488,50 +506,42 @@
 
     if (!validation.valid) {
       data.canBookActivity = false;
-      data.bookingSuccess = false;
       data.bookingError = validation.message;
+      data.bookingSuccess = false;
       return;
     }
 
     data.canBookActivity = true;
-    data.bookingError = '';
-    if (input.action === 'validateActivityBooking') {
-      return;
-    }
+    data.reservationSysId = validation.reservationSysId;
 
-    var actPricing = pricingUtil.calculateSportsActivity(input.selectedActivityId);
-    var confirmedRate = actPricing.ok ? actPricing.rate : 0;
-    var guestName = input.guestName || validation.guestName || data.userName;
-    var guestEmail = input.guestEmail || validation.guestEmail || data.userEmail;
-    var targetUser = data.userId || validation.registeredUser;
+    // 3. Handle actual booking insertion into database
+    if (input.action === 'bookActivity') {
+      var actPricing = pricingUtil.calculateSportsActivity(input.selectedActivityId);
+      var confirmedRate = actPricing.ok ? actPricing.rate : 0;
+      var guestName = input.guestName || validation.guestName || data.userName;
+      var guestEmail = input.guestEmail || validation.guestEmail || data.userEmail;
 
-    var booking = new GlideRecord('x_2206701_hotel_0_sports_bookings');
-    booking.initialize();
-    booking.setValue('sports_activity', input.selectedActivityId);
-    booking.setValue('guest_name', guestName);
-    booking.setValue('guest_email', guestEmail);
-    booking.setValue('rate', confirmedRate);
-    booking.setValue('booking_status', 'booked');
-    if (targetUser) {
-      booking.setValue('registered_user', targetUser);
-    }
-    if (booking.isValidField('room_reservation') && validation.reservationSysId) {
-      booking.setValue('room_reservation', validation.reservationSysId);
-    }
-
-    var newSysId = booking.insert();
-    if (newSysId) {
-      var saved = new GlideRecord('x_2206701_hotel_0_sports_bookings');
-      if (saved.get(newSysId)) {
-        data.bookingSuccess = true;
-        data.activityBookingRef = saved.getValue('number') || newSysId;
-      } else {
-        data.bookingSuccess = true;
-        data.activityBookingRef = newSysId;
+      var grBook = new GlideRecord('x_2206701_hotel_0_sports_bookings');
+      grBook.initialize();
+      grBook.setValue('sports_activity', input.selectedActivityId);
+      grBook.setValue('room_reservation', validation.reservationSysId);
+      grBook.setValue('reservation_number', (input.reservationNumber || '').trim().toUpperCase());
+      grBook.setValue('activity_rate', confirmedRate);
+      grBook.setValue('guest_name', guestName);
+      grBook.setValue('guest_email', guestEmail);
+      grBook.setValue('booking_status', 'confirmed');
+      if (data.isLoggedIn) {
+        grBook.setValue('user', data.userId);
       }
-    } else {
-      data.bookingSuccess = false;
-      data.bookingError = 'Booking failed. Please try again.';
+
+      var newSysId = grBook.insert();
+      if (newSysId) {
+        data.bookingSuccess = true;
+        data.bookingNumber = grBook.getDisplayValue('number') || newSysId;
+      } else {
+        data.bookingSuccess = false;
+        data.bookingError = 'Booking failed. Please try again.';
+      }
     }
   }
 })();]]></script>
@@ -540,14 +550,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 12:15:47</sys_created_on>
         <sys_id>247ce8e083d4df50ef22b1b6feaad394</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Hotel Sports Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_247ce8e083d4df50ef22b1b6feaad394</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-23 10:16:55</sys_updated_on>
+        <sys_updated_on>2026-11-24 16:13:07</sys_updated_on>
         <template><![CDATA[<div class="hotel-sports-widget">
 
   <!-- Page Banner -->
