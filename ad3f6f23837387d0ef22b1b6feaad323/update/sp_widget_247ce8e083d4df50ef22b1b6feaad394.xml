@@ -671,18 +671,28 @@
       grBook.setValue('sports_activity', input.selectedActivityId);
       grBook.setValue('room_reservation', validation.reservationSysId);
       grBook.setValue('reservation_number', (input.reservationNumber || '').trim().toUpperCase());
-      grBook.setValue('activity_rate', confirmedRate);
+      
+      // FIX 1: rate imbes activity_rate
+      grBook.setValue('rate', confirmedRate);
+      
       grBook.setValue('guest_name', guestName);
       grBook.setValue('guest_email', guestEmail);
-      grBook.setValue('booking_status', 'confirmed');
+      
+      // FIX 3: booked imbes confirmed
+      grBook.setValue('booking_status', 'booked');
+      
+      // FIX 2: registered_user imbes user
       if (data.isLoggedIn) {
-        grBook.setValue('user', data.userId);
+        grBook.setValue('registered_user', data.userId);
       }
 
       var newSysId = grBook.insert();
       if (newSysId) {
         data.bookingSuccess = true;
-        data.bookingNumber = grBook.getDisplayValue('number') || newSysId;
+        // FIX 4: activityBookingRef para sa HTML confirmation popup
+        var refNum = grBook.getDisplayValue('number') || newSysId;
+        data.activityBookingRef = refNum;
+        data.bookingNumber = refNum;
       } else {
         data.bookingSuccess = false;
         data.bookingError = 'Booking failed. Please try again.';
@@ -695,14 +705,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-29 12:15:47</sys_created_on>
         <sys_id>247ce8e083d4df50ef22b1b6feaad394</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Hotel Sports Booking Form</sys_name>
         <sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package>
         <sys_policy/>
         <sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope>
         <sys_update_name>sp_widget_247ce8e083d4df50ef22b1b6feaad394</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-11-24 16:24:55</sys_updated_on>
+        <sys_updated_on>2026-11-24 16:56:12</sys_updated_on>
         <template><![CDATA[<div class="hotel-sports-widget">
 
   <!-- Page Banner -->
