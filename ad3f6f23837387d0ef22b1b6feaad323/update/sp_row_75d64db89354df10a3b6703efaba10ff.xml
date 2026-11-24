@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row">
     <sp_row action="INSERT_OR_UPDATE">
+        <aria_label/>
         <class_name/>
         <order>1</order>
         <semantic_tag/>
         <sp_column/>
-        <sp_container display_value="Hotel Reservation Home Page - Container 8">5dd64db89354df10a3b6703efaba1082</sp_container>
+        <sp_container display_value="CITÉLLE Hotel &amp; Resort - Container 8">5dd64db89354df10a3b6703efaba1082</sp_container>
         <sys_class_name>sp_row</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:44:06</sys_created_on>

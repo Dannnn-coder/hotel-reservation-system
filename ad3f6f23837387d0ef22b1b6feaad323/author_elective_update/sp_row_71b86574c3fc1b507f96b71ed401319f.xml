@@ -25,7 +25,6 @@
         <file_path/>
         <instance_id>ca118e99ff6093dcc812f8e4fc4fd973</instance_id>
         <instance_name>dev480929</instance_name>
-        <merge_base/>
         <name>sp_row_71b86574c3fc1b507f96b71ed401319f</name>
         <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row"><sp_row action="INSERT_OR_UPDATE"><aria_label/><class_name/><order>1</order><semantic_tag/><sp_column/><sp_container display_value="Sign In - Container 1">91b82574c3fc1b507f96b71ed40131e5</sp_container><sys_class_name>sp_row</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-11-24 07:43:30</sys_created_on><sys_id>71b86574c3fc1b507f96b71ed401319f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="Hotel Reservation System" source="x_2206701_hotel_0">ad3f6f23837387d0ef22b1b6feaad323</sys_package><sys_policy/><sys_scope display_value="Hotel Reservation System">ad3f6f23837387d0ef22b1b6feaad323</sys_scope><sys_update_name>sp_row_71b86574c3fc1b507f96b71ed401319f</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-11-24 07:43:30</sys_updated_on></sp_row></record_update>]]></payload>
         <payload_hash>1019346986</payload_hash>
@@ -46,7 +45,7 @@
         <update_guid_history>79b86574cffc1b502538ee9f11b60aa2:1019346986</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="1">0409ad74c3fc1b507f96b71ed4013110</sys_audit_delete>
+        <sys_audit_delete display_value="">0409ad74c3fc1b507f96b71ed4013110</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-24 07:44:45</sys_created_on>
