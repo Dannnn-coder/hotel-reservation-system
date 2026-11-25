@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
     <sp_column action="INSERT_OR_UPDATE">
+        <aria_label/>
         <class_name/>
         <order>1</order>
         <semantic_tag/>
@@ -7,7 +8,7 @@
         <size_lg/>
         <size_sm/>
         <size_xs/>
-        <sp_row display_value="1">d518457c9354df10a3b6703efaba10fc</sp_row>
+        <sp_row display_value="2">d518457c9354df10a3b6703efaba10fc</sp_row>
         <sys_class_name>sp_column</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-10-30 08:49:32</sys_created_on>

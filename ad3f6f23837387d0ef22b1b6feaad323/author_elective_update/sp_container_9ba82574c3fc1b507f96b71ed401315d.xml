@@ -54,7 +54,7 @@
         <update_guid_history>ddb8657477fc1b501198b355690ba69a:460198709,57a82574ebfc1b50aef8cd6e4dc92ede:-1732451786</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="Sign In - Container 2">f6b8a574c3fc1b507f96b71ed401313b</sys_audit_delete>
+        <sys_audit_delete display_value="">f6b8a574c3fc1b507f96b71ed401313b</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-11-24 07:43:34</sys_created_on>

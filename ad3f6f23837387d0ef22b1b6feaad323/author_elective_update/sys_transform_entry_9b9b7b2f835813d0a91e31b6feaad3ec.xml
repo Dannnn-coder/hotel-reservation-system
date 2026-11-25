@@ -37,6 +37,7 @@
         <file_path/>
         <instance_id>21cd4a5dff1d6a1cc80bf8e4fc4fd957</instance_id>
         <instance_name>dev341206</instance_name>
+        <merge_base/>
         <name>sys_transform_entry_9b9b7b2f835813d0a91e31b6feaad3ec</name>
         <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_transform_entry"&gt;&lt;sys_transform_entry action="INSERT_OR_UPDATE"&gt;&lt;choice_action&gt;create&lt;/choice_action&gt;&lt;coalesce&gt;false&lt;/coalesce&gt;&lt;coalesce_case_sensitive&gt;false&lt;/coalesce_case_sensitive&gt;&lt;coalesce_empty_fields&gt;false&lt;/coalesce_empty_fields&gt;&lt;date_format&gt;yyyy-MM-dd HH:mm:ss&lt;/date_format&gt;&lt;map display_value="Reservations Import Map"&gt;f1da33ab835813d0a91e31b6feaad32d&lt;/map&gt;&lt;reference_value_field/&gt;&lt;source_field&gt;u_registered_user&lt;/source_field&gt;&lt;source_script&gt;&lt;![CDATA[answer = (function transformEntry(source) {
 
